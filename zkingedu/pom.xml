@@ -158,6 +158,13 @@
             <version>1.7.25</version>
         </dependency>
 
+        <!--支付宝支付jar包 -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.4.49.ALL</version>
+        </dependency>
+
 
         <!--   ====================================映入工具类所需依赖 Start-->
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->

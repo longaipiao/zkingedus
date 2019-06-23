@@ -22,6 +22,10 @@ public class Charge implements Serializable {
     private Double chargeMoney;
     //积分
     private Integer chargeIntegral;
-    //'账单时间
+    //'充值时间
     private String chargeTime;
+
+
+    //用户对象
+    private User user;
 }

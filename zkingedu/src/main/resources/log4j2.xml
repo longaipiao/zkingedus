@@ -58,6 +58,7 @@
                       <logger name="org.apache.shiro" level="info"></logger>
                       <logger name="org.hibernate" level="info"></logger>
                       <logger name="io.netty" level="info"></logger>
+                      <logger name="org.thymeleaf" level="info"></logger>
         <root level="all">
             <appender-ref ref="Console" />
             <appender-ref ref="RollingFileInfo" />
