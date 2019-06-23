@@ -54,6 +54,10 @@
         <!--过滤掉spring和mybatis的一些无用的DEBUG信息 -->
                  <logger name="org.springframework" level="INFO"></logger>
                  <logger name="org.mybatis" level="INFO"></logger>
+                      <logger name="org.quartz" level="info"></logger>
+                      <logger name="org.apache.shiro" level="info"></logger>
+                      <logger name="org.hibernate" level="info"></logger>
+                      <logger name="io.netty" level="info"></logger>
         <root level="all">
             <appender-ref ref="Console" />
             <appender-ref ref="RollingFileInfo" />
