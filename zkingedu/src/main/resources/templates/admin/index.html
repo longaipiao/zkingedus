@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -13,8 +13,8 @@
 	<link rel="stylesheet" href="css/xadmin.css">
 	
     <script src="js/jquery.min.js"></script>
-    <script src="lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/admin/js/xadmin.js"></script>
 
 </head>
 <body>
@@ -45,132 +45,84 @@
           </li>
           <li class="layui-nav-item to-index"><a href="#">前台首页</a></li>
         </ul>
-        
     </div>
     <!-- 顶部结束 -->
     <!-- 中部开始 -->
+    <script type="text/javascript">
+        var id=2;
+        <!--左侧导航栏渲染-->
+        $(function(){
+            $.ajax({
+                type:"post",
+                datatype:"json",
+                url:"/admin/getmuens",
+                async:"false",
+                data:{
+                    empid:id,
+                },
+                success:function(data){
+                    //先添加所有的主材单
+                    var content='<ul id="nav">';
+                    $.each(data, function (i, obj) {
+                        // alert(obj.menuname);
+                        content +='<li>';
+                        content +='<a href="javascript:;"><i class="iconfont">'+obj.menuImg+'</i><cite>'+obj.menuName+'</cite>';
+                        content +='<i class="iconfont nav_right">&#xe6a7;</i></a><ul class="sub-menu">';
+                        //这里是添加所有的子菜单
+                        content += loadchild(obj.menus);
+                        content += '</ul></li>';
+                    });
+                    content+='</ul>';
+                    // alert(content)
+                    $("#side-nav").html(content);
+                },
+                error:function(){
+                    alert("操作过于频繁,请稍后再试!或重启系统");
+                }
+            });
+            //组装子菜单的方法
+            function loadchild(obj) {
+                // alert(obj.menuname);
+                if (obj == null) {
+                    return;
+                }
+                var text = '';
+                if (obj != null && obj.length > 0) {
+                    $.each(obj, function (i, note) {
+                        if (note == null) {
+                            return;
+                        }
+                        text += '<li><a _href="'+note.menuURL+'"><i class="iconfont">'+note.menuImg;
+                        text += '</i><cite>'+note.menuName+'</cite></a></li >';
+                    });
+                }
+                return text;
+            };
+        })
+    </script>
      <!-- 左侧菜单开始 -->
+
     <div class="left-nav">
       <div id="side-nav">
-        <ul id="nav">
-             <li >
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6eb;</i>
-                    <cite>主页</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/welcome.html"><i class="iconfont">&#xe6a7;</i><cite>控制台</cite></a></li >
-                </ul>
-            </li>
 
-            <!-- 新增区域 -->
-            <li >
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6e4;</i>
-                    <cite>系统设置</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/level-list.html"><i class="iconfont">&#xe6a7;</i><cite>会员等级</cite></a></li >
-                    <li><a _href="html/integral-list.html"><i class="iconfont">&#xe6a7;</i><cite>积分设置</cite></a></li >
-                    <li><a _href="html/recharge-list.html"><i class="iconfont">&#xe6a7;</i><cite>充值记录</cite></a></li >
-                </ul>
-            </li>
-
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe726;</i>
-                    <cite>用户管理</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/member-list.html"><i class="iconfont">&#xe6a7;</i><cite>会员列表</cite></a></li >
-                    <li><a _href="html/tearch-list.html"><i class="iconfont">&#xe6a7;</i><cite>讲师列表</cite></a></li >
-                    <li><a _href="html/admin-list.html"><i class="iconfont">&#xe6a7;</i><cite>管理员列表</cite></a></li >
-                    <li><a _href="html/admin-role.html"><i class="iconfont">&#xe6a7;</i><cite>角色管理</cite></a></li >
-                    <li><a _href="html/admin-cate.html"><i class="iconfont">&#xe6a7;</i><cite>权限管理</cite></a></li >
-                </ul>
-            </li>
+          <!--<ul id="nav">-->
+              <!--<li><a href="javascript:;">-->
+                  <!--<i class="iconfont">&#xe614;</i>-->
+                  <!--<cite>系统管理</cite>-->
+                  <!--<i class="iconfont nav_right">&#xe6a7;</i>-->
+              <!--</a>-->
+                  <!--<ul class="sub-menu">-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe645;</i><cite>广告管理</cite></a></li >-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe716;</i><cite>开发者工具</cite></a></li >-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe66f;</i><cite>员工管理</cite></a></li >-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe66b;</i><cite>菜单管理</cite></a></li >-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe612;</i><cite>角色管理</cite></a></li >-->
+                      <!--<li><a _href="null"><i class="iconfont">&#xe606;</i><cite>管理员列表</cite></a></li >-->
+                  <!--</ul>-->
+              <!--</li>-->
+          <!--</ul>-->
 
 
-            <!--  课程体系  start -->
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6b4;</i>
-                    <cite>课程体系</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/cate.html"><i class="iconfont">&#xe6a7;</i><cite>体系分类</cite></a></li >
-                    <li><a _href="html/member-list.html"><i class="iconfont">&#xe6a7;</i><cite>课程管理</cite></a></li >
-                    <li><a _href="html/member-list.html"><i class="iconfont">&#xe6a7;</i><cite>章节管理</cite></a></li >
-                    <li><a _href="html/member-list.html"><i class="iconfont">&#xe6a7;</i><cite>视频管理</cite></a></li >
-                </ul>
-            </li>
-            <!--  课程体系  end -->
-
-
-            <!--  文章评论  start -->
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe705;</i>
-                    <cite>文章评论</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/article-cate.html"><i class="iconfont">&#xe6a7;</i><cite>文章分类</cite></a></li >
-                    <li><a _href="html/article-list.html"><i class="iconfont">&#xe6a7;</i><cite>文章列表</cite></a></li >
-                    <li><a _href="html/message-list.html"><i class="iconfont">&#xe6a7;</i><cite>评论管理</cite></a></li >
-                </ul>
-            </li>
-            <!--  文章评论  end -->
-
-            <!--  题库管理  start -->
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe60a;</i>
-                    <cite>题库管理</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/cate.html"><i class="iconfont">&#xe6a7;</i><cite>题库类型</cite></a></li >
-                    <li><a _href="html/admin-role.html"><i class="iconfont">&#xe6a7;</i><cite>题目管理</cite></a></li >
-                    <li><a _href="html/admin-cate.html"><i class="iconfont">&#xe6a7;</i><cite>答案管理</cite></a></li >
-                    <li><a _href="html/admin-cate.html"><i class="iconfont">&#xe6a7;</i><cite>测评记录</cite></a></li >
-                </ul>
-            </li>
-            <!--  题库管理  end -->
-
-
-            <!--  资源管理  start -->
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe857;</i>
-                    <cite>资源下载</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/download-cate.html"><i class="iconfont">&#xe6a7;</i><cite>资源分类</cite></a></li >
-                    <li><a _href="html/download-list.html"><i class="iconfont">&#xe6a7;</i><cite>资源管理</cite></a></li >
-                </ul>
-            </li>
-            <!--  题库管理  end -->
-
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe69e;</i>
-                    <cite>订单管理</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li><a _href="html/order-list.html"><i class="iconfont">&#xe6a7;</i><cite>订单列表</cite></a></li >
-                </ul>
-            </li>
-
-
-            <!-- 新增区域 -->
-            </ul>
       </div>
     </div>
     <!-- <div class="x-slide_left"></div> -->

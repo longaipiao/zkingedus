@@ -9,33 +9,33 @@
                     pattern="[%d{HH:mm:ss:SSS}] ++++++++++++++++[%p] - %l -%n%m%n" />
         </console>
         <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
-        <RollingFile name="RollingFileInfo"
-                     fileName="F://logs/info.log"
-                     filePattern="F://logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
-            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
-            <ThresholdFilter level="info" onMatch="ACCEPT"
-                             onMismatch="DENY" />
-            <PatternLayout
-                    pattern="[%d{HH:mm:ss:SSS}] ++++++++++ [%p] - %l - %m%n" />
-            <Policies>
-                <TimeBasedTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="10MB" />
-            </Policies>
-        </RollingFile>
-        <RollingFile name="RollingFileWarn"
-                     fileName="F://logs/warn.log"
-                     filePattern="F://logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
-            <ThresholdFilter level="warn" onMatch="ACCEPT"
-                             onMismatch="DENY" />
-            <PatternLayout
-                    pattern="[%d{HH:mm:ss:SSS}] ++++++++ [%p] - %l - %m%n" />
-            <Policies>
-                <TimeBasedTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="10MB" />
-            </Policies>
-            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 -->
-            <DefaultRolloverStrategy max="10" />
-        </RollingFile>
+        <!--<RollingFile name="RollingFileInfo"-->
+                     <!--fileName="F://logs/info.log"-->
+                     <!--filePattern="F://logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">-->
+            <!--&lt;!&ndash;控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） &ndash;&gt;-->
+            <!--<ThresholdFilter level="info" onMatch="ACCEPT"-->
+                             <!--onMismatch="DENY" />-->
+            <!--<PatternLayout-->
+                    <!--pattern="[%d{HH:mm:ss:SSS}] ++++++++++ [%p] - %l - %m%n" />-->
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy />-->
+                <!--<SizeBasedTriggeringPolicy size="10MB" />-->
+            <!--</Policies>-->
+        <!--</RollingFile>-->
+        <!--<RollingFile name="RollingFileWarn"-->
+                     <!--fileName="F://logs/warn.log"-->
+                     <!--filePattern="F://logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">-->
+            <!--<ThresholdFilter level="warn" onMatch="ACCEPT"-->
+                             <!--onMismatch="DENY" />-->
+            <!--<PatternLayout-->
+                    <!--pattern="[%d{HH:mm:ss:SSS}] ++++++++ [%p] - %l - %m%n" />-->
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy />-->
+                <!--<SizeBasedTriggeringPolicy size="10MB" />-->
+            <!--</Policies>-->
+            <!--&lt;!&ndash; DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 &ndash;&gt;-->
+            <!--<DefaultRolloverStrategy max="10" />-->
+        <!--</RollingFile>-->
         <RollingFile name="RollingFileError"
                      fileName="F://logs/error.log"
                      filePattern="F://logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
