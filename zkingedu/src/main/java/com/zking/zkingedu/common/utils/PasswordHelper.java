@@ -7,12 +7,75 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 public class PasswordHelper {
-    private RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+    private static RandomNumberGenerator  randomNumberGenerator = new SecureRandomNumberGenerator();
     public static final String ALGORITHM_NAME = "md5";//基础散列算法
     public static final int HASH_ITERATIONS = 2;//自定义散列次数
 
+    /**
+     * 指定hash算法为MD5
+     */
+    private static final String hashAlgorithmName = "md5";
+
+    /**
+     * 指定散列次数为1024次，即加密1024次
+     */
+    private static final int hashIterations = 1024;
+
+    /**
+     * true指定Hash散列值使用Hex加密存. false表明hash散列值用用Base64-encoded存储
+     */
+    private static final boolean storedCredentialsHexEncoded = true;
+
     public void encryptPassword(User user){
         //随机字符串作为salt因子，实际参与运算的salt我们还引入其他干扰因子
+    }
 
+
+    /**
+     * 获得加密用的盐
+     *
+     * @return
+     */
+    public static String createSalt() {
+        return randomNumberGenerator.nextBytes().toHex();
+    }
+
+    /**
+     * 获得加密后的凭证
+     *
+     * @param credentials 凭证(即密码)
+     * @param salt        盐
+     * @return
+     */
+    public static String createCredentials(String credentials, String salt) {
+        SimpleHash simpleHash = new SimpleHash(hashAlgorithmName, credentials,
+                salt, hashIterations);
+        return storedCredentialsHexEncoded ? simpleHash.toHex() : simpleHash.toBase64();
+    }
+
+
+    /**
+     * 进行密码验证
+     *
+     * @param credentials        未加密的密码
+     * @param salt               盐
+     * @param encryptCredentials 加密后的密码
+     * @return
+     */
+    public static boolean checkCredentials(String credentials, String salt, String encryptCredentials) {
+        return encryptCredentials.equals(createCredentials(credentials, salt));
+    }
+
+    public static void main(String[] args) {
+        //盐
+        String salt = createSalt();
+        System.out.println(salt);
+        System.out.println(salt.length());
+        //凭证+盐加密后得到的密码
+        String credentials = createCredentials("123456", salt);
+        System.out.println(credentials);
+        System.out.println(credentials.length());
+        boolean b = checkCredentials("123456", salt, credentials);
+        System.out.println(b);
     }
 }

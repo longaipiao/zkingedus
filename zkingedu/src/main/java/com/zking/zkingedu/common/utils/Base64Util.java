@@ -456,4 +456,8 @@ public final class Base64Util
         in.close();
     }
 
+    public static void main(String[] args) throws Exception {
+        System.out.println(decodeString("123456"));
+        System.out.println(encode("123456"));
+    }
 }

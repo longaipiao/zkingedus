@@ -4,6 +4,7 @@ package com.zking.zkingedu.common.controller;
 import com.zking.zkingedu.common.dao.EmpDao;
 import com.zking.zkingedu.common.model.Emp;
 import com.zking.zkingedu.common.service.UserService;
+import com.zking.zkingedu.common.utils.PasswordHelper;
 import com.zking.zkingedu.common.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class TestController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @ResponseBody
+
     @RequestMapping("/")
     public String test(HttpServletRequest request){
 
-        return "Holle World!!";
+        return "/user/index";
     }
 
 

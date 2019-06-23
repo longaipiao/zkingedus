@@ -43,10 +43,10 @@ spring:
     #  prefix: /
     #  suffix: .html
   #配置JPA参数
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   #配置redis
   redis:
     #redis数据库索引，默认0
