@@ -25,10 +25,10 @@ public class TestController {
     private RedisUtil redisUtil;
 
 
+
     @RequestMapping("/")
     public String test(HttpServletRequest request){
         System.out.println("首页测试");
-
         return "/user/index";
     }
 

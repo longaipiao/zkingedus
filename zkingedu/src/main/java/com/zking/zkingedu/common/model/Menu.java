@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 菜单表
@@ -30,4 +32,6 @@ public class Menu implements Serializable {
     private Integer menuRank;
     //类别0菜单1授权码（按钮)
     private Integer menuSort;
+    //装子类
+    private List<Menu> menus = new ArrayList<>();
 }
