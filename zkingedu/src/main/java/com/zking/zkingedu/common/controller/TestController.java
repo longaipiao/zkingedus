@@ -27,7 +27,8 @@ public class TestController {
 
     @RequestMapping("/")
     public String test(HttpServletRequest request){
-        System.out.println("首页测试");
+        System.out.println("首页测试lail");
+
         return "/user/index";
     }
 
