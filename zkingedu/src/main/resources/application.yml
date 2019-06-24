@@ -1,19 +1,19 @@
 #配置项目名和端口号server:
 server:
    servlet:
-     context-path:  /
-   port: 8800
+     context-path: /
+   port: 8899
 #配置数据库
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.107.120.48/ZkingEdu?serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/education?serverTimezone=UTC
     username: root
-    password: 123456
+    password: 123
     type: com.alibaba.druid.pool.DruidDataSource
   #德鲁伊连接配置
     druid:
-      initial-size: 5
+      initial-size: 1
       max-active: 100
       min-idle: 5
       max-wait: 60000
@@ -43,16 +43,16 @@ spring:
     #  prefix: /
     #  suffix: .html
   #配置JPA参数
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
   #配置redis
   redis:
     #redis数据库索引，默认0
     database: 0
     #redis服务器地址
-    host: 47.107.120.48
+    host: 192.168.111.129
     #redis服务器端口号
     port: 6379
     #redis服务器连接密码(默认为空)
