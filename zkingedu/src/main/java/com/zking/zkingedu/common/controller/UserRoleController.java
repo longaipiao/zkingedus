@@ -26,7 +26,7 @@ public class UserRoleController {
 
     @RequestMapping(value = "/user123")
     public String test(){
-        System.out.println("了user/user123");
+        System.out.println("来了user/user123");
         return "user/user123";
     }
 
