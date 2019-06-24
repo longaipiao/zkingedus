@@ -30,6 +30,5 @@ public class Post implements Serializable {
     private Integer postNum;
     //状态0正常1封禁
     private Integer postState;
-    //帖子类别id
-    private Integer postCategory;
+
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Aspect
@@ -25,6 +26,8 @@ public class AopUserRole {
     private HttpServletRequest request;
     @Resource
     private HttpServletResponse response;
+    @Autowired
+    private HttpSession session;
     /**
      * 定义切入点
      */
@@ -32,32 +35,35 @@ public class AopUserRole {
     public void test(){
 
     }
-
     @Before("test()")
-    public boolean test1(){
-        System.out.println("用户权限切面检测");
-        if(request.getSession().getAttribute("user")==null){//检测用户是否登陆，未登录直接返回首页
-            try {
-                response.sendRedirect("/");
-            } catch (IOException e) {
-                System.out.println("重定向");
-                e.printStackTrace();
-            }
-            return false;
+    public boolean roleAop(){
+        System.out.println("权限切面检测");
+        boolean f = true;
+        if(session.getAttribute("user")==null){//检测用户是否登陆，未登录直接返回首页
+           f=false;
         }else{//检测用户ip地址是否对应，不对应直接回首页
             //获取该用户的id
-            User u = (User)request.getSession().getAttribute("user");
+            User u = (User)session.getAttribute("user");
             //获取该用户
             User user = userService.getUserByid(u.getUserID());
             if(!user.getUserIP().equals(IpAddress.getIpAddr(request))){//对比访问ip和数据库ip是否对应
-                try {
-                    response.sendRedirect("/");
-                } catch (IOException e) {
-                    System.out.println("重定向");
-                    e.printStackTrace();
-                }
+                f=false;
             }
         }
+
+        if(f==false){
+            try {
+            response.sendRedirect("/jump");
+            return false;
+            } catch (IOException e) {
+                System.out.println("重定向Io异常");
+                e.printStackTrace();
+            } catch (Exception e){
+                System.out.println("userRole重定向exception");
+                e.printStackTrace();
+            }
+        }
+
         return true;
     }
 }

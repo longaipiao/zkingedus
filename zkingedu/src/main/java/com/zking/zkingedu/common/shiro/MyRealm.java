@@ -37,11 +37,13 @@ public class MyRealm extends AuthorizingRealm {
         Emp dbEmp = empService.getempbyempname(token.getUsername());
         System.out.println(dbEmp);
         //如果账号对象为null，表示该数据库表中没有该账户
-        if(dbEmp==null){
+        if (dbEmp == null) {
             return null;
         }
         //最后的比对需要交给安全管理器（Su）
         //三个参数进行初步的简单认证信息对象的包装
         AuthenticationInfo info = new SimpleAuthenticationInfo(dbEmp, dbEmp.getEmpPassword(), this.getClass().getSimpleName());
+
         return info;
     }
+}
