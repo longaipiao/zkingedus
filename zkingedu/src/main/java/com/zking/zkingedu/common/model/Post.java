@@ -18,6 +18,8 @@ public class Post implements Serializable {
     private Integer postID;
     //用户id
     private Integer postUid;
+    //帖子类别
+    private Integer postCategory;
     //帖子标题
     private String postName;
     //帖子内容

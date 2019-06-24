@@ -43,7 +43,6 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashAlgorithmName(PasswordHelper.ALGORITHM_NAME);
         //散列次数
         hashedCredentialsMatcher.setHashIterations(PasswordHelper.HASH_ITERATIONS);
-        System.out.println();
         hashedCredentialsMatcher.toString();
         return hashedCredentialsMatcher;
     }
@@ -51,7 +50,6 @@ public class ShiroConfig {
     @Bean
     public MyRealm shiroRealm() {
         MyRealm shiroRealm = new MyRealm();
-        System.out.println();
         //shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher()); // 原来在这里
         return shiroRealm;
     }
