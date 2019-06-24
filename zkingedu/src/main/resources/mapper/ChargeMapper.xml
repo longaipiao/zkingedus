@@ -25,7 +25,19 @@
             t_charge a,
             t_user b
         WHERE
-            b.user_id = a.charge_uid;
+            b.user_id = a.charge_uid
+        <!--<if test="userName!=null">
+            and b.user_name like '%${userName}%'
+        </if>
+        <if test="chargeMoney!=null">
+            and a.charge_money like '%${chargeMoney}%'
+        </if>
+         <if test="chargeIntegral!=null">
+             and a.charge_integral like '%${chargeIntegral}%'
+         </if>
+         <if test="chargeTime!=null">
+             and a.cherge_time like '%${chargeTime}%'
+         </if>-->
     </select>
 
     <!--添加充值记录-->
@@ -34,6 +46,10 @@
             t_charge(charge_uid,charge_money,charge_integral,charge_time)
         values (#{chargeUid},#{chargeMoney},#{chargeIntegral},#{chargeTime})
     </insert>
+    
+    <delete id="delChargeByID">
+        delete from t_charge where charge_id=#{chargeID}
+    </delete>
 
 
 </mapper>
