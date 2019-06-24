@@ -1,20 +1,14 @@
 package com.zking.zkingedu.common.controller;
 
-import com.alipay.api.internal.util.AlipaySignature;
 import com.zking.zkingedu.common.config.AlipayConfig;
 import com.zking.zkingedu.common.service.AliPayService;
 import com.zking.zkingedu.common.utils.PayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 /**

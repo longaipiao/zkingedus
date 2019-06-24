@@ -2,14 +2,14 @@
 server:
    servlet:
      context-path: /
-   port: 8899
+   port: 8800
 #配置数据库
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/education?serverTimezone=UTC
+    url: jdbc:mysql://47.107.120.48/ZkingEdu?serverTimezone=UTC
     username: root
-    password: 123
+    password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
   #德鲁伊连接配置
     druid:
