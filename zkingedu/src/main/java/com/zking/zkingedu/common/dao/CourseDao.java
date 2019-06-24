@@ -16,5 +16,5 @@ public interface CourseDao {
      * @param fid
      * @return
      */
-    List<Course> courses(Integer free,Integer fid);
+//    List<Course> courses(Integer free,Integer fid);
 }

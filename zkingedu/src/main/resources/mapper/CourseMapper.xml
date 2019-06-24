@@ -4,7 +4,7 @@
 <mapper namespace="com.zking.zkingedu.common.dao.CourseDao">
     <!--课程接口Mapper-->
     <!--根据类别和课程体系查询课程-->
-    <select id="courses" resultType="Courses">
+    <select id="courses" resultType="Course">
         select * from t_course where 1=1
         <!--<if test="param1==1">
             and course_free==0

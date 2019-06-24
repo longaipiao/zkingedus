@@ -24,8 +24,8 @@ public class CourseServiceImpl implements CourseService {
      * @param fid
      * @return
      */
-    @Override
-    public List<Course> courses(Integer free, Integer fid) {
-        return courseDao.courses(free,fid);
-    }
+//    @Override
+////    public List<Course> courses(Integer free, Integer fid) {
+////        return courseDao.courses(free,fid);
+////    }
 }
