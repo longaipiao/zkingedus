@@ -3,10 +3,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.UserDao">
 
-    <!--用户接口Mapper-->
+    <!--<cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>-->
 
-    <!--<select id="getUserByname" resultMap="userRolePermission" >
-      select * from t_user a, t_role b ,t_permission c ,t_user_role d ,t_role_permission e where a.uid=d.uid
-and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}
-    </select>-->
+    <insert id="addUser" parameterType="user">
+        <!--<if test="user.user.user_openid"></if>-->
+        insert into t_user(user_img,user_phone,user_name,user_password,user_integrsl,user_state,user_regTime)
+        values(#{user.userImg},#{user.userPhone},#{user.userName},#{user.userPassword},#{user.userIntegrsl},#{user.userState},#{user.userRegTime});
+    </insert>
+
+    <insert id="addQqLogin" parameterType="user">
+        insert into t_user(user_img,user_phone,user_name,user_password,user_integrsl,user_state,user_regTime,user_openid)
+        values(#{user.userImg},#{user.userPhone},#{user.userName},#{user.userPassword},#{user.userIntegrsl},#{user.userState},#{user.userRegTime},#{user.user_openid});
+    </insert>
+
+    <select id="queryPhone" resultType="String">
+        select user_phone from t_user where user_phone=#{phone}
+    </select>
+
+    <select id="userLogin" resultType="user">
+        select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+        where user_phone=#{user.userPhone}  and user_password=#{user.userPassword}
+    </select>
+
+    <update id="updateAddressAndTime">
+        update t_user set user_lastTime=#{lastTime},user_IP=#{address} where user_id=#{uid}
+    </update>
+
+    <select id="getUserByid" resultType="user">
+        select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+        where user_id=#{uid}
+    </select>
+
 </mapper>

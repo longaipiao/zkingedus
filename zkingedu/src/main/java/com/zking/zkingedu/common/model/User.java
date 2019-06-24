@@ -19,6 +19,12 @@ public class User implements Serializable {
     private Integer userID;
     //用户名称
     private String userName;
+    //用户头像
+    private String userImg;
+    //用户邮箱
+    private String userEmail;
+    //用户手机号
+    private String userPhone;
     //用户密码
     private String userPassword;
     //用户积分

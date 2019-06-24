@@ -7,13 +7,13 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.107.120.48/ZkingEdu?serverTimezone=UTC
+    url: jdbc:mysql://47.107.120.48/ZkingEdu?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
   #德鲁伊连接配置
     druid:
-      initial-size: 5
+      initial-size: 1
       max-active: 100
       min-idle: 5
       max-wait: 60000

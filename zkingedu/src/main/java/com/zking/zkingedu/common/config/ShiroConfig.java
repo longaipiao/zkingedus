@@ -24,11 +24,10 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
-        Map<String,String> filterChainDefinitionMap = new HashMap<String,String>();
+        Map<String,String> filterChainDefinitionMap = new HashMap<>();
         shiroFilterFactoryBean.setLoginUrl("/login");
         /*shiroFilterFactoryBean.setUnauthorizedUrl("/index");
         shiroFilterFactoryBean.setSuccessUrl("/yesRole");*/
-
 
         //filterChainDefinitionMap.put("/admin","perms[查看用户,增加用户]");
         filterChainDefinitionMap.put("/*","anon");

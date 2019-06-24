@@ -19,21 +19,18 @@
     <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
 
     <meta content="实验楼,琛石科技" name="author">
-	<link rel="shortcut icon" href="/user/favicon.ico">
-	<link rel="stylesheet" href="/user/static/font-awesome//4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/user/static/highlight.js/9.8.0/monokai-sublime.min.css">
-	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="/static/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/highlight.js/9.8.0/monokai-sublime.min.css">
-    <link rel="stylesheet" href="/user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
-    <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
-	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
 
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="user/static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="user/static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user/app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="user/app/css/libs/videojs/5.11.7/video-js.min.css">
+    <link rel="stylesheet" href="user/app/css/dest/styles.css?=2016121272249">
 	<style>
 		@font-face {
 			font-family: "lantingxihei";
-			src: url("/user/fonts/FZLTCXHJW.TTF");
+			src: url("fonts/FZLTCXHJW.TTF");
 		}
 
         /* modal 模态框*/
@@ -75,7 +72,7 @@
         }
     </style>
 
-<style style="text/css">
+<style type="text/css">
 .navbar-banner {
     margin-top: 50px;
     background: url("/user/img/homepage-bg.png");
@@ -84,8 +81,7 @@
 }
 </style>
 
-
-
+    <!--自定义js-->
 
 </head>
 
@@ -749,15 +745,6 @@
 	</div>
 
 
-
-
-
-
-
-
-
-
-
     <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -765,10 +752,10 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                        <a href="#signin-form" aria-controls="signin-form2" role="tab" data-toggle="tab">登录</a>
                     </li>
                     <li role="presentation">
-                        <a href="#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                        <a href="#signup-form" aria-controls="signup-form1" role="tab" data-toggle="tab">注册</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -779,7 +766,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-envelope" style="margin:0;"></i>
                                     </div>
-                                    <input type="email" name="login" class="form-control" placeholder="请输入邮箱">
+                                    <input name="login" class="form-control" placeholder="请输入手机号" id="loginPhone">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -787,7 +774,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-lock" style="margin:0;"></i>
                                     </div>
-                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码" id="loginUpwd">
                                 </div>
                             </div>
                             <div class="form-inline verify-code-item" style="display:none;">
@@ -796,14 +783,14 @@
                                         <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
                                     </div>
                                 </div>
-                                <img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">
+                                <!--<img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">-->`
                             </div>
                             <div class="form-group remember-login">
                                 <input name="remember" type="checkbox" value="y"> 下次自动登录
                                 <a class="pull-right" href="reset_password/index.html">忘记密码？</a>
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" name="submit" type="submit" value="进入实验楼">
+                                <input class="btn btn-primary" name="submit" type="button" value="进入实验楼" onclick="loginChek()">
                             </div>
                             <div class="form-group widget-signin">
                                 <span>快速登录</span>
@@ -821,13 +808,13 @@
 
                     <!--注册-->
                     <div role="tabpanel" class="tab-pane" id="signup-form">
-                        <form action="/user/zc" method="post">
+                        <form action="#" method="post" id="zc_form">
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-envelope" style="margin:0;"></i>
                                     </div>
-                                    <input type="email" name="email" class="form-control" placeholder="请输入手机号">
+                                    <input type="email" name="email" class="form-control" placeholder="请输入手机号" id="phone">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -835,19 +822,20 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-lock" style="margin:0;"></i>
                                     </div>
-                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码" id="upwd">
                                 </div>
                             </div>
                             <div class="form-inline">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码" id="code">
                                     </div>
                                 </div>
-                                <img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">
+                                <button id="sendPhone">获取验证码</button>
+                                <!--<img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">-->
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" name="submit" type="submit" value="注册">
+                                <input class="btn btn-primary" name="submit" onclick="zc()" type="button" value="注册">
                             </div>
                             <div class="form-group error-msg">
                                 <div class="alert alert-danger" role="alert"></div>
@@ -876,10 +864,11 @@
         data-msg-system=""
     ></div>
 
-    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
+
     <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
     <script src="/user/static/ace/1.2.5/ace.js"></script>
-    <script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <!--<script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>-->
     <script src="/user/static/highlight.js/9.8.0/highlight.min.js"></script>
     <script src="/user/static/jspdf/1.2.61/jspdf.min.js"></script>
     <script src="/user/static/plupload/2.1.9/js/plupload.full.min.js"></script>
@@ -889,25 +878,21 @@
     <script src="/user/static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
     <script src="/user/static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
     <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
-    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
-    <script>
+    <script src="/user/zc.js"></script>
+    <script src="/user/loginCheck.js"></script>
+    <!--<script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>-->
+    <!--<script>
         Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
         }).install();
-    </script>
-
-
-
-
-
+    </script>-->
 
 <div id="jinja-data"
     data-post-url="/registercheck"
 ></div>
 
 <script src="/user/app/dest/frontend/index.js?=2016121272249"></script>
-
+<script src="/user/app/dest/user/index.js?=2016121272249"></script>
 
 
 
@@ -969,7 +954,7 @@
                 <a href="paths/index.html" target="_blank">大数据学习路径</a><br>
                 <a href="paths/index.html" target="_blank">Java学习路径</a><br>
                 <a href="paths/index.html" target="_blank">PHP学习路径</a><br>
-                <a href="paths/index.html", target="_blank">全部</a>
+                <a href="paths/index.html" , target="_blank">全部</a>
             </div>
         </div>
     </div>
@@ -977,18 +962,9 @@
         <span>Copyright @2013-2016 实验楼在线教育</span>
         <span class="ver-line"> | </span>
         <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
-        <script type="text/javascript">
-            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-            document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
-        </script>
+
         <script>
-            var _hmt = _hmt || [];
-            (function() {
-             var hm = document.createElement("script");
-             hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
-             var s = document.getElementsByTagName("script")[0];
-             s.parentNode.insertBefore(hm, s);
-             })();
+
         </script>
         <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

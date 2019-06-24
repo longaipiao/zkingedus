@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+   <!-- <script type="text/javascript"  charset="utf-8"
+            src="http://connect.qq.com/qc_jssdk.js"
+            data-appid="101577021"
+
+    ></script>-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101577021" charset="utf-8" ></script>
+</head>
+<body>
+
+
+<span id="qqLoginBtn"></span>
+<script type="text/javascript">
+    QC.Login({
+        btnId:"qqLoginBtn"	//插入按钮的节点id
+    },function(reqData, opts){//登录成功
+        //根据返回数据，更换按钮显示状态方法
+        var dom = document.getElementById(opts['btnId']),
+            _logoutTemplate=[
+                //头像
+                '<span><img id="tx" src="{figureurl}" class="{size_key}"/></span>',
+                //昵称
+                '<span>{nickname}</span>',
+                //退出
+                '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
+            ].join("");
+        dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+            nickname : QC.String.escHTML(reqData.nickname), //做xss过滤
+            figureurl : reqData.figureurl
+        }));
+    }, function(opts){//注销成功
+        alert('QQ登录 注销成功');
+    });
+    var paras = {};
+
+        QC.api("get_user_info", paras)
+            .success(function(s){//成功回调
+                alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+            })
+            .error(function(f){//失败回调
+                alert("获取用户信息失败！");
+            })
+            .complete(function(c){//完成请求回调
+                alert("获取用户信息完成！");
+            });
+
+        if(QC.Login.check()){//如果已登录
+            var i;
+            var a;
+            QC.Login.getMe(function(openId, accessToken){
+                i = openId;
+                a = accessToken;
+                alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
+            });
+            //这里可以调用自己的保存接口
+            //...
+            var src = $('#tx').attr('src');
+            var s100 = $('#tx').attr('src',src.substring(0,src.length-2)+'100');
+            $.ajax({
+                url:'/qqUserAdd',
+                type:'post',
+                async:false,
+                data:{
+                    img:s100,
+                    openId:i,
+                    accessToken:a
+                },
+                success:function (data) {
+                    console.log(data);
+                    location.href=''
+                },
+                error:function () {
+                    console.log("error:保存错误");
+                }
+
+            });
+        }
+
+
+
+</script>
+
+
+<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+</body>
+</html>
