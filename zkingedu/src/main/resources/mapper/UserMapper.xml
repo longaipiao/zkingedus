@@ -34,4 +34,17 @@
         where user_id=#{uid}
     </select>
 
+    <!--<select id="getUserByname" resultMap="userRolePermission" >
+      select * from t_user a, t_role b ,t_permission c ,t_user_role d ,t_role_permission e where a.uid=d.uid
+and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}
+    </select>-->
+
+    <!--likai begin-->
+    <!--用户充值增加积分-->
+    <update id="addIntegral">
+        update t_user set user_integrsl= user_integrsl+#{userIntegrsl} where user_id=#{userID}
+    </update>
+    <!--likai end-->
+
+
 </mapper>

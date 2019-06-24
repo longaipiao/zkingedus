@@ -4,6 +4,10 @@
 <mapper namespace="com.zking.zkingedu.common.dao.BillDao">
 
     <!--账单接口Mapper-->
+    <insert id="insertBill">
+        insert into t_bill(bill_uid,bill_type,bill_integral,bill_time,bill_content)
+        values (#{billUid},#{billType},#{billIntegral},#{billTime},#{billContent})
+    </insert>
 
 
 </mapper>

@@ -11,11 +11,32 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
+
+
+
+    /**
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     * @author likai
+     * 用户充值增加积分
+     */
+    @Override
+    public int addIntegral(Integer userID, String userIntegrsl) {
+        return userDao.addIntegral(userID,userIntegrsl);
+    }
+
+
+
+
+
     @Override
     public int addUser(User user) {
         return userDao.addUser(user);
@@ -25,6 +46,8 @@ public class UserServiceImpl implements UserService {
     public String queryPhone(String phone) {
         return userDao.queryPhone(phone);
     }
+
+
 
     @Override
     public User userLogin(User user) {

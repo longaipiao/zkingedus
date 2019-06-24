@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+import com.zking.zkingedu.common.model.User;
+
 /**
  * 用户 服务层
  */
@@ -58,4 +60,14 @@ public interface UserService {
      * @return
      */
     int addQqLogin(User user);
+
+    /**
+     * @author likai
+     *      用户充值增加积分
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     */
+    int addIntegral(Integer userID,String userIntegrsl);
+
 }
