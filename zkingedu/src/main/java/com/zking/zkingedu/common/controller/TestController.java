@@ -51,7 +51,7 @@ public class TestController {
         return "login";
     }
 
-    @RequestMapping(value = "index")
+    @RequestMapping(value = "/index")
     public String testShiro2(){
         System.err.println("来了index");
         return "user/index";
