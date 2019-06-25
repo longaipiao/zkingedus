@@ -42,7 +42,7 @@ public class AopAddressIp {
     @Before("test()")
     public boolean addrAop(){//检测用户ip地址是否对应
         boolean f = true;
-        System.out.println("切面检测");
+        //System.out.println("切面检测");
         User u;
         if(session.getAttribute("user")!=null){
             u = (User)session.getAttribute("user");
