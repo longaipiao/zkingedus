@@ -19,6 +19,26 @@ public class CourseServiceImpl implements CourseService {
     private CourseDao courseDao;
 
     /**
+     * 根据体系id获取体系下的课程数量
+     * @param systemID
+     * @return
+     */
+    @Override
+    public Integer ccount(Integer systemID) {
+        return courseDao.ccount(systemID);
+    }
+
+    /**
+     * 根据体系ID获取体系下所有课程
+     * @param systemID
+     * @return
+     */
+    @Override
+    public List<Course> courses(Integer systemID) {
+        return courseDao.courses(systemID);
+    }
+
+    /**
      * 根据类别和课程体系查询课程
      * @param free
      * @param fid

@@ -4,9 +4,9 @@
 <mapper namespace="com.zking.zkingedu.common.dao.CourseDao">
     <!--课程接口Mapper-->
     <!--根据类别和课程体系查询课程-->
-    <select id="courses" resultType="Course">
+    <!--<select id="courses" resultType="Course">
         select * from t_course where 1=1
-        <!--<if test="param1==1">
+        &lt;!&ndash;<if test="param1==1">
             and course_free==0
         </if>
         <if test="param1==2">
@@ -14,7 +14,17 @@
         </if>
         <if test="param2!=0 and param2!=null">
             and course_free==#{param2}
-        </if>-->
+        </if>&ndash;&gt;
+    </select>-->
+
+    <!--根据体系id获取体系下的课程数量-->
+    <select id="ccount" resultType="Integer">
+        select count(*) from t_course where course_sid in(select system_id from t_system where system_fid=#{systemID} and system_state=0) and course_state=0
+    </select>
+
+    <!--根据体系ID获取体系下所有课程-->
+    <select id="courses" resultType="Course">
+        select * from t_course where course_sid in(select system_id from t_system where system_fid=#{systemID} and system_state=0) and course_state=0
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,18 +22,18 @@
 
     <meta content="实验楼,琛石科技" name="author">
 
-	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="../static/font-awesome//4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/highlight.js/9.8.0/monokai-sublime.min.css">
-    <link rel="stylesheet" href="../app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../app/css/libs/katex/0.6.0/katex.min.css">
-    <link rel="stylesheet" href="../app/css/libs/videojs/5.11.7/video-js.min.css">
-	<link rel="stylesheet" href="../app/css/dest/styles.css?=2016121272249">
+	<link rel="shortcut icon" href="/user/favicon.ico">
+	<link rel="stylesheet" href="/user/static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/user/static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
+	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
 
 	<style>
 		@font-face {
 			font-family: "lantingxihei";
-			src: url("../fonts/FZLTCXHJW.TTF");
+			src: url("/user/fonts/FZLTCXHJW.TTF");
 		}
 
         /* modal 模态框*/
@@ -99,7 +100,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="../index.html">
-                <img src="../img/logo_03.png">
+                <img src="/user/img/logo_03.png">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="header-navbar-collapse">
@@ -153,7 +154,7 @@
 <div class="container layout layout-margin-top">
     
 <ol class="breadcrumb">
-    <li><a href="/paths/">学习路径</a></li>
+    <li><a href="/courseindex">学习路径</a></li>
     <li class="active"><a href="/paths/newhand">新手入门</a></li>
 </ol>
 
@@ -162,16 +163,17 @@
             
     <div class="content" style="padding:0px">
         <div class="path-description" style="margin:0px">
-            <div class="path-desc-top clearfix" style="background: url('../img/1471513740139.png') no-repeat;background-size: cover;">
+            <div class="path-desc-top clearfix" style="background: url('/user/img/1471513740139.png') no-repeat;background-size: cover;">
                 <div class="name-total-box clearfix">
                     <div class="col-md-6 col-sm-6 col-md-offset-1 path-name">
-                        <h4>新手入门</h4>
+                        <span id="systemID" th:title="${system.systemID}"></span>
+                        <h4 th:text="${system.systemName}"></h4>
                     </div>
                     <div class="col-md-3 col-sm-6 col-md-offset-1 path-total-courses">
-                        <span class="total-courses-box">课程 <span class="num">6</span></span>
+                        <span class="total-courses-box">课程 <span class="num" th:text="${system.ccount}"></span></span>
                     </div>
                 </div>
-                <div class="col-md-10 col-md-offset-1 path-desc-text">新手入门路径帮助对 IT 技术感兴趣的新手0基础入门计算机编程。本路径通过新手入门、Linux 及 Vim课程熟悉实验楼的实践学习环境，再以 C 语言和一个简单的项目引导你一步步进入计算机技术的殿堂。</div>
+                <div class="col-md-10 col-md-offset-1 path-desc-text" th:text="${system.systemDesc}"></div>
             </div>
             <div class="path-desc-btm" >
                 <div class="col-sm-12 col-md-4 clearfix learn-time-div">
@@ -201,260 +203,10 @@
             <div role="tabpanel" class="tab-pane path-details active" id="path-details">
                 <div class="details-box">    
                     <a href="/courses/63" class="btn start-btn">开始学习</a>
-                    
-                        <div class="clearfix text-center path-title-box">
-                            <span class="line hidden-xs"></span>
-                            <span>阶段1：基础知识</span>
-                            <span class="line hidden-xs"></span>
-                        </div>
-                        <div class="row">
-                        
-                        
+                    <!--展示体系和课程-->
+                    <div id="systems">
+                    </div>
 
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/63">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/63/follow"
-                data-unfollow-url="/courses/63/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="新手指南之玩转实验楼" src="https://dn-simplecloud.shiyanlou.com/ncn63.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="新手指南之玩转实验楼">新手指南之玩转实验楼</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                58061
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
-                        
-
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/1">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/1/follow"
-                data-unfollow-url="/courses/1/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="Linux 基础入门（新版）" src="https://dn-simplecloud.shiyanlou.com/ncn1.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Linux 基础入门（新版）">Linux 基础入门（新版）</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                85244
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
-                        
-
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/2">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/2/follow"
-                data-unfollow-url="/courses/2/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="Vim编辑器" src="https://dn-simplecloud.shiyanlou.com/ncn2.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Vim编辑器">Vim编辑器</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                26839
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
-                        </div>
-                    
-                        <div class="clearfix text-center path-title-box">
-                            <span class="line hidden-xs"></span>
-                            <span>阶段2：编程语言</span>
-                            <span class="line hidden-xs"></span>
-                        </div>
-                        <div class="row">
-                        
-                        
-
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/20">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/20/follow"
-                data-unfollow-url="/courses/20/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="数据结构(新版)" src="https://dn-simplecloud.shiyanlou.com/ncn20.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="数据结构(新版)">数据结构(新版)</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                8565
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
-                        
-
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/57">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/57/follow"
-                data-unfollow-url="/courses/57/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="C语言入门教程" src="https://dn-simplecloud.shiyanlou.com/ncn57.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="C语言入门教程">C语言入门教程</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                21538
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
-                        </div>
-                    
-                        <div class="clearfix text-center path-title-box">
-                            <span class="line hidden-xs"></span>
-                            <span>阶段3：入门项目</span>
-                            <span class="line hidden-xs"></span>
-                        </div>
-                        <div class="row">
-                        
-                        
-
-
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="/courses/75">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/75/follow"
-                data-unfollow-url="/courses/75/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="C语言制作简单计算器" src="https://dn-simplecloud.shiyanlou.com/ncn75.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="C语言制作简单计算器">C语言制作简单计算器</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                5504
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-                        
                         </div>
                     
                     <div class="btn end-pin">完成学习</div>
@@ -493,7 +245,7 @@
                 <div class="user-avatar">
                     
                      <a class="avatar" href="#sign-modal" data-toggle="modal" data-sign="signin">
-                         <img class="circle" src="../img/logo-grey.png">
+                         <img class="circle" src="/user/img/logo-grey.png">
                      </a>
                       
                 </div>
@@ -561,17 +313,17 @@
 		<h4 class="sidebox-title">最热路径</h4>
 	</div>
 	<div class="sidebox-body course-content side-list-body">
-        <a href="/paths/python"><img style="width:25px;height:25px" src="../img/1471513769430.png"> Python 研发工程师</a>
-        <a href="/paths/bigdata"><img style="width:25px;height:25px" src="../img/1471513926288.png"> 大数据工程师</a>
-        <a href="/paths/cpp"><img style="width:25px;height:25px" src="../img/1471513793360.png"> C++ 研发工程师</a>
-        <a href="/paths/security"><img style="width:25px;height:25px" src="../img/1471513867033.png"> 信息安全工程师</a>
-        <a href="/paths/linuxsys"><img style="width:25px;height:25px" src="../img/1471514004752.png"> Linux 运维工程师</a>
+        <a href="/paths/python"><img style="width:25px;height:25px" src="/user/img/1471513769430.png"> Python 研发工程师</a>
+        <a href="/paths/bigdata"><img style="width:25px;height:25px" src="/user/img/1471513926288.png"> 大数据工程师</a>
+        <a href="/paths/cpp"><img style="width:25px;height:25px" src="/user/img/1471513793360.png"> C++ 研发工程师</a>
+        <a href="/paths/security"><img style="width:25px;height:25px" src="/user/img/1471513867033.png"> 信息安全工程师</a>
+        <a href="/paths/linuxsys"><img style="width:25px;height:25px" src="/user/img/1471514004752.png"> Linux 运维工程师</a>
 	</div>
     
 </div>
 
 <div class="side-image side-qrcode">
-    <img src="../img/ShiyanlouQRCode.png">
+    <img src="/user/img/ShiyanlouQRCode.png">
     <div class="side-image-text">关注公众号，手机看教程</div>
 </div>
 
@@ -755,25 +507,82 @@
         data-msg-system=""
     ></div>
 
-    <script src="../app/dest/lib/lib.js?=2016121272249"></script>
-    <script src="../static/jquery/2.2.4/jquery.min.js"></script>
-    <script src="../static/ace/1.2.5/ace.js"></script>
-    <script src="../static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
-    <script src="../static/highlight.js/9.8.0/highlight.min.js"></script>
-    <script src="../static/jspdf/1.2.61/jspdf.min.js"></script>
-    <script src="../static/plupload/2.1.9/js/plupload.full.min.js"></script>
-    <script src="../static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
-    <script src="../static/videojs/video.min.js"></script>
-    <script src="../static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
+    <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/static/ace/1.2.5/ace.js"></script>
+    <script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="/user/static/highlight.js/9.8.0/highlight.min.js"></script>
+    <script src="/user/static/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="/user/static/plupload/2.1.9/js/plupload.full.min.js"></script>
+    <script src="/user/static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src="/user/static/videojs/video.min.js"></script>
+    <script src="/user/static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
-    <script src="../static/ravenjs/3.7.0/raven.min.js"></script>
+    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
     <script>
         Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
         }).install();
+
+        //获取体系Id
+        var systemID=$('#systemID').attr("title");
+
+        //获取子体系以及子体系下的课程
+        $.ajax({
+            type:"post",
+            url:"/systems",
+            data:JSON.stringify({
+                systemID:systemID
+            }),
+            dataType:"json",
+            contentType : "application/json",//应用类型/json
+            success:function(systems){
+                //判断体系是否为空
+                if (systems.data.length>0){
+                    //遍历体系
+                    for(var i=0;i<systems.data.length;i++){
+                        var content='<div class="clearfix text-center path-title-box">' +
+                            '<span class="line hidden-xs"></span>' +
+                            '<span>'+systems.data[i].systemName+'</span>' +
+                            '<span class="line hidden-xs"></span>' +
+                            '</div>' +
+                            '<div class="row">'
+                        //遍历体系下的课程
+                        for(var j=0;j<systems.courses.length;j++){
+                            //判读课程里的体系Id是否相等
+                            if(systems.courses[j].courseSid==systems.data[i].systemID){
+                                content+='<div class="col-md-4 col-sm-6  course">' +
+                                    '<a class="course-box" href="/courses/75">' +
+                                    ' <div class="sign-box">' +
+                                    '<i class="fa fa-star-o course-follow pull-right"' +
+                                    'data-follow-url="/courses/75/follow"' +
+                                    'data-unfollow-url="/courses/75/unfollow" style="display:none" ></i>' +
+                                    '</div>' +
+                                    '<div class="course-img">' +
+                                    '<img alt="'+systems.courses[j].courseName+'" src="'+systems.courses[j].courseImg+'">' +
+                                    '</div>' +
+                                    '<div class="course-body">' +
+                                    '<span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+systems.courses[j].courseName+'">'+systems.courses[j].courseName+'</span>' +
+                                    '</div>' +
+                                    '<div class="course-footer">' +
+                                    '<span class="course-per-num pull-left">' +
+                                    '<i class="fa fa-users"></i>' +
+                                    ''+systems.courses[j].courseNum+'' +
+                                    '</span>'
+                            }
+                        }
+                        $("#systems").append(content);
+                    }
+                }
+            },
+            error:function(){
+                aler("接口回调异常");
+            }
+        });
+
     </script>
 
     
@@ -787,20 +596,20 @@
         data-path-comment-url="/jobs/9/comment"
         data-user-logined="false"
 ></div>
-<script src="../app/dest/path/path.js?=2016121272249"></script>        
+<script src="/user/app/dest/path/path.js?=2016121272249"></script>
             
             
 <div class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-4 clearfix footer-col">
-                <img src="../img/logo_03.png">
+                <img src="/user/img/logo_03.png">
                 <div class="footer-slogan">动手做实验，轻松学编程</div>
                 <div class="col-xs-2">
                     <div class="social-item footer-weixin-item">
                         <i class="fa fa-weixin"></i>
                         <div class="footer-weixin">
-                            <img src="../img/footer-weixin.png">
+                            <img src="/user/img/footer-weixin.png">
                         </div>
                     </div>
                 </div>
