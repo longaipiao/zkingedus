@@ -50,4 +50,15 @@ public class ChargeServiceImpl implements ChargeService {
     public int delChargeByID(String chargeID) {
         return chargeDao.delChargeByID(chargeID);
     }
+
+    /**
+     * 用户个人中心查看自己的充值记录
+     *
+     * @param userID
+     * @return
+     */
+    @Override
+    public List<Charge> getChargesByUserID(Integer userID) {
+        return chargeDao.getChargesByUserID(userID);
+    }
 }

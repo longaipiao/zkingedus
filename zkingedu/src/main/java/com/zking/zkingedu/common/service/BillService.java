@@ -17,4 +17,11 @@ public interface BillService {
      */
     int insertBill(Bill bill);
 
+    /**
+     * 前台用户查看自己的账单
+     * @param userID
+     * @return
+     */
+    List<Bill> myBills(Integer userID);
+
 }

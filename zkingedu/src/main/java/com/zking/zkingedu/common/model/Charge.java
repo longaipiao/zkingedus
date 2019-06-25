@@ -25,6 +25,9 @@ public class Charge implements Serializable {
     //'充值时间
     private String chargeTime;
 
+    //前台状态0：正常  1：隐藏
+    private Integer chargeState;
+
 
     //用户对象
     private User user;

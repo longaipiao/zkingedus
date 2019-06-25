@@ -6,6 +6,7 @@ import com.zking.zkingedu.common.service.BillService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 账单表  实现
@@ -25,5 +26,17 @@ public class BillServiceImpl implements BillService {
     @Override
     public int insertBill(Bill bill) {
         return billDao.insertBill(bill);
+    }
+
+    /**
+     * 前台用户查看自己的账单
+     *
+     * @param userID
+     * @return
+     */
+    @Override
+    public List<Bill> myBills(Integer userID) {
+
+        return billDao.myBills(userID);
     }
 }

@@ -3,11 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.BillDao">
 
+
+    <!--账单表所有字段-->
+    <sql id="billAll">
+        bill_id,bill_uid,bill_integral,bill_type,bill_time,bill_content
+    </sql>
+
     <!--账单接口Mapper-->
     <insert id="insertBill">
         insert into t_bill(bill_uid,bill_type,bill_integral,bill_time,bill_content)
         values (#{billUid},#{billType},#{billIntegral},#{billTime},#{billContent})
     </insert>
 
+    <!--前台用户查看自己的账单-->
+    <select id="myBills" resultType="bill">
+        select
+            <include refid="billAll"/>
+        from t_bill
+    </select>
 
 </mapper>

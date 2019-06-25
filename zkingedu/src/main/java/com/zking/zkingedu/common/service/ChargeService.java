@@ -30,4 +30,11 @@ public interface ChargeService {
      * @return
      */
     int delChargeByID(String chargeID);
+
+    /**
+     * 用户个人中心查看自己的充值记录
+     * @param userID
+     * @return
+     */
+    List<Charge> getChargesByUserID(Integer userID);
 }

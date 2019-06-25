@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+<div class="demoTable">
+    搜索：
+    <div class="layui-inline">
+        <input class="layui-input" name="search" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="search" data-type="reload">搜索</button>
+</div>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<link rel="stylesheet" th:href="@{admin/lib/layui/css/layui.css}" />
+<script th:src="@{admin/lib/layui/layui.js}"  charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        var $ = layui.jquery;
+
+        table.render({
+            elem: '#test'
+            ,url:'/getCharges'
+            ,toolbar: '#toolbarDemo'
+            ,title: '充值记录表'
+            ,id:"tableReload"
+            ,cols: [
+                [
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'chargeID', title:'序号', fixed: 'left', unresize: true, sort: true}
+                ,{field:'userName', title:'用户名', edit: 'text'}
+                ,{field:'chargeMoney', title:'充值金额',  edit: 'text', sort:true }
+                ,{field:'chargeIntegral', title:'所得积分' ,sort: true}
+                ,{field:'chargeTime', title:'充值时间',sort:true }
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                ]
+            ]
+            ,page: true
+        });
+
+        $("#search").on('click', function(){
+            //执行重载
+            table.reload('tableReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    search:$('#demoReload').val()
+                }
+            });
+        });
+
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除这条线路吗', function(index){
+                    $.ajax({
+                        url:'/delCharge',
+                        type:'post',
+                        data:{
+                            chargeID:data.chargeID,
+                        },
+                        success:function () {
+                            obj.del();
+                            layer.close(index);
+                        },
+                        error:function () {
+                            layer.msg("出现bug了，请联系921607915")
+                        }
+                    })
+                });
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
