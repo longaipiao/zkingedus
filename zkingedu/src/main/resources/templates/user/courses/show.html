@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,17 +22,17 @@
     <meta content="实验楼,琛石科技" name="author">
 
 	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="../static/font-awesome//4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/highlight.js/9.8.0/monokai-sublime.min.css">
-    <link rel="stylesheet" href="../app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../app/css/libs/katex/0.6.0/katex.min.css">
-    <link rel="stylesheet" href="../app/css/libs/videojs/5.11.7/video-js.min.css">
-	<link rel="stylesheet" href="../app/css/dest/styles.css?=2016121272249">
+	<link rel="stylesheet" href="/user/static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/user/static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
+	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
 
 	<style>
 		@font-face {
 			font-family: "lantingxihei";
-			src: url("../fonts/FZLTCXHJW.TTF");
+			src: url("/user/fonts/FZLTCXHJW.TTF");
 		}
 
         /* modal 模态框*/
@@ -73,7 +73,7 @@
             font-size: 14px;
         }
     </style>
-<link rel="stylesheet" href="../restatic/js/libs/marked/katex/katex.min.css">
+<link rel="stylesheet" href="/user/restatic/js/libs/marked/katex/katex.min.css">
 <style>
     .bootcamp-infobox {
         margin: 50px 0 0;
@@ -137,7 +137,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="../index.html">
-                <img src="../img/logo_03.png">
+                <img src="/user/img/logo_03.png">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="header-navbar-collapse">
@@ -194,17 +194,11 @@
     
 <ol class="breadcrumb">
     <li><a href="/courses/">全部课程</a></li>
-    
-    <li>
-    
-    <a href="/courses/?tag=Linux">Linux</a>
-    
-    </li>
-    
+    <!--课程分类-->
+    <li><a href="/courses/?tag=Linux" th:text="${course.t_name}"></a></li>
+    <!--课程名-->
     <li class="active">
-        <a href="/courses/1">
-        Linux 基础入门（新版）
-        </a>
+        <a href="javascript:void(0);" th:text="${course.course_name}"></a>
     </li>
 </ol>
 
@@ -237,14 +231,14 @@
         <div class="clearfix course-infobox-header">
             <h4 class="pull-left course-infobox-title">
                 
-                <span>Linux 基础入门（新版）</span>
+                <span th:text="${course.course_name}"></span>
                 
             </h4>
             <div class="pull-right course-infobox-follow"
                 data-follow-url="/courses/1/follow"
                 data-unfollow-url="/courses/1/unfollow">
-                <span class="course-infobox-followers">4401</span>
-                <span>人关注</span>
+                <span class="course-infobox-followers" th:text="${collection}"></span>
+                <span>人收藏</span>
                 
                 <i class="fa fa-star-o" data-next="/login?next=%2Fcourses%2F1"></i>
                 
@@ -252,18 +246,13 @@
         </div>
         <div class="clearfix course-infobox-body">
             <div class="course-infobox-content">
-            <p>要在实验楼愉快地学习，先要熟练地使用 Linux，本实验介绍 Linux 基本操作，shell 环境下的常用命令。</p>
+            <p th:text="${course.course_desc}"></p>
             
             </div>
             
             <div class="course-infobox-progress">
-                
-                
-                    
                     <div class="course-progress-new"></div>
-                    
-                
-                
+
                     <div class="course-progress-new"></div>
                 
                     <div class="course-progress-new"></div>
@@ -311,7 +300,7 @@
         
         <div class="clearfix course-infobox-footer">
             
-            <div class="pull-right course-infobox-learned">85243 人学过</div>
+            <div class="pull-right course-infobox-learned" th:text="${course.course_num}+'人学过'"></div>
         </div>
         
     </div>
@@ -319,18 +308,18 @@
         <ul class="nav nav-tabs" role="tablist">
             
             <li role="presentation" class="active">
-                <a href="#labs" aria-controls="labs" role="tab" data-toggle="tab">实验列表</a>
+                <a href="#labs" aria-controls="labs" role="tab" data-toggle="tab">课程章节</a>
             </li>
             
             <li role="presentation">
                 <a href="#comments" class="stat-event" aria-controls="comments" role="tab" data-stat="course_comment" data-toggle="tab">课程评论(1194)</a>
             </li>
-            <li role="presentation">
+            <!--<li role="presentation">
                 <a href="#reports" class="stat-event" data-stat="course_report" aria-controls="reports" role="tab" data-toggle="tab">实验报告(3417)</a>
             </li>
             <li role="presentation">
                 <a href="#questions" class="stat-event" data-stat="course_question" aria-controls="questions" role="tab" data-toggle="tab">实验问答(1108)</a>
-            </li>
+            </li>-->
         </ul>
         <div class="tab-content">
             
@@ -343,7 +332,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第1节</div>
@@ -353,7 +342,7 @@
             
             
                 
-                <a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>
+                <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
                 <a class="btn btn-primary" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始实验</a>
                 
             
@@ -367,7 +356,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第2节</div>
@@ -388,7 +377,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第3节</div>
@@ -409,7 +398,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第4节</div>
@@ -430,7 +419,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第5节</div>
@@ -451,7 +440,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第6节</div>
@@ -472,7 +461,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第7节</div>
@@ -493,7 +482,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第8节</div>
@@ -514,7 +503,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第9节</div>
@@ -535,7 +524,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第10节</div>
@@ -556,7 +545,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第11节</div>
@@ -577,7 +566,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第12节</div>
@@ -598,7 +587,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第13节</div>
@@ -619,7 +608,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第14节</div>
@@ -640,7 +629,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第15节</div>
@@ -661,7 +650,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第16节</div>
@@ -682,7 +671,7 @@
     <div class="lab-item ">
     <div class="lab-item-status">
         
-            <img src="../img/lab-not-ok.png">
+            <img src="/user/img/lab-not-ok.png">
         
     </div>
     <div class="lab-item-index">第17节</div>
@@ -771,9 +760,10 @@
 
         </div>
         <div class="col-md-3 layout-side">
-            
+
+    <!--课程图片-->
     <div class="side-image side-image-pc">
-        <img src="../img/ncn1.jpg?imageView2/0/h/300">
+        <img th:src="${course.course_img}">
     </div>
     
 
@@ -785,17 +775,19 @@
         <h4 class="sidebox-title">课程教师</h4>
     </div>
     <div class="sidebox-body mooc-content">
+        <!--教师头像-->
         <a href="/user/20406" target="_blank">
-          <img src="../img/Linux&c.png">
+          <img th:src="${course.emp_integral}">
         </a>
         <div class="mooc-info">
-            <div class="name"><strong>Edward</strong> </div>
-            
-            <div class="courses">共发布过<strong>18</strong>门课程</div>
+            <!--教师名字-->
+            <div class="name"><strong th:text="${course.emp_name}"></strong> </div>
+            <!--发布课程-->
+            <div class="courses">共发布过<strong th:text="${announcedc}"></strong>门课程</div>
         </div>
         <div class="mooc-extra-info">
             <div class="word long-paragraph">
-                资深程序员，5年Linux运维、企业级开发经验及数据库实战和教学经验。
+                资深程序员，现卓京金牌讲师。
             </div>
         </div>
     </div>
@@ -809,7 +801,7 @@
     
     <div class="side-image">
     <a href="/vip" target="_blank">
-        <img src="../img/banner-vip.png">
+        <img src="/user/img/banner-vip.png">
     </a>
 </div>
     
@@ -976,7 +968,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a type="button" class="submit-question btn btn-primary" href="/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="../img/senior-vip-icon.png" alt=""> 加入高级会员获得助教答疑</a>
+                <a type="button" class="submit-question btn btn-primary" href="/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="/user/img/senior-vip-icon.png" alt=""> 加入高级会员获得助教答疑</a>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="submit-question btn btn-primary" data-dismiss="modal">提交</button>
             </div>
@@ -1282,21 +1274,21 @@
         data-msg-system=""
     ></div>
 
-    <script src="../app/dest/lib/lib.js?=2016121272249"></script>
-    <script src="../static/jquery/2.2.4/jquery.min.js"></script>
-    <script src="../static/ace/1.2.5/ace.js"></script>
-    <script src="../static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
-    <script src="../static/highlight.js/9.8.0/highlight.min.js"></script>
-    <script src="../static/jspdf/1.2.61/jspdf.min.js"></script>
-    <script src="../static/plupload/2.1.9/js/plupload.full.min.js"></script>
-    <script src="../static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
-    <script src="../static/videojs/video.min.js"></script>
-    <script src="../static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="../static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
+    <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/static/ace/1.2.5/ace.js"></script>
+    <script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="/user/static/highlight.js/9.8.0/highlight.min.js"></script>
+    <script src="/user/static/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="/user/static/plupload/2.1.9/js/plupload.full.min.js"></script>
+    <script src="/user/static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src="/user/static/videojs/video.min.js"></script>
+    <script src="/user/static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
-    <script src="../static/ravenjs/3.7.0/raven.min.js"></script>
+    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
     <script>
         Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
@@ -1319,11 +1311,11 @@
     data-loginurl="/login?next=%2Fcourses%2F1"
     data-site-type="0"
     data-report-post="/courses/1/reports"
-    data-recomment-img="../img/recommentReport.png"
+    data-recomment-img="/user/img/recommentReport.png"
     data-charge-course-phone-code="/user/sms/code"
     data-join-private-course="/courses/join"
     data-current-user-id=""
-    data-vip-icon="../img/vip-icon.png"
+    data-vip-icon="/user/img/vip-icon.png"
     data-vip-index="/vip"
     data-get-question-url="/courses/1/questions"
 	data-real-price = ""
@@ -1332,7 +1324,7 @@
     data-question-form="/questions/meta"
     data-qiniu-token-url="/api/qiniu/token"
     ></div>
-<script src="../app/dest/course/labs.js?=2016121272249"></script>
+<script src="/user/app/dest/course/labs.js?=2016121272249"></script>
 
 	
         
@@ -1342,13 +1334,13 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 clearfix footer-col">
-                <img src="../img/logo_03.png">
+                <img src="/user/img/logo_03.png">
                 <div class="footer-slogan">动手做实验，轻松学编程</div>
                 <div class="col-xs-2">
                     <div class="social-item footer-weixin-item">
                         <i class="fa fa-weixin"></i>
                         <div class="footer-weixin">
-                            <img src="../img/footer-weixin.png">
+                            <img src="/user/img/footer-weixin.png">
                         </div>
                     </div>
                 </div>
