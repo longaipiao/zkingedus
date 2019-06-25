@@ -28,4 +28,6 @@ public class System implements Serializable {
     //体系图片
     private String systemImg;
 
+    //体系下的课程数量
+    private Integer ccount;
 }

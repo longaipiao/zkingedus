@@ -6,7 +6,12 @@
     <cache />
     <!--获取所有体系-->
     <select id="systems" resultType="System">
-        select * from t_system where system_fid=0 and system_state=0
+        select * from t_system where system_fid=#{systemFid} and system_state=0
+    </select>
+
+    <!--根据体系Id查询体系-->
+    <select id="system" resultType="System">
+        select * from t_system where system_id=#{systemID} and system_state=0
     </select>
 
 </mapper>

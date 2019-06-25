@@ -25,7 +25,6 @@ public class CourseController {
     public String courseIndex(){
 //        List<Course> courses = courseService.courses(0, 1);
 //        System.out.println(courses);
-
         return "user/courses/index.html";
     }
 }

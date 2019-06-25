@@ -22,7 +22,17 @@ public class SystemServiceImpl implements SystemService {
      * @return
      */
     @Override
-    public List<System> systems() {
-        return systemDao.systems();
+    public List<System> systems(Integer systemFid) {
+        return systemDao.systems(systemFid);
+    }
+
+    /**
+     * 根据体系Id查询体系
+     * @param systemID
+     * @return
+     */
+    @Override
+    public System system(Integer systemID) {
+        return systemDao.system(systemID);
     }
 }

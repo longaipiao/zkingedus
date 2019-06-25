@@ -14,5 +14,12 @@ public interface SystemDao {
      * 获取所有体系
      * @return
      */
-    List<System> systems();
+    List<System> systems(Integer systemFid);
+
+    /**
+     * 根据体系Id查询体系
+     * @param systemID
+     * @return
+     */
+    System system(Integer systemID);
 }

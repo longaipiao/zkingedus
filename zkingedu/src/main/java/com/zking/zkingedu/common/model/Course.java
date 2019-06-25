@@ -36,4 +36,6 @@ public class Course implements Serializable {
     private Integer courseNum;
     //发布时间
     private String courseTime;
+    //课程类别
+    private Integer courseType;
 }
