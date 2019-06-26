@@ -73,4 +73,20 @@ public class UserServiceImpl implements UserService {
     public int addQqLogin(User user) {
         return userDao.addQqLogin(user);
     }
+
+    @Override
+    public int updatePhone(Integer user_id, String newPhone) {
+        return userDao.updatePhone(user_id,newPhone);
+    }
+
+    @Override
+    public int updateEmail(Integer user_id, String newEmail) {
+        return userDao.updateEmail(user_id,newEmail);
+    }
+
+
+    @Override
+    public int updateData(User user) {
+        return userDao.updateData(user);
+    }
 }

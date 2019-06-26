@@ -34,6 +34,26 @@
         where user_id=#{uid}
     </select>
 
+    <update id="updatePhone">
+        update t_user set user_phone=#{newPhone} where user_id=#{user_id}
+    </update>
+
+    <update id="updateEmail">
+        update t_user set user_email=#{newEmail} where user_id=#{user_id}
+    </update>
+
+    <update id="updateData" parameterType="user">
+        <if test="user.userName != null">
+            update t_user set user_name=#{user.userName} where user_id=#{user.userID}
+        </if>
+       <if test="user.userImg != null">
+           update t_user set user_img=#{user.userImg} where user_id=#{user.userID}
+       </if>
+       <if test="user.userPassword!=null">
+           update t_user set user_password=#{user.userPassword} where user_id=#{user.userID}
+       </if>
+    </update>
+
     <!--<select id="getUserByname" resultMap="userRolePermission" >
       select * from t_user a, t_role b ,t_permission c ,t_user_role d ,t_role_permission e where a.uid=d.uid
 and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}

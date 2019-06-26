@@ -4,6 +4,7 @@ server:
      context-path: /
    port: 8800
 #配置数据库
+
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver

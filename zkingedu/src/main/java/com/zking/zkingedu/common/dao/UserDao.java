@@ -73,4 +73,30 @@ public interface UserDao {
      */
     int addQqLogin(User user);
 
+    /**
+     * 修改手机号码
+     * @param user_id
+     * @param newPhone
+     * @return
+     */
+    int updatePhone(@Param("user_id") Integer user_id,@Param("newPhone") String newPhone);
+
+
+    /**
+     * 修改邮箱
+     * @param user_id
+     * @param newEmail
+     * @return
+     */
+    int updateEmail(@Param("user_id") Integer user_id,@Param("newEmail") String newEmail);
+
+
+    /**
+     * 修改用户基本信息
+     * @param user
+     * @return
+     */
+    int updateData(@Param("user") User user);
+
+
 }

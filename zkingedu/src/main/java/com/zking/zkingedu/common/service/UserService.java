@@ -61,6 +61,32 @@ public interface UserService {
      */
     int addQqLogin(User user);
 
+
+    /**
+     * 修改手机号码
+     * @param user_id
+     * @param newPhone
+     * @return
+     */
+    int updatePhone(Integer user_id,String newPhone);
+
+
+    /**
+     * 修改邮箱
+     * @param user_id
+     * @param newEmail
+     * @return
+     */
+    int updateEmail(Integer user_id,String newEmail);
+
+
+    /**
+     * 修改用户基本信息
+     * @param user
+     * @return
+     */
+    int updateData(User user);
+
     /**
      * @author likai
      *      用户充值增加积分

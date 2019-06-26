@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
 		<link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
 		<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-		
+        <link rel="stylesheet" href="/user/layui/css/layui.css">
 		<style>
 		@font-face {
 			font-family: "lantingxihei";
@@ -98,7 +98,14 @@
 	.certificate-item a {
 		color: #444;
 	}
+    /*去掉input type=number中的上下箭头*/
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0;
+    }
 </style>
+
 	</head>
 	<body>
 		<nav class="navbar navbar-default navbar-fixed-top header">
@@ -163,28 +170,29 @@
 						<div class="pull-left userinfo-banner-avatar">
 							<div class="user-avatar ">
 								<a class="avatar" href="#" target="_blank">
-									<img src="https://dn-simplecloud.shiyanlou.com/gravatarc51ce410c124a10e0db5e4b97fc2af39.png?v=1439957390221&amp;imageView2/1/w/200/h/200">
+
+                                    <img th:src="${session.user.userImg}">
 								</a>
 								<a class="member-icon" href="/user//user/vip/index.html" target="_blank">
-									<img src=" /user/img/vip-icon.png">
+                                    <!--<img th:src="${session.user.userImg}">-->
 								</a>
 							</div>
 						</div>
 				
 						<div class="pull-left userinfo-banner-details">
-							<div class="userinfo-banner-meta">
+							<!--<div class="userinfo-banner-meta">
 								<div class="user-username ">
 									<a class="username" href="#" target="_blank">石头山</a>
 									<span class="user-level">L195</span>
 								</div>
-							</div>
+							</div>-->
 							<div class="userinfo-banner-status">
-									<span>学生</span>
-									<a href="/edu/1" target="_blank">北京大学</a>
+                                <h3><span th:text="${session.user.userName}">用户名</span></h3>
 							</div>
-							<div class="userinfo-banner-status">
-									<span>积分:</span>
-									<strong>123</strong>
+							<div  class="userinfo-banner-status">
+									<span><h3>积分:</h3></span>
+
+                                <strong><h2><span th:text="${session.user.userIntegrsl}"></span></h2></strong>
 							</div>
 						</div>
 					</div>
@@ -247,30 +255,36 @@
 								
 								<div class="tab-content">
 									<div id="yi" class="tab-pane fade in active" style="height: 300px;">
-										<form class="form-horizontal">
+										<form method="post" class="form-horizontal" enctype="multipart/form-data" id="formImage" action="/fileUploadPage">
 												  <div class="form-group">
-													<label for="inputEmail3" class="col-xs-4 control-label">头像</label>
+													<label  class="col-xs-4 control-label">头像:</label>
 													<div class="col-sm-3">
-                                                        <img src="/static/user/img/default.jpg">
-													  <input type="text" class="form-control" id="inputEmail3" value="艰难人生">
+                                                      <input type="file" id="uploadImage" name="file" style="display: none" onchange="updateImage()"/>
+
+                                                      <img id="imgtx" onclick="imgUpload()" title="点击更换头像" th:src="${session.user.userImg}" style="height: 80px;width: 80px;margin-left: 70px" class="layui-nav-img">
 													</div>
 												  </div>
 												  <div class="form-group">
 													<label for="inputName" class="col-xs-4 control-label">昵称</label>
 													<div class="col-xs-3">
-													  <input type="text" class="form-control" id="inputName" value="颜值帅">
+                                                        <!--<label type="text"  class="form-control" id="inputName" value="颜值帅">颜值帅</label>-->
+                                                        <label type="text"  class="form-control" id="inputName"  ><span id="uname" th:text="${session.user.userName}"></span></label>
 													</div>
 												  </div>
 												  <div class="form-group">
-													<label for="inputAge" class="col-xs-4 control-label">手机号</label>
+													<label  class="col-xs-4 control-label">手机号</label>
 													<div class="col-xs-3">
-													  <input type="text" class="form-control" id="inputAge" value="21">
+                                                        <!--<label type="text"  class="form-control"  value="颜值帅"><span>15296009413</span></label>-->
+                                                       <label type="text"  class="form-control"  ><span id="uphone" th:text="${session.user.userPhone}">15296009413</span></label>
 													</div>
 												  </div>
 												  <div class="form-group">
-													<label for="inputShou" class="col-xs-4 control-label">邮箱</label>
+													<label  class="col-xs-4 control-label">邮箱</label>
 													<div class="col-xs-3">
-													  <input type="text" class="form-control" id="inputShou" value="123456789101">
+                                                        <label title="点击绑定邮箱" onclick="updateEmail('绑定邮箱')" style="cursor: pointer;" th:if="${session.user.userEmail}==null" type="text"  class="form-control"  value="颜值帅">未绑定邮箱</label>
+                                                        <input id="checkEmail" type="hidden" th:value="${session.user.userEmail}"/>
+                                                       <!-- <label type="text"  class="form-control"  value="颜值帅">1647799067@qq.com</label>-->
+                                                        <label th:if="${session.user.userEmail}!=null" type="text"  class="form-control" ><span id="uemail" th:text="${session.user.userEmail}">1647799067@qq.com</span></label>
 													</div>
 												  </div>
 
@@ -283,34 +297,34 @@
 												  </div>
 												  <div class="form-group">
 													<div class="col-xs-offset-5 col-xs-9">
-													  <button type="submit" class="btn btn-default">编辑资料</button>
+													  <button  onclick="setData()" type="button" class="btn btn-default">编辑资料</button>
 													</div>
 												  </div>
 										</form>
 									</div>
 									<div id="er" class="tab-pane fade" style="height: 300px;">
 										<form class="form-horizontal">
-											  <div class="form-group">
-												<label for="inputEmail3" class="col-xs-4 control-label">原密码</label>
+											  <!--<div class="form-group">
+												<label  class="col-xs-4 control-label">原密码</label>
 												<div class="col-sm-3">
 												  <input type="email" class="form-control" id="inputEmail1" placeholder="原密码">
 												</div>
-											  </div>
+											  </div>-->
 											  <div class="form-group">
 												<label for="inputPassword3" class="col-xs-4 control-label">新密码</label>
 												<div class="col-xs-3">
-												  <input type="password" class="form-control" id="inputPassword2" placeholder="新密码">
+												  <input onblur="newPwd()" type="password" class="form-control" id="inputPassword2" placeholder="新密码">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<label for="inputPassword3" class="col-xs-4 control-label">确认密码</label>
 												<div class="col-xs-3">
-												  <input type="password" class="form-control" id="inputPassword3" placeholder="确认密码">
+												  <input onblur="newPwd2()" type="password" class="form-control" id="inputPassword3" placeholder="确认密码">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<div class="col-xs-offset-5 col-xs-9">
-												  <button type="submit" class="btn btn-default">修改</button>
+												  <button type="button" onclick="subPwd()" class="btn btn-default">修改</button>
 												</div>
 											  </div>
 										</form>
@@ -523,5 +537,130 @@
 		</script>
 
 		<script src="/user/app/dest/user/index.js?=2016121272249"></script>
+        <script src="/user/layui/layui.js"></script>
+    <script>
+        var a = $('#yi').html();
+        var b = a;
+        a="";
+        $(function () {
+            $('#imgtx').click(function () {
+
+            });
+        });
+        function imgUpload() {
+            $('#uploadImage').click()
+        }
+
+        function setData() {
+            var uname = $('#uname').text();
+            var uphone = $('#uphone').text();
+            var uemail = $('#uemail').text();
+
+
+            var html="";
+            html+="<form class=\"form-horizontal\">";
+            html+="<div class=\"form-group\">";
+            html+="<label for=\"inputName\" class=\"col-xs-4 control-label\">昵称：</label>";
+            html+="<div class=\"col-xs-3\">";
+            html+="<input type=\"text\"  placeholder='请输入长度1~12的昵称'  class=\"form-control\" id=\"inputName\" value=\""+uname+"\" />";
+            html+="</div>";
+            html+="</div>";
+            html+="<div class=\"form-group\">";
+            html+="<label  class=\"col-xs-4 control-label\">手机号：</label>";
+            html+="<div class=\"col-xs-3\">";
+            html+="<input type=\"text\" onclick='updatePhone()'  class=\"form-control\"  value=\""+uphone+"\"/>";
+            html+="</div></div>";
+
+            if($('#checkEmail').val().length!=0){
+                html+="<div class=\"form-group\">";
+                html+="<label  class=\"col-xs-4 control-label\">邮箱：</label>";
+                html+="<div class=\"col-xs-3\">";
+                html+="<input type=\"text\"  class=\"form-control\" onclick=\"updateEmail('修改邮箱地址')\"  value=\""+uemail+"\"/> </div> </div>";
+            }
+            html+="<div class=\"form-group\">";
+            html+="<div class=\"col-xs-offset-5 col-xs-9\">";
+            html+="<button type=\"button\"  onclick='updateName11()' class=\"btn btn-default\">确认修改</button>&nbsp;&nbsp;&nbsp;<button onclick='test144()' type=\"button\" class=\"btn btn-default\">返回</button>";
+            html+="</div></div></form>";
+            $('#yi').html(html);
+        }
+        
+        function test144() {
+            $('#yi').html(b);
+        }
+        function updatePhone() {
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                var index = layer.open({
+                    type: 1,
+                    title :'修改手机号',
+                    content:$('#setPhone'),
+                    area :'auto',
+                    maxWidth :400
+                });
+                $('#close').click(function () {
+                    layer.close(index);
+                });
+            });
+        }
+
+        function updateEmail(type) {
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                var index = layer.open({
+                    type: 1,
+                    title :type,
+                    content:$('#setEmail'),
+                    area :'auto',
+                    maxWidth :400
+                });
+                $('#emailClose').click(function () {
+                    layer.close(index);
+                });
+            });
+        }
+        function updateImage() {
+            $('#formImage').submit();
+        }
+    </script>
+
+        <script src="/user/updatePhone.js"></script>
+        <script src="/user/updateEmail.js"></script>
+        <script src="/user/updatePassword.js"></script>
 	</body>
+
+    <div id="setPhone" style="height: 300px;display:none;width: 400px">
+        <form>
+            <table style="margin-left:70px; ">
+                <tbody>
+                    <tr style="height: 80px">
+                        <td><input onblur="phoneCheck()" type="number" name="phone" id="phone" class="layui-form-label"  placeholder="请输入新手机号" style="width: 230px;text-align:left;"/></td>
+                    </tr>
+                    <tr style="height: 80px">
+                        <td><input type="text" id="code" class="layui-form-label"  placeholder="请输入验证码" style="width: 120px;text-align:left;"/>&nbsp;&nbsp;&nbsp;<button type="button" id="getCode" class="layui-btn layui-btn-normal">获取验证码</button></td>
+                    </tr>
+                    <tr style="height: 80px">
+                        <td><input type="hidden" name="userId" th:value="${session.user.userID}"/><button class="layui-btn layui-btn-normal" type="button" onclick="subUpPhone()" style="margin-left: 20px">确认修改</button>&nbsp;&nbsp;&nbsp;<button id="close" class="layui-btn layui-btn-warm" type="button" style="margin-left: 20px">返回</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div id="setEmail" style="height: 300px;display:none;width: 400px">
+        <form>
+            <table style="margin-left:70px; ">
+                <tbody>
+                <tr style="height: 80px">
+                    <td><input  type="email" id="email" name="email" onblur="emailCheck()" class="layui-form-label"  placeholder="请输入邮箱地址" style="width: 230px;text-align:left;"/></td>
+                </tr>
+                <tr style="height: 80px">
+                    <td><input type="text" id="emailCode" class="layui-form-label"  placeholder="请输入验证码" style="width: 120px;text-align:left;"/>&nbsp;&nbsp;&nbsp;<button type="button" id="getEmailCode" class="layui-btn layui-btn-normal">获取验证码</button></td>
+                </tr>
+                <tr style="height: 80px">
+                    <td><input id="userId" type="hidden" name="userId" th:value="${session.user.userID}"/><button class="layui-btn layui-btn-normal" type="button" onclick="subUpEmail()" style="margin-left: 20px">确认</button>&nbsp;&nbsp;&nbsp;<button id="emailClose" class="layui-btn layui-btn-warm" type="button" style="margin-left: 20px">返回</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
 </html>

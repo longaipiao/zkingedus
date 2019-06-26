@@ -21,12 +21,13 @@
     <meta content="实验楼,琛石科技" name="author">
 
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="user/static/font-awesome//4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="user/static/highlight.js/9.8.0/monokai-sublime.min.css">
-    <link rel="stylesheet" href="user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="user/app/css/libs/katex/0.6.0/katex.min.css">
-    <link rel="stylesheet" href="user/app/css/libs/videojs/5.11.7/video-js.min.css">
-    <link rel="stylesheet" href="user/app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/user/static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
+    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/layui/css/layui.css">
 	<style>
 		@font-face {
 			font-family: "lantingxihei";
@@ -141,22 +142,22 @@
 
 
             <div class="navbar-right btns">
-                <span th:text="${addr}"></span>
+               <!-- <span th:text="${addr}"></span>
                 <span th:if="${addr}!=delete">111111111111111111111111111111111</span>
-                用户：<span th:text="${session.user1}"></span>
-                <!--<span th:if="${addr==delete}">
+                用户：<span th:text="${session.user1}"></span>-->
+                <span th:if="${addr}==delete">
                     <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
                     <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
                 </span>
-                <span th:if="${addr!=delete}">
-                    <span th:if="${user!=null}">
-                        用户：<span th:value="${user.userName}"></span>
+                <span th:if="${addr}!=delete">
+                    <span th:if="${session.user}!=null">
+                        <img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}">
                     </span>
-                    <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
-                    <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
-                </span>-->
-                <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
-                <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
+                    <span th:if="${session.user}==null">
+                        <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
+                        <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
+                    </span>
+                </span>
             </div>
 
 
@@ -566,11 +567,7 @@
                             </div>
                             <div class="form-group widget-signin">
                                 <span>快速登录</span>
-                                <a href="/auth/qq?next="><i class="fa fa-qq"></i></a>
-                                <a href="/auth/weibo?next="><i class="fa fa-weibo"></i></a>
-                                <a href="/auth/weixin?next="><i class="fa fa-weixin"></i></a>
-                                <a href="/auth/github?next="><i class="fa fa-github"></i></a>
-                                <a href="/auth/renren?next="><i class="fa fa-renren"></i></a>
+                                <a href="/qqLogin><i class="fa fa-qq"></i></a>
                             </div>
                             <div class="form-group error-msg">
                                 <div class="alert alert-danger" role="alert"></div>
@@ -707,8 +704,7 @@
     data-post-url="/registercheck"
 ></div>
 
-<script src="/user/app/dest/frontend/index.js?=2016121272249"></script>
-<script src="/user/app/dest/user/index.js?=2016121272249"></script>
+
 
 
 
@@ -798,8 +794,10 @@
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
         ga('create', 'UA-89338452-1', 'auto');
         ga('send', 'pageview');
-        </script>
+        </script>-->
 
+<script src="/user/app/dest/frontend/index.js?=2016121272249"></script>
+<script src="/user/app/dest/user/index.js?=2016121272249"></script>
         <!-- 轮播图自动切换 -->
         <script type="text/javascript">
             $("#lb").carousel({

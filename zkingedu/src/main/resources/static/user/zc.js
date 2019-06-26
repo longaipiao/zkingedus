@@ -46,9 +46,6 @@ function timeStart(){
 
 /*注册*/
 function zc() {
-
-
-
     if(checkPhone()==false){//查询重复用户
         return false;
     }else if(!(/^1[3456789]\d{9}$/.test($('#phone').val()))){
@@ -107,4 +104,7 @@ function checkPhone() {
     return f;
 }
 
+/**
+ * 更换手机号码
+ */
 

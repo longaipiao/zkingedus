@@ -38,10 +38,10 @@ public class TestController {
         System.out.println("首页测试");
         return "user/index";
     }
-    @RequestMapping(value = "/qqLogin")
+    @RequestMapping(value = "/binding")
     public String qqLogin(){
-        System.out.println("QQLogin来了");
-        return "user/qqLogin";
+        System.out.println("binding");
+        return "user/binding";
     }
 
     @RequestMapping(value = "/admin1")

@@ -182,9 +182,12 @@
             <artifactId>cglib</artifactId>
             <version>3.2.12</version>
         </dependency>
-
-
-
+        <!--上传文件工具包-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.3</version>
+        </dependency>
         <!--   ====================================映入工具类所需依赖 Start-->
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
