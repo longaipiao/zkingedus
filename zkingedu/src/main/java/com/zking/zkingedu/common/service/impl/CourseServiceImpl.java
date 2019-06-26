@@ -76,7 +76,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public List<Map> sections(Integer courseID) {
-        return null;
+        return courseDao.sections(courseID);
     }
 
     /**
