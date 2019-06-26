@@ -47,7 +47,7 @@ public class ChargeController {
      * 后台chargesShow.html绑定表格数据
      */
     @ResponseBody
-    @RequestMapping("/getCharges")
+    @RequestMapping("/houtai/getCharges")
     Map<String,Object> getCharges(@Param("page") Integer page, @Param("limit") Integer limit,Charge charge){
         Map<String,Object> chargesMap = new HashMap<>();
 
@@ -94,11 +94,23 @@ public class ChargeController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("user/MyCharges")
-    List<Charge> getMyCharges(HttpServletRequest  request){
+    @RequestMapping("/user/MyCharges")
+    Map<String,Object> getMyCharges(HttpServletRequest  request){
         //User user = (User) request.getSession().getAttribute("user");
         //user.getUserID
+
+        String page = request.getParameter("page");
+        String limit = request.getParameter("pageSize");
+        //分页
+        Page pageLine = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+
         List<Charge> myCharges = chargeService.getChargesByUserID(36);
-        return myCharges;
+        Map<String,Object> chargeMap = new HashMap<>();
+        chargeMap.put("count",pageLine.getTotal());
+        chargeMap.put("code","");
+        chargeMap.put("msg","");
+        chargeMap.put("data",myCharges);
+
+        return chargeMap;
     }
 }

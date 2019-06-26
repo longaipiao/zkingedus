@@ -188,6 +188,16 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.3</version>
         </dependency>
+
+        <!-- 热加载-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+            <optional>true</optional>
+        </dependency>
+
+
         <!--   ====================================映入工具类所需依赖 Start-->
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>

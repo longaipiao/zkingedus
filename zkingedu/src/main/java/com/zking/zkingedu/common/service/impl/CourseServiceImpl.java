@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程接口
@@ -36,6 +37,46 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> courses(Integer systemID) {
         return courseDao.courses(systemID);
+    }
+
+    /**
+     * 根据课程Id查询课程、课程类别、讲师
+     * @param courseID
+     * @return
+     */
+    @Override
+    public Map course(Integer courseID) {
+        return courseDao.course(courseID);
+    }
+
+    /**
+     * 根据课程Id查询收藏此课程的人数
+     * @param courseID
+     * @return
+     */
+    @Override
+    public Integer collection(Integer courseID) {
+        return courseDao.collection(courseID);
+    }
+
+    /**
+     * 根据讲师Id查询发布课程数
+     * @param empID
+     * @return
+     */
+    @Override
+    public Integer announcedc(Integer empID) {
+        return courseDao.announcedc(empID);
+    }
+
+    /**
+     * 根据课程Id获取章节、视频
+     * @param courseID
+     * @return
+     */
+    @Override
+    public List<Map> sections(Integer courseID) {
+        return courseDao.sections(courseID);
     }
 
     /**

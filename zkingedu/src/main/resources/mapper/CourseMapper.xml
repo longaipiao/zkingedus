@@ -27,4 +27,23 @@
         select * from t_course where course_sid in(select system_id from t_system where system_fid=#{systemID} and system_state=0) and course_state=0
     </select>
 
+    <!--根据课程Id查询课程、课程类别、讲师-->
+    <select id="course" resultType="Map">
+        select * from t_course a,course_type b,t_emp c where a.course_type=b.t_id and a.course_eid=c.emp_id and a.course_id=#{courseID}
+    </select>
+
+    <!--根据课程Id查询收藏此课程的人数-->
+    <select id="collection" resultType="Integer">
+        select count(*) from t_collection where collection_state=0 and collection_zpid=#{courseID}
+    </select>
+
+    <!--根据讲师Id查询发布课程数-->
+    <select id="announcedc" resultType="Integer">
+        select count(*) from t_course where course_eid=#{empID}
+    </select>
+
+    <!--根据课程Id获取章节、视频-->
+    <select id="sections" resultType="Map">
+        select * from t_section a,t_video b where a.section_id=b.video_sid and section_cid=#{courseID} order by a.section_seq
+    </select>
 </mapper>

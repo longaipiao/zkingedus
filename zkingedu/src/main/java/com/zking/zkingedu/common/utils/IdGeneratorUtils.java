@@ -1,5 +1,7 @@
 package com.zking.zkingedu.common.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -9,6 +11,7 @@ import java.text.SimpleDateFormat;
  * @author lenovo
  *
  */
+@Component
 public class IdGeneratorUtils {
 
 	private long workerId;   //用ip地址最后几个字节标示
