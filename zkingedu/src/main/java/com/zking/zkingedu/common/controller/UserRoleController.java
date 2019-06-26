@@ -75,7 +75,7 @@ public class UserRoleController {
             user.setUserName("inputName");
             n = userService.updateData(user);
         }catch (Exception e){
-            System.out.println("修改名字错误");
+            System.out.println("修改名字错误1");
             e.printStackTrace();
         }
         User user = (User)request.getSession().getAttribute("user");
