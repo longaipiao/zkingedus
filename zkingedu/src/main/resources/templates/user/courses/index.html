@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -162,60 +163,63 @@
         <div class="row course-cates">
             <div class="col-md-1 course-cates-title">类别：</div>
             <div class="col-md-11 course-cates-content free">
-                <a class="active" onclick="cfree(0)">全部</a>
-                <a onclick="cfree(1)">免费</a>
-                <!--<a class="" href="/courses/?course_type=all&amp;tag=all&amp;fee=limited">限免</a>-->
-                <a onclick="cfree(2)"><img src="/user/img/vip-icon.png"> 收费</a>
+                <a th:title="${free}" name="2" th:href='${"/courseindex/"+Tid+"/2"}'>全部</a>
+                <a name="0" th:href='${"/courseindex/"+Tid+"/0"}'>免费</a>
+                <a name="1" th:href='${"/courseindex/"+Tid+"/1"}'><img src="/user/img/vip-icon.png"> 收费</a>
             </div>
         </div>
 
         <div class="row course-cates">
             <div class="col-md-1 course-cates-title">体系：</div>
             <div class="col-md-11 course-cates-content system">
-                <a class="active" onclick="csystem(0)">全部</a>
+                <a id="0" th:name="${Tid}" th:href='${"/courseindex/0/"+free}'>全部</a>
+                <!--后台获取所有课程分类-->
+                <a th:id="${courseType.Tid}" th:each="courseType:${courseTypes}" th:text="${courseType.tName}" th:href='${"/courseindex/"+courseType.Tid+"/"+free}'></a>
             </div>
         </div>
-    </div>
-    <div class="content position-relative">
-        <ul class="nav nav-tabs" role="tablist">
-            <li class=""><!--<a href="/courses/?course_type=all&amp;tag=all&amp;fee=all">已上线</a>--></li>
-            <li class=""><!--<a href="/courses/?status=preview" class="stat-event" data-stat="preview_course">即将上线</a>--></li>
-        </ul>
-        <div class="clearfix"></div>
-        <div class="courses-sort">
-            <a  href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;order=latest">最新</a>
-            /
-            <a  href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;order=hotest">最热</a>
-        </div>
-        <div class="search-result"></div>
 
-        <div class="row">
-<div class="col-md-4 col-sm-6  course">
-    <a class="course-box" href="show.html">
-        <div class="sign-box">
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/708/follow"
-                data-unfollow-url="/courses/708/unfollow"  style="display:none"  ></i>
-        </div>
-        <div class="course-img">
-            <img alt="Python 3 实现 Markdown 解析器" src="https://dn-simplecloud.shiyanlou.com/1480644410422.png">
-        </div>
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Python 3 实现 Markdown 解析器">Python 3 实现 Markdown 解析器</span>
-        </div>
-        <div class="course-footer">
+    </div>
+
+            <div class="content position-relative">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="/courses/?course_type=all&amp;tag=all&amp;fee=all">已上线</a></li>
+                    <li class=""><a href="/courses/?status=preview" class="stat-event" data-stat="preview_course">即将上线</a></li>
+                </ul>
+                <div class="clearfix"></div>
+                <div class="courses-sort">
+                    <a  href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;order=latest">最新</a>
+                    /
+                    <a  href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;order=hotest">最热</a>
+                </div>
+                <div class="search-result"></div>
+                <div class="row courses">
+
+                    <!--课程展示-->
+                    <!--<div class="col-md-4 col-sm-6  course">
+                        <a class="course-box" href="show.html">
+                            <div class="sign-box">
+                                <i class="fa fa-star-o course-follow pull-right"
+                                   data-follow-url="/courses/708/follow"
+                                   data-unfollow-url="/courses/708/unfollow"  style="display:none"  ></i>
+                            </div>
+                            <div class="course-img">
+                                <img alt="Python 3 实现 Markdown 解析器" src="https://dn-simplecloud.shiyanlou.com/1480644410422.png">
+                            </div>
+                            <div class="course-body">
+                                <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Python 3 实现 Markdown 解析器">Python 3 实现 Markdown 解析器</span>
+                            </div>
+                            <div class="course-footer">
 			<span class="course-per-num pull-left">
                 <i class="fa fa-users"></i>
                 745
 			</span>
-                <span class="course-money pull-right">会员</span>
-        </div>
-    </a>
-</div>
+                                <span class="course-money pull-right">会员</span>
+                            </div>
+                        </a>
+                    </div>-->
 
 
-        </div>
-        
+                </div>
 
 <nav class="pagination-container">
     <ul class="pagination">
@@ -584,57 +588,98 @@
             release: '3.12.13'
         }).install();
 
-        //监听a标签触发
-        $(".free").on("click","a",function () {
-            //将所有class移除
-            $(".free a").removeClass("active");
-            $(this).addClass("active");
-        });
-        $(".system").on("click","a",function () {
-            //将所有class移除
-            $(".system a").removeClass("active");
-            $(this).addClass("active");
-        });
+        //页面加载完后执行程序入口
+        $(function(){
+            //获取跳转进来的课程类别Id/课程收费状态
+            var T=$("#0").attr("name");
+            var f=$("a[name=2]").attr("title");
 
-        //获取所有体系展示
-        /*$.ajax({
-            type:"post",
-            url:"/systems",
-            dataType:"json",
-            contentType : "application/json",//应用类型/json
-            success:function(systems){
-                //判断有数据才遍历
-                if (systems.code==1){
-                    for(var i=0;i<systems.data.length;i++){
-                        //添加体系
-                        var content=""
-                        content+='<a onclick="csystem('+systems.data[i].systemID+')">'+systems.data[i].systemName+'</a>'
-                        $(".system").append(content);
+            //设置初始化样式
+            $("#"+T).addClass("active");
+            $(".free a[name="+f+"]").addClass("active");
+
+            //监听a标签触发
+            /*$(".free").on("click","a",function () {
+                //将所有class移除
+                $(".free a").removeClass("active");
+                $(this).addClass("active");
+            });
+            $(".system").on("click","a",function () {
+                //将所有class移除
+                $(".system a").removeClass("active");
+                $(this).addClass("active");
+            });*/
+
+            //调用加载课程的方法
+            courses();
+
+            //加载课程的方法
+            function courses(){
+                //获取选中的课程收费状态（0免费，1收费，2全部）/课程类别Id
+                var free=$(".free .active").attr("name");
+                var Tid=$(".system .active").attr("id");
+
+                //根据收费状态/课程类别查询课程
+                $.ajax({
+                    type:"post",
+                    url:"/courses2",
+                    dataType:"json",
+                    data:JSON.stringify({
+                        free:free,
+                        Tid:Tid
+                    }),
+                    contentType : "application/json",//应用类型/json
+                    success:function(courses){
+                        //判断分类下是否有课程
+                        if (courses.code==0){
+                            alert("该分类下暂无课程数据");
+                        }else{
+                            //循环拼接
+                            for(var i=0;i<courses.courses.length;i++){
+                                //添加体系
+                                var content='<div class="col-md-4 col-sm-6  course">' +
+                                    '                        <a class="course-box" href="/courseshow/'+courses.courses[i].course_id+'">' +
+                                    '                            <div class="sign-box">' +
+                                    '                                <i class="fa fa-star-o course-follow pull-right"' +
+                                    '                                   data-follow-url="/courses/708/follow"' +
+                                    '                                   data-unfollow-url="/courses/708/unfollow"  style="display:none"></i>' +
+                                    '                            </div>' +
+                                    '                            <div class="course-img">' +
+                                    '                                <img alt="'+courses.courses[i].course_name+'" src="'+courses.courses[i].course_img+'">' +
+                                    '                            </div>' +
+                                    '                            <div class="course-body">' +
+                                    '                                <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+courses.courses[i].course_name+'">'+courses.courses[i].course_name+'</span>' +
+                                    '                            </div>' +
+                                    '                            <div class="course-footer">' +
+                                    '<span class="course-per-num pull-left">' +
+                                    '                <i class="fa fa-users"></i>' +
+                                    '                '+courses.courses[i].course_num+'' +
+                                    '</span>'
+                                //判断是收费还是免费
+                                if(courses.courses[i].course_free==0){
+                                    content+='                                <span class="course-bootcamp pull-right">免费</span>' +
+                                        '                            </div>' +
+                                        '                        </a>' +
+                                        '                    </div>'
+                                }else{
+                                    content+='                                <span class="course-money pull-right">收费</span>' +
+                                        '                            </div>' +
+                                        '                        </a>' +
+                                        '                    </div>'
+                                }
+
+                                $(".courses").append(content);
+                            }
+                        }
+                    },
+                    error:function(){
+                        aler("发生错误");
                     }
-                }else{
-                    alert("数据有误");
-                }
-            },
-            error:function(){
-                aler("发生错误");
+                });
             }
-        });
 
-        //类别/体系标记
-        var free,system="";
-        //类别a标签点击
-        function cfree(v) {
-            free=v;
-        }
-        //体系a标签点击
-        function csystem(v) {
-            system=v;
-        }
-        
-        //获取所有课程
-        function courses() {
-            
-        }*/
+
+        });
 
     </script>
 
