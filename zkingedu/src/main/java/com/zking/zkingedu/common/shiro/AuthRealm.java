@@ -27,6 +27,7 @@ public class AuthRealm extends AuthorizingRealm {
         UsernamePasswordToken utoken=(UsernamePasswordToken) token;//获取用户输入的token
         String empname = utoken.getUsername();
         System.err.println("-----------------------------"+empname);
+        System.err.println("AuthRealm"+empname);
         Emp emp = empService.getempbyempname(empname);
         System.err.println(emp);
         return new SimpleAuthenticationInfo(emp, emp.getEmpPassword(),this.getClass().getName());//放入shiro.调用CredentialsMatcher检验密码

@@ -231,8 +231,8 @@
 
                     //判断右侧菜单的位置
                     l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
-                    t = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
-                    popupmenu.css({left: l, top: t}).show(); //进行绝对定位
+                    r = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
+                    popupmenu.css({left: l, top: r}).show(); //进行绝对定位
                     //alert("右键菜单")
                     return false;
                 });

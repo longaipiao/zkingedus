@@ -47,17 +47,29 @@
         },
         success: function (result) {
             if(result!='0'){
+              layer.alert("角色添加成功",function(){
+                window.parent.location.reload();//刷新父页面
                 parent.layer.close(index);//关闭弹出层
-                layer.open({
-                  title: "授权",
-                  type: 2,
-                  skin: 'layui-layer-rim', //加上边框
-                  area: [window.screen.width / 4 + 'px', window.screen.height / 2.5 + 'px'], //宽高
-                  maxmin: true, //开启最大化最小化按钮
-                  content: "/url/admin-tree?roleID="+result
-                });
+              });
+              // //配置一个透明的询问框
+              // layer.confirm('已经成功添加角色,可以选择继续授权!', {
+              //   btn: ['继续', '不了'] //可以无限个按钮
+              // }, function(index, layero){
+              //   layer.close(index);
+              //   //按钮【按钮一】的回调
+              //   layer.open({
+              //     title: "授权",
+              //     type: 2,
+              //     area: [window.screen.width / 4 + 'px', window.screen.height / 2.5 + 'px'], //宽高
+              //     maxmin: true, //开启最大化最小化按钮
+              //     content: "/url/admin-tree?roleID="+result
+              //   });
+              // }, function(index){
+              //   //按钮【按钮二】的回调
+              //   parent.layer.close(index);//关闭弹出层
+              // });
 
-              // parent.layer.close(parent.layer.index);//关闭自己
+
             }else{
               layer.alert("角色名已存在");
               $(".layui-input").val("");

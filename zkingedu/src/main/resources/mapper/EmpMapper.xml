@@ -6,14 +6,14 @@
     <!--员工接口Mapper-->
 
     <!--使全局的映射器启用或禁用缓存  开启二级缓存-->
-    <cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>
+    <!--<cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>-->
     
     
-    <select id="getemps" resultType="emp">
+    <select id="getemps" resultType="Emp">
         select * from t_emp
     </select>
 
-    <select id="getempbyempname" resultType="emp">
+    <select id="getempbyempname" resultType="com.zking.zkingedu.common.model.Emp">
         select * from t_emp where emp_name = #{empname}
     </select>
 

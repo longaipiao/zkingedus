@@ -27,7 +27,8 @@ public class EmpServiceImpl implements EmpService {
     //按照用户名查询查询员工
     @Override
     public Emp getempbyempname(String empname){
-        return empDao.getempbyempname(empname);
+        Emp getempbyempname = empDao.getempbyempname(empname);
+        return getempbyempname;
     }
 
 

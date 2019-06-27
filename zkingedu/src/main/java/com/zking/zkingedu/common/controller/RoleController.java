@@ -131,9 +131,10 @@ public class RoleController {
         if (existsrolename>0){
             return 0;
         }
-        int addrole = roleService.addrole(role);
-        Integer roleID = role.getRoleID();
-        return roleID;
+//        int addrole = roleService.addrole(role);
+//        Integer roleID = role.getRoleID();
+//        return roleID;
+        return 1;
     }
 
 }

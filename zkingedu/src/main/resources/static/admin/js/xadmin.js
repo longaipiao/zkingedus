@@ -111,11 +111,13 @@ $(function () {
 	//点击菜单显示效果	
 	$(document).ready(function() {
        $('.left-nav #nav li .sub-menu li ').click(function(){
-           alert(1);
-		   $(this).addClass('menu-current').siblings().removeClass('menu-current');
+		    $(this).addClass('menu-current').siblings().removeClass('menu-current');
 		   })
     });
+
+    // $('body .left-nav #side-nav #nav .show-id').click(function (event) {
     $('.left-nav #nav li').click(function (event) {
+
         if($(this).children('.sub-menu').length){
             if($(this).hasClass('open')){
                 $(this).removeClass('open');
@@ -132,7 +134,6 @@ $(function () {
                 $(this).siblings().removeClass('open');
             }
         }else{
-
             var url = $(this).children('a').attr('_href');
             var title = $(this).find('cite').html();
             var index  = $('.left-nav #nav li').index($(this));
@@ -148,9 +149,9 @@ $(function () {
             tab.tabAdd(title,url,index+1);
             tab.tabChange(index+1);
         }
-        
+
         event.stopPropagation();
-         
+
     })
     
 })
@@ -204,4 +205,20 @@ function x_admin_close(){
     parent.layer.close(index);
 }
 
+//动态加载 js /css
+function loadjscssfile(filename, filetype) {
+    if (filetype == "js") { //判定文件类型
+        var fileref = document.createElement('script')//创建标签
+        fileref.setAttribute("type", "text/javascript")//定义属性type的值为text/javascript
+        fileref.setAttribute("src", filename)//文件的地址
+    }
+    else if (filetype == "css") { //判定文件类型
+        var fileref = document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    if (typeof fileref != "undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+}
 

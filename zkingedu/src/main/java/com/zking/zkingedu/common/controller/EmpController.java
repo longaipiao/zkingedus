@@ -8,6 +8,7 @@ import com.zking.zkingedu.common.service.EmpService;
 import com.zking.zkingedu.common.service.MenuService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.RedisUtil;
+import com.zking.zkingedu.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -32,11 +33,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class EmpController {
     @Autowired
-    private EmpService empService;
-    @Autowired
-    private RedisUtil redisUtil;
-
-
+    private  EmpService empService;
     /**
      * shiro登陆
      * @param emp
@@ -75,7 +72,5 @@ public class EmpController {
         }
         return map;
     }
-
-
 
 }

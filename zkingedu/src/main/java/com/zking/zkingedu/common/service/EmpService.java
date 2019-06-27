@@ -1,7 +1,6 @@
 package com.zking.zkingedu.common.service;
 
 import com.zking.zkingedu.common.model.Emp;
-import com.zking.zkingedu.common.model.Menu;
 
 import java.util.List;
 
