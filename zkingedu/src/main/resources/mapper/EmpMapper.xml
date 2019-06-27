@@ -17,11 +17,6 @@
         select * from t_emp where emp_name = #{empname}
     </select>
 
-    <select id="getmenus" resultType="menu">
-        select e.* from t_emp a,t_role b,t_emp_role c,t_menu_role d,t_menu e
-        where a.emp_id=c.emp_id and b.role_id=c.role_id
-        and d.menu_id = e.menu_id and d.role_id = b.role_id
-        and a.emp_id = #{empid}
-    </select>
+
 
 </mapper>

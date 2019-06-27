@@ -27,4 +27,8 @@ public class Emp implements Serializable {
     private Integer empState;
     //错误次数
     private Integer empError;
+
+    public String getlogin(){
+        return "loginTrue";
+    }
 }

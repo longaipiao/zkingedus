@@ -4,5 +4,19 @@
 <mapper namespace="com.zking.zkingedu.common.dao.MenuDao">
 
     <!--菜单接口Mapper-->
+    <select id="getmenus" resultType="menu">
+        select DISTINCT e.* from t_emp a,t_role b,t_emp_role c,t_menu_role d,t_menu e
+        where a.emp_id=c.emp_id and b.role_id=c.role_id
+        and d.menu_id = e.menu_id and d.role_id = b.role_id
+        <if test="empid!=null">
+             and a.emp_id = #{empid}
+        </if>
+    </select>
+
+    <select id="getrole" resultType="_int">
+        select menu_id from t_menu_role where role_id=#{roleid}
+    </select>
+
+
 
 </mapper>

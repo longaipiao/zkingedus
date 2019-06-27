@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Title</title>
+</head>
+<body>
+
+<table class="layui-table" id="test" lay-filter="test">
+</table>
+
+
+<link rel="stylesheet" th:href="@{/admin/layui/css/layui.css}"/>
+<script th:src="@{/admin/layui/layui.js}" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<form class="layui-form">
+  <div class="layui-form-item">
+    <label class="layui-form-label">角色名</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" required  lay-verify="required" placeholder="请输入角色名" autocomplete="off" class="layui-input" style="width: 200px">
+    </div>
+  </div>
+
+
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input class="layui-btn" type="button" lay-submit lay-filter="formDemo" value="立即提交">
+    </div>
+  </div>
+</form>
+
+<script>
+  //Demo
+  layui.use(['form', 'jquery', 'layer','tree', 'util'], function () {
+    var form = layui.form;
+    var $ = layui.jquery;
+    var layer = layui.layer;
+
+    //监听提交
+    form.on('submit(formDemo)', function(data) {
+      $.ajax({
+        datatype: "json",
+        type: "post",
+        url: "/role/addrole",
+        data: {
+          roleName: data.field.title
+        },
+        success: function (result) {
+            if(result!='0'){
+                parent.layer.close(index);//关闭弹出层
+                layer.open({
+                  title: "授权",
+                  type: 2,
+                  skin: 'layui-layer-rim', //加上边框
+                  area: [window.screen.width / 4 + 'px', window.screen.height / 2.5 + 'px'], //宽高
+                  maxmin: true, //开启最大化最小化按钮
+                  content: "/url/admin-tree?roleID="+result
+                });
+
+              // parent.layer.close(parent.layer.index);//关闭自己
+            }else{
+              layer.alert("角色名已存在");
+              $(".layui-input").val("");
+            }
+
+        },
+        error: function () {
+          layer.msg("出现bug了，请联系9527")
+        }
+      });
+    });
+
+
+
+
+
+   })
+
+
+
+
+</script>
+
+</body>
+</html>

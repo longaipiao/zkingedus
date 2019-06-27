@@ -1,5 +1,7 @@
 package com.zking.zkingedu.common.utils;
 
+import java.util.List;
+
 /**
  * String工具 主要是对StringUtils一些方法进行重写,从而达到更好的应用
  *
@@ -56,5 +58,32 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		Object object = str;
 		return !isBlank(object);
 	}
+
+	/**
+	 * 判断两个集合的值是否一致
+	 * @param l0
+	 * @param l1
+	 * @return
+	 */
+	public static boolean isListEqual(List l0, List l1){
+		if (l0 == l1)
+			return true;
+		if (l0 == null && l1 == null)
+			return true;
+		if (l0 == null || l1 == null)
+			return false;
+		if (l0.size() != l1.size())
+			return false;
+		for (Object o : l0) {
+			if (!l1.contains(o))
+				return false;
+		}
+		for (Object o : l1) {
+			if (!l0.contains(o))
+				return false;
+		}
+		return true;
+	}
+
 
 }

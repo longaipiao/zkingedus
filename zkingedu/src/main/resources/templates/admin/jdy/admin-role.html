@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Title</title>
+</head>
+<body>
+
+<table class="layui-table" id="test" lay-filter="test">
+</table>
+
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">管理权限</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<link rel="stylesheet" th:href="@{/admin/lib/layui/css/layui.css}"/>
+<script th:src="@{/admin/lib/layui/layui.js}" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+  layui.use(['tree', 'util','table'], function(){
+    var table = layui.table;
+    var $ = layui.jquery;
+
+    table.render({
+      elem: '#test'
+      ,url:'/role/roles'
+      ,toolbar: '#toolbarDemo'
+      ,title: '角色管理'
+      ,id:"tableReload"
+      ,limit:5
+      ,cols: [ [
+
+          {field:'roleID', title:'角色ID', fixed: 'left', unresize: true, sort: true}
+          ,{field:'roleName', title:'角色名', edit: 'text'}
+          ,{fixed: 'right', title:'操作' +
+                  '<a class="layui-btn layui-btn-primary layui-btn-small" id="adda" style="line-height:10px;' +
+                  'float: right" lay-event="add" title="添加角色">\n' +
+                  '    <i class="layui-icon" style="line-height:28px">+</i>\n' +
+                  '  </a>', toolbar: '#barDemo'}
+        ] ]
+      ,page: true
+    });
+
+    $("#search").on('click', function(){
+      //执行重载
+      table.reload('tableReload', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          search:$('#demoReload').val()
+        }
+      });
+    });
+    $("#adda").on('click', function(){
+      layer.open({
+        title: "添加角色",
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: [window.screen.width / 4 + 'px', window.screen.height / 2.5 + 'px'], //宽高
+        maxmin: true, //开启最大化最小化按钮
+        content: "/url/roleadd"
+      });
+    });
+
+
+    //监听行工具事件
+    // 单元格被编辑，且值发生改变时触发，回调函数返回一个object参数，携带的成员如下：
+    table.on('edit(test)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+      console.log(obj.value); //得到修改后的值
+      console.log(obj.field); //当前编辑的字段名
+      console.log(obj.data.roleID); //所在行的所有相关数据
+      $.ajax({
+        datatype:"json",
+        type:"post",
+        url:"/role/updaterolename",
+        data:{
+          roleID: obj.data.roleID,
+          roleName: obj.value
+        },
+        success:function(result){
+          if(result!='ok'){
+            layer.msg("出现巨大的bug，请联系9527")
+          }
+        },
+        error:function () {
+          layer.msg("出现bug了，请联系9527")
+        }
+      })
+    });
+
+
+    //点击操作按钮时按钮时触发
+    table.on('tool(test)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'del'){
+        layer.confirm('真的删除该角色吗?', function(index){
+          $.ajax({
+            url:'/role/delrole',
+            type:'post',
+            data:{
+              roleid:obj.data.roleID
+            },
+            success:function (result) {
+              if(result=="ok"){
+                obj.del();
+                layer.close(index);
+              }else{
+                layer.msg("出现bug了，请联系9527")
+              }
+
+            },
+            error:function () {
+              layer.msg("出现bug了，请联系921607915")
+            }
+          });
+        });
+      }
+      else if(obj.event === 'edit'){//点击了修改
+        layer.open({
+          title: this.text,
+          type: 2,
+          skin: 'layui-layer-rim', //加上边框
+          area: [window.screen.width / 4 + 'px', window.screen.height / 2.5 + 'px'], //宽高
+          maxmin: true, //开启最大化最小化按钮
+          content: "/url/admin-tree?roleID="+data.roleID
+        });
+      }
+    });
+  });
+
+</script>
+
+</body>
+</html>

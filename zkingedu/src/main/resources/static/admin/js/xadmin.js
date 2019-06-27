@@ -111,12 +111,11 @@ $(function () {
 	//点击菜单显示效果	
 	$(document).ready(function() {
        $('.left-nav #nav li .sub-menu li ').click(function(){
+           alert(1);
 		   $(this).addClass('menu-current').siblings().removeClass('menu-current');
 		   })
-    });	
-	
+    });
     $('.left-nav #nav li').click(function (event) {
-
         if($(this).children('.sub-menu').length){
             if($(this).hasClass('open')){
                 $(this).removeClass('open');

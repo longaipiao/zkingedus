@@ -13,6 +13,5 @@ public interface EmpService {
     List<Emp> getemps();
     //按照条件查询查询员工
     Emp getempbyempname(String empname);
-    //根据用户ID查询该用户该用户所有的菜单
-    List<Menu> getmenus(Integer empid);
+
 }

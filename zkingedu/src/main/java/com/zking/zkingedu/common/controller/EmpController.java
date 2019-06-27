@@ -5,6 +5,7 @@ import com.zking.zkingedu.common.dao.EmpDao;
 import com.zking.zkingedu.common.model.Emp;
 import com.zking.zkingedu.common.model.Menu;
 import com.zking.zkingedu.common.service.EmpService;
+import com.zking.zkingedu.common.service.MenuService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,16 +35,6 @@ public class EmpController {
     private EmpService empService;
     @Autowired
     private RedisUtil redisUtil;
-    //跳转到登陆界面
-    @RequestMapping("/loginpage")
-    public String page1(){
-        return "admin/login";
-    }
-    //登陆成功后跳转到后台的index界面
-    @RequestMapping("/index")
-    public String page2(){
-        return "admin/index";
-    }
 
 
     /**
@@ -75,7 +66,6 @@ public class EmpController {
             subject.login(token);
             //获得Principal对象（Principal是一个包含用户的标识和用户的所属角色的对象）
             emp = (Emp) subject.getPrincipal();
-            System.out.println(emp);
             //将认证通过的主体存入Session
             session.setAttribute("emp", emp);
             map.put("message", 0);
@@ -84,28 +74,6 @@ public class EmpController {
             return map;
         }
         return map;
-    }
-
-    //个人权限菜单展示
-    @ResponseBody
-    @RequestMapping(value = "/getmuens")
-    public List<Menu> getmuen(Integer empid){
-        List<Menu> menus = empService.getmenus(empid);
-        return menus;
-    }
-
-
-
-
-    /**
-     * 测试
-     * @param string
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("text")
-    public Emp text(String string){
-        return empService.getempbyempname(string);
     }
 
 
