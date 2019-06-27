@@ -10,12 +10,11 @@ import java.util.Map;
  */
 public interface CourseService {
     /**
-     * 根据类别和课程体系查询课程
-     * @param free
-     * @param fid
+     * 根据课程收费状态、课程类别查询
+     * @param query
      * @return
      */
-//    List<Course> courses(Integer free, Integer fid);
+    List<Course> courses2(Map query);
 
     /**
      * 根据体系id获取体系下的课程数量

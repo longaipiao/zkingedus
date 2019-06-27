@@ -96,4 +96,13 @@ public interface UserService {
      */
     int addIntegral(Integer userID,String userIntegrsl);
 
+    /**
+     * 根据OpenId查询用户
+     * @param openId
+     * @return
+     */
+    User queryUserByOpenid(String openId);
+
+
+
 }

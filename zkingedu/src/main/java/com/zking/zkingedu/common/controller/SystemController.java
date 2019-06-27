@@ -34,6 +34,7 @@ public class SystemController {
     @RequestMapping(value = "/systems",method = RequestMethod.POST)
     @ResponseBody
     public Map systems(@RequestBody HashMap map2){
+        java.lang.System.out.println("获取所有体系方法");
         //返回的map
         Map<String,Object> map=new HashMap<>();
 

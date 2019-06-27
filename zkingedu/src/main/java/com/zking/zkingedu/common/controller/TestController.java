@@ -35,14 +35,10 @@ public class TestController {
     private RedisUtil redisUtil;
     @RequestMapping("/")
     public String test(HttpServletRequest request){
-        System.out.println("首页测试");
+//        System.out.println("首页测试");
         return "user/index";
     }
-    @RequestMapping(value = "/binding")
-    public String qqLogin(){
-        System.out.println("binding");
-        return "user/binding";
-    }
+
 
     @RequestMapping(value = "/admin1")
     public String testShiro1(){

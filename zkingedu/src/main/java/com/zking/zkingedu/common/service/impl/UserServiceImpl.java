@@ -33,6 +33,10 @@ public class UserServiceImpl implements UserService {
         return userDao.addIntegral(userID,userIntegrsl);
     }
 
+    @Override
+    public User queryUserByOpenid(String openId) {
+        return userDao.queryUserByOpenid(openId);
+    }
 
 
 

@@ -98,5 +98,12 @@ public interface UserDao {
      */
     int updateData(@Param("user") User user);
 
+    /**
+     * 根据OpenId查询用户
+     * @param openId
+     * @return
+     */
+    User queryUserByOpenid(String openId);
+
 
 }
