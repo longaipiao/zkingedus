@@ -151,7 +151,7 @@
                 </span>
                 <span th:if="${addr}!=delete">
                     <span th:if="${session.user}!=null">
-                        <img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}">
+                        <a href="/userinfo?a=123"><img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}"></a>
                     </span>
                     <span th:if="${session.user}==null">
                         <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
@@ -567,7 +567,7 @@
                             </div>
                             <div class="form-group widget-signin">
                                 <span>快速登录</span>
-                                <a href="/qqLogin><i class="fa fa-qq"></i></a>
+                                <a href="/qqCheck"><i class="fa fa-qq"></i></a>
                             </div>
                             <div class="form-group error-msg">
                                 <div class="alert alert-danger" role="alert"></div>
@@ -618,7 +618,7 @@
 </div>
 
 
-    <div id="base-data"
+   <!-- <div id="base-data"
 
 
             data-flash="false"
@@ -631,7 +631,7 @@
         data-socket-url="wss://comet.shiyanlou.com"
         data-msg-user=""
         data-msg-system=""
-    ></div>
+    ></div>-->
 
     <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
     <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
@@ -648,8 +648,8 @@
     <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script src="/user/zc.js"></script>
     <script src="/user/loginCheck.js"></script>
-    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
-    <script>
+    <!--<script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>-->
+   <script>
         Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
         }).install();
@@ -794,7 +794,7 @@
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
         ga('create', 'UA-89338452-1', 'auto');
         ga('send', 'pageview');
-        </script>-->
+        </script>&ndash;&gt;
 
 <script src="/user/app/dest/frontend/index.js?=2016121272249"></script>
 <script src="/user/app/dest/user/index.js?=2016121272249"></script>

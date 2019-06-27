@@ -54,6 +54,12 @@
        </if>
     </update>
 
+    <select id="queryUserByOpenid" resultType="user">
+        select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+        where user_openid=#{openId}
+    </select>
+
+
     <!--<select id="getUserByname" resultMap="userRolePermission" >
       select * from t_user a, t_role b ,t_permission c ,t_user_role d ,t_role_permission e where a.uid=d.uid
 and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}

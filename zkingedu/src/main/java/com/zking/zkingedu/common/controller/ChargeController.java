@@ -39,7 +39,7 @@ public class ChargeController {
 
     //跳转个人中心
     @RequestMapping("/userinfo")
-    String userInfo(){
+    String userInfo(HttpServletRequest request){
         return "user/userinfo";
     }
 
