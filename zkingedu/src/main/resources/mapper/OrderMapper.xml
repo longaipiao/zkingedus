@@ -27,4 +27,48 @@
         from t_order where order_uid=#{orderUid}
     </select>
 
+    <!--后台订单管理  orderShow.html-->
+    <resultMap id="order_user_course" type="order">
+        <id property="orderID" column="order_id"/>
+        <result property="orderIntegral" column="order_integral"/>
+        <result property="chargeTime" column="charge_time"/>
+        <association property="user" javaType="user">
+            <result property="userName" column="user_name"/>
+        </association>
+        <association property="course" javaType="course">
+            <result property="courseName" column="course_name"/>
+        </association>
+    </resultMap>
+    <select id="getOrders" resultMap="order_user_course">
+        SELECT
+            a.order_id,b.user_name,c.course_name,a.order_integral,a.charge_time
+        from
+            t_order a,t_user b,t_course c
+        where a.order_uid=b.user_id
+        and a.order_cid=c.course_id
+        <if test="orderID!=null">
+            and a.order_id like '%${orderID}%'
+        </if>
+        <if test="orderIntegral!=null">
+            and a.order_integral like '%${orderIntegral}%'
+        </if><if test="chargeTime!=null">
+            and a.charge_time like '%${chargeTime}%'
+        </if>
+        <if test="user!=null">
+            <if test="user.userName!=null">
+                and b.user_name like '%${user.userName}%'
+            </if>
+        </if>
+        <if test="course!=null">
+            <if test="course.courseName!=null">
+                and c.course_name like '%${course.courseName}%'
+            </if>
+        </if>
+    </select>
+
+    <!--删除订单记录-->
+    <delete id="delOrderByID">
+        delete from t_order where order_id=#{orderID}
+    </delete>
+
 </mapper>

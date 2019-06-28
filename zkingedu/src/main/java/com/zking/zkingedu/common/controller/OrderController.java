@@ -11,6 +11,7 @@ import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.OrderService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IdGeneratorUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName OrderController
@@ -47,8 +45,20 @@ public class OrderController {
 
     @Autowired
     private Bill bill;
+
+    @Autowired
+    private User user;
+
+    @Autowired
+    private Course course;
     //当前时间
     String nowDate = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+
+    //后台订单记录
+    @RequestMapping("/orderURL")
+    String chargeURL(){
+        return "admin/likai/ordersShow";
+    }
 
     /**
      *  个人中心 userinfo.html 我的订单
@@ -86,7 +96,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/order/buyOrder")
+    @RequestMapping("/user/buyOrder")
     String  bitBuyCourse(String integral, String courseID, HttpServletRequest request){
         System.out.println("============================>积分："+integral+"课程ID："+courseID+"<============================");
 
@@ -116,8 +126,15 @@ public class OrderController {
     }
 
 
+    /**
+     * show.html  开始学习没有购买   确认购买
+     * @param integral
+     * @param courseID
+     * @param request
+     * @return
+     */
     @ResponseBody
-    @RequestMapping("/order/buyCourse")
+    @RequestMapping("/user/buyCourse")
     String buyCourse(String integral, String courseID, HttpServletRequest request){
 
         System.out.println("============================>积分："+integral+"课程ID："+courseID+"<============================");
@@ -147,5 +164,69 @@ public class OrderController {
         System.out.println("================================添加账单成功================================");
         //return "NOW_BUY";
         return "BUY_SUCCESS";
+    }
+
+
+    @ResponseBody
+    @RequestMapping ("/admin/ordersAll")
+    Map<String,Object> getOrdersAll(@Param("page")Integer page,@Param("limit")Integer limit,@Param("search") String search,@Param("type") String type,Order order){
+        Map<String,Object> orderMaps = new HashMap<>();
+
+        System.out.println("类型："+type+"；文本框的值"+search);
+
+        try {
+            if(search!=null){
+                if(("用户名").equals(type)){
+                    user.setUserName(search);
+                    order.setUser(user);
+                } else if("订单号".equals(type)){
+                    order.setOrderID(search);
+                } else if("课程名".equals(type)){
+                    course.setCourseName(search);
+                    order.setCourse(course);
+                } else if ("订单积分".equals(type)) {
+                    order.setOrderIntegral(Integer.parseInt(search));
+                } else if("订单时间".equals(type)){
+                    order.setChargeTime(search);
+                }
+            }
+        } catch (NumberFormatException e) {
+            search = null;
+        }
+
+        Page orderPage = PageHelper.startPage(page, limit);
+
+        List<Order> orders = orderService.getOrders(order);
+
+        List<Map<String,Object>> ls = new ArrayList<>();
+
+        for (Order order1 : orders) {
+            Map<String,Object> maps = new HashMap<>();
+            maps.put("orderID",order1.getOrderID());
+            maps.put("orderIntegral",order1.getOrderIntegral());
+            maps.put("chargeTime",order1.getChargeTime());
+            maps.put("userName",order1.getUser().getUserName());
+            maps.put("courseName",order1.getCourse().getCourseName());
+            ls.add(maps);
+        }
+
+        orderMaps.put("count",orderPage.getTotal());
+        orderMaps.put("code","");
+        orderMaps.put("msg","");
+        orderMaps.put("data",ls);
+
+        return orderMaps;
+    }
+
+
+    /**
+     * orderShow.html 删除订单记录
+     * @param orderID
+     */
+    @ResponseBody
+    @RequestMapping("/delOrder")
+    void delLine(@Param("orderID") String orderID  ){
+        //删除充值记录
+        orderService.delOrderByID(orderID);
     }
 }

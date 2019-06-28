@@ -29,4 +29,18 @@ public interface OrderDao {
      * @return
      */
     List<Order> getMyOrdersByUserID(Integer orderUid);
+
+    /**
+     * 后台订单管理  orderShow.html
+     * @param order
+     * @return
+     */
+    List<Order> getOrders(Order order);
+
+    /**
+     * 根据ID删除订单
+     * @param orderID
+     * @return
+     */
+    int delOrderByID(String orderID);
 }

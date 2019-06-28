@@ -1,8 +1,6 @@
 package com.zking.zkingedu.common.model;
 
-import com.zking.zkingedu.common.utils.IdGeneratorUtils;
 import lombok.Data;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -27,6 +25,9 @@ public class Order implements Serializable {
     //'账单时间
     private String chargeTime;
 
+
+    //用户对象
+    private User user;
     //课程对象
     private Course course;
 
