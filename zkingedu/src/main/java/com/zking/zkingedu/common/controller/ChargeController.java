@@ -30,6 +30,9 @@ public class ChargeController {
     @Autowired
     private Charge charge;
 
+    @Autowired
+    private User user;
+
 
     //后台充值记录
     @RequestMapping("/chargeURL")
@@ -48,8 +51,30 @@ public class ChargeController {
      */
     @ResponseBody
     @RequestMapping("/houtai/getCharges")
-    Map<String,Object> getCharges(@Param("page") Integer page, @Param("limit") Integer limit,Charge charge){
+    Map<String,Object> getCharges(@Param("page") Integer page, @Param("limit") Integer limit,@Param("search") String search,@Param("type") String type,Charge charge){
         Map<String,Object> chargesMap = new HashMap<>();
+
+        System.out.println("类型："+type+"；文本框的值"+search);
+
+
+        try {
+            if(search!=null){
+                if(("用户名").equals(type)){
+                    user.setUserName(search);
+                    charge.setUser(user);
+                } else if("序号".equals(type)){
+                    charge.setChargeID(Integer.parseInt(search));
+                } else if("充值金额".equals(type)){
+                    charge.setChargeMoney(Integer.parseInt(search));
+                } else if ("所得积分".equals(type)) {
+                    charge.setChargeIntegral(Integer.parseInt(search));
+                } else if("充值时间".equals(type)){
+                    charge.setChargeTime(search);
+                }
+            }
+        } catch (NumberFormatException e) {
+            search = null;
+        }
 
         //分页
         Page pageLine = PageHelper.startPage(page, limit);
@@ -78,13 +103,12 @@ public class ChargeController {
 
     /**
      * @ResponseBody  处理前台404错误。Spring框架问题
-     * 根据线路ID删除线路和线路基本信息
-     * @param request
+     * 根据充值记录ID删除记录
+     * @param chargeID
      */
     @ResponseBody
     @RequestMapping("/delCharge")
-    void delLine(HttpServletRequest  request){
-        String chargeID = request.getParameter("chargeID");
+    void delLine(@Param("chargeID") String chargeID  ){
         //删除充值记录
         chargeService.delChargeByID(chargeID);
     }
@@ -96,15 +120,12 @@ public class ChargeController {
     @ResponseBody
     @RequestMapping("/user/MyCharges")
     Map<String,Object> getMyCharges(HttpServletRequest  request){
-        //User user = (User) request.getSession().getAttribute("user");
-        //user.getUserID
+        User user = (User) request.getSession().getAttribute("user");
 
-        String page = request.getParameter("page");
-        String limit = request.getParameter("pageSize");
         //分页
-        Page pageLine = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        Page pageLine = PageHelper.startPage(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("pageSize")));
 
-        List<Charge> myCharges = chargeService.getChargesByUserID(36);
+        List<Charge> myCharges = chargeService.getChargesByUserID(user.getUserID());
         Map<String,Object> chargeMap = new HashMap<>();
         chargeMap.put("count",pageLine.getTotal());
         chargeMap.put("code","");

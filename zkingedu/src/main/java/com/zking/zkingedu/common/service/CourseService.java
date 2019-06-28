@@ -57,4 +57,12 @@ public interface CourseService {
      * @return
      */
     List<Map> sections(Integer courseID);
+
+    /**
+     * @author likai
+     * 根据课程id得到所有的课程信息
+     * @param courseID
+     * @return
+     */
+    Course getCourseByCourseID(Integer courseID);
 }

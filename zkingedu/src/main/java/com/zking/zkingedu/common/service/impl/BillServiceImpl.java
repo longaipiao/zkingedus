@@ -31,12 +31,12 @@ public class BillServiceImpl implements BillService {
     /**
      * 前台用户查看自己的账单
      *
-     * @param userID
+     * @param billID
      * @return
      */
     @Override
-    public List<Bill> myBills(Integer userID) {
+    public List<Bill> myBills(Integer billID) {
 
-        return billDao.myBills(userID);
+        return billDao.myBills(billID);
     }
 }

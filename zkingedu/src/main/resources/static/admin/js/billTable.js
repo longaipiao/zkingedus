@@ -52,10 +52,10 @@ $(function () {
                     "<td>"+type+"</td>" +
                     "<td>"+o.billTime+"</td>" +
                     "</tr>"
-
         });
         $('#billTbody').html(html);
     }
+
 
 
 

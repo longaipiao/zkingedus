@@ -62,7 +62,7 @@ public class AliPayService {
         try {
 
             //充值金额
-            charge.setChargeMoney(Double.parseDouble(totalAmount));
+            charge.setChargeMoney(Integer.parseInt(totalAmount));
             //积分
             charge.setChargeIntegral(Integer.parseInt(body));
             //充值时间

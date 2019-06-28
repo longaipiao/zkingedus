@@ -33,6 +33,17 @@ public class UserServiceImpl implements UserService {
         return userDao.addIntegral(userID,userIntegrsl);
     }
 
+    /**
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     * @author likai
+     * 用户购买（兑换）课程扣除相应的积分
+     */
+    @Override
+    public int deducuIntegralWithUser(Integer userID, Integer userIntegrsl) {
+        return userDao.deducuIntegralWithUser(userID,userIntegrsl);
+    }
     @Override
     public User queryUserByOpenid(String openId) {
         return userDao.queryUserByOpenid(openId);
