@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Title</title>
+  <title>角色管理</title>
 </head>
 <body>
-
 <table class="layui-table" id="test" lay-filter="test">
 </table>
-
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-xs" lay-event="edit">管理权限</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<link rel="stylesheet" th:href="@{/admin/lib/layui/css/layui.css}"/>
-<script th:src="@{/admin/lib/layui/layui.js}" charset="utf-8"></script>
+<link rel="stylesheet" th:href="@{/admin/layui/css/layui.css}"/>
+<script th:src="@{/admin/layui/layui.js}" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
   layui.use(['tree', 'util','table'], function(){
@@ -24,10 +22,12 @@
     table.render({
       elem: '#test'
       ,url:'/role/roles'
-      ,toolbar: '#toolbarDemo'
+      ,toolbar:true
+      ,defaultToolbar: ['filter', 'print', 'exports']
       ,title: '角色管理'
       ,id:"tableReload"
       ,limit:5
+      ,totalRow:true
       ,cols: [ [
 
           {field:'roleID', title:'角色ID', fixed: 'left', unresize: true, sort: true}
@@ -39,6 +39,7 @@
                   '  </a>', toolbar: '#barDemo'}
         ] ]
       ,page: true
+
     });
 
     $("#search").on('click', function(){
@@ -67,9 +68,9 @@
     //监听行工具事件
     // 单元格被编辑，且值发生改变时触发，回调函数返回一个object参数，携带的成员如下：
     table.on('edit(test)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-      console.log(obj.value); //得到修改后的值
-      console.log(obj.field); //当前编辑的字段名
-      console.log(obj.data.roleID); //所在行的所有相关数据
+      // console.log(obj.value); //得到修改后的值
+      // console.log(obj.field); //当前编辑的字段名
+      // console.log(obj.data.roleID); //所在行的所有相关数据
       $.ajax({
         datatype:"json",
         type:"post",

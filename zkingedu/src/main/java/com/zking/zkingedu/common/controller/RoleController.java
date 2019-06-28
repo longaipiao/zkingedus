@@ -6,6 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zking.zkingedu.common.model.Role;
 import com.zking.zkingedu.common.model.Treedata;
+import com.zking.zkingedu.common.service.EmpService;
 import com.zking.zkingedu.common.service.MenuService;
 import com.zking.zkingedu.common.service.RoleService;
 import com.zking.zkingedu.common.utils.StringUtils;
@@ -26,6 +27,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/role")
 public class RoleController {
+
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -48,6 +50,15 @@ public class RoleController {
         rolemap.put("data",getrole);
         return rolemap;
     }
+
+    @RequestMapping("/getrole")
+    @ResponseBody
+    public List<Role> getrole(){
+        List<Role> getrole = roleService.getrole();
+        return getrole;
+    }
+
+
 
     /**
      * 修改权限
@@ -131,10 +142,9 @@ public class RoleController {
         if (existsrolename>0){
             return 0;
         }
-//        int addrole = roleService.addrole(role);
-//        Integer roleID = role.getRoleID();
-//        return roleID;
-        return 1;
+        int addrole = roleService.addrole(role);
+        Integer roleID = role.getRoleID();
+        return roleID;
     }
 
 }

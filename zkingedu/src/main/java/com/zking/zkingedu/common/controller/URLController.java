@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RequestMapping("/url")
 public class URLController {
-
+    @Autowired
+    private EmpService empService;
 
     //跳转到登陆界面
     @RequestMapping("/loginpage")
@@ -23,11 +24,6 @@ public class URLController {
         return "admin/login";
     }
 
-//    //登陆成功后跳转到后台的index界面
-//    @RequestMapping("/")
-//    public String page2(){
-//        return "admin/index";
-//    }
 
     //树界面
     @RequestMapping("/admin-tree")
@@ -48,15 +44,30 @@ public class URLController {
         return "admin/jdy/admin-roleadd";
     }
 
-    //跳转
+    //跳转后台主页
     @RequestMapping("/index")
     public String page6(){
         return "admin/jdy/admin-index";
     }
 
+    //跳转角色管理
+    @RequestMapping("/emp")
+    public String page7(){
+        return "admin/jdy/admin-emp";
+    }
 
-
-
-
-
+    //跳转修改角色
+    @RequestMapping("/updaterole")
+    public String page8(HttpServletRequest request){
+        int empid = Integer.parseInt(request.getParameter("empid"));
+        int roleid = empService.getroleid(empid);
+        request.setAttribute("roleid",roleid);
+        request.setAttribute("empid",empid);
+        return "admin/jdy/updaterole";
+    }
+    //跳转到添加角色
+    @RequestMapping("addemp")
+    public String page9(){
+        return "admin/jdy/addemp";
+    }
 }

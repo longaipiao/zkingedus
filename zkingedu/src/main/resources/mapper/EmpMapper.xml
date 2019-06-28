@@ -10,13 +10,51 @@
     
     
     <select id="getemps" resultType="Emp">
-        select * from t_emp
+        select * from t_emp where emp_name != 'admin'
+        <if test="str !=null">
+            and emp_name like #{str}
+        </if>
     </select>
 
     <select id="getempbyempname" resultType="com.zking.zkingedu.common.model.Emp">
         select * from t_emp where emp_name = #{empname}
     </select>
 
+    <delete id="delempbyid">
+        delete from t_emp where emp_id = #{empid}
+    </delete>
 
+    <update id="updateempbyid">
+        update t_emp set
+            <if test="empPassword != null">
+                emp_password = #{empPassword}
+            </if>
+            <if test="empState != null">
+                emp_state = #{empState}
+            </if>
+            <if test="empIntegral != null">
+                emp_integral = #{empIntegral}
+            </if>
+            <if test="empError != null">
+                emp_error = #{empError}
+            </if>
+        where emp_id = #{empID}
+    </update>
+    <!--添加后返回主键-->
+     <insert id="addemp" parameterType="Emp"  useGeneratedKeys="true" keyProperty="empID" keyColumn="emp_id">
+         insert into t_emp(emp_name,emp_password,emp_integral,emp_time,emp_state,emp_error)
+         values (#{empName},#{empPassword},#{empIntegral},#{empTime},#{empState},#{empError})
+     </insert>
 
+    <select id="getroleid" resultType="_int" >
+        select role_id from t_emp_role where emp_id = #{empid}
+    </select>
+
+    <update id="updateemproleid">
+        update t_emp_role set role_id=#{roleid} where emp_id = #{empid}
+    </update>
+
+    <insert id="addt_emp_role">
+        insert into t_emp_role(emp_id,role_id) values (#{empid},#{roleid})
+    </insert>
 </mapper>

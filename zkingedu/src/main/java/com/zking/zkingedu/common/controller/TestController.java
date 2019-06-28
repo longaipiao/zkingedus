@@ -42,25 +42,23 @@ public class TestController {
 
     @RequestMapping(value = "/admin1")
     public String testShiro1(){
-        System.err.println("来了admin1");
         return "user/admin1";
     }
 
     @RequestMapping(value = "/test1")
     public String testShiro2(){
-        System.err.println("来了test1");
         return "user/test1";
     }
 
     @Resource
     private EmpDao empDao;
 
-    @ResponseBody
-    @RequestMapping("/redis")
-    public List<Emp> getEmps(){
-        log.info("请求成功。。。");
-        return empDao.getemps();
-    }
+//    @ResponseBody
+//    @RequestMapping("/redis")
+//    public List<Emp> getEmps(){
+//        log.info("请求成功。。。");
+//        return empDao.getemps();
+//    }
 
     /**
      * layui测试页面

@@ -1,29 +1,25 @@
 package com.zking.zkingedu.common.controller;
 
 
-import com.zking.zkingedu.common.dao.EmpDao;
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.zking.zkingedu.common.model.Emp;
-import com.zking.zkingedu.common.model.Menu;
+import com.zking.zkingedu.common.model.Role;
 import com.zking.zkingedu.common.service.EmpService;
-import com.zking.zkingedu.common.service.MenuService;
-import com.zking.zkingedu.common.service.UserService;
-import com.zking.zkingedu.common.utils.RedisUtil;
-import com.zking.zkingedu.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +30,7 @@ import java.util.Map;
 public class EmpController {
     @Autowired
     private  EmpService empService;
+
     /**
      * shiro登陆
      * @param emp
@@ -73,4 +70,117 @@ public class EmpController {
         return map;
     }
 
+    /**
+     * 查询所有的员工（后台用户）
+     * @param page
+     * @param limit
+     * @return
+     */
+    @RequestMapping("/getemps")
+    @ResponseBody
+    public Map getempall(@Param("page") String page,@Param("limit") String limit,String str){
+        if(str==null){
+            str = "";
+        }
+        Page<Object> objects = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        Map<String,Object> empmap = new HashMap<>();
+        List<Emp> getemps = empService.getemps("%"+str+"%");
+        empmap.put("code","0");
+        empmap.put("msg","");
+        empmap.put("count",objects.getTotal());
+        empmap.put("data",getemps);
+        return empmap;
+    }
+
+    /**
+     * 修改后台用户状态
+     * @param empid
+     * @param state
+     * @return
+     */
+    @RequestMapping("/state")
+    @ResponseBody
+    public String updateState(String empid,String state,Emp emp){
+        if(empid==null||state==null){
+            return "no";
+        }
+        emp.setEmpID(Integer.parseInt(empid));
+        if("true".equals(state)){
+            emp.setEmpState(0);
+        }
+        else{
+            emp.setEmpState(1);
+        }
+        empService.updateempbyid(emp);
+        return "ok";
+    }
+
+    /**
+     * 删除员工
+     * @param empid
+     */
+    @RequestMapping("/delemp")
+    @ResponseBody
+    public String deleteempbyid(String empid){
+        if(empid!=null){
+            empService.delempbyid(Integer.parseInt(empid));
+        }
+        return "ok";
+    }
+
+    /**
+     * 直接修改员工密码
+     * @param emp
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateemp")
+    public String updateempbyid(Emp emp){
+        if(emp!=null){
+            empService.updateempbyid(emp);
+        }
+        return "ok";
+    }
+    /**
+     * 修改员工角色
+     */
+    @RequestMapping("updateemproleid")
+    @ResponseBody
+    public String updateemproleid(String empid, String roleid){
+        int updateemproleid = empService.updateemproleid(Integer.parseInt(empid), Integer.parseInt(roleid));
+        if(updateemproleid<0){
+            return "no";
+        }
+        return "ok";
+    }
+
+    /**
+     * 添加员工表  添加员工角色表
+     * @param jsons
+     * @return
+     */
+    @RequestMapping("addemp")
+    @ResponseBody
+    public String addemp(String jsons, Emp emp, Role role){
+        Map maps = (Map)JSON.parse(jsons);
+        String empname = (String)maps.get("username");
+        String emppwd = (String)maps.get("password");
+        String roleid = (String)maps.get("interest");
+        int rid = 0;
+        if(roleid!=null){
+            rid = Integer.parseInt(roleid);
+        }
+        //添加员工
+        String nowDate = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+        emp.setEmpName(empname);
+        emp.setEmpPassword(emppwd);
+        emp.setEmpIntegral("/user/img/1.jpg");
+        emp.setEmpTime(nowDate);
+        emp.setEmpState(0);
+        emp.setEmpError(0);
+        empService.addemp(emp);
+        Integer empID = emp.getEmpID();
+        empService.addt_emp_role(empID,rid);
+        return "ok";
+    }
 }
