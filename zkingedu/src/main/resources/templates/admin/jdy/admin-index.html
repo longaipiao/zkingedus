@@ -1,0 +1,145 @@
+<!--suppress ALL-->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+>
+<head>
+	<meta charset="UTF-8">
+	<title>后台登录-L-admin2.0</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/admin/css/font.css">
+    <link rel="stylesheet" href="/admin/css/xadmin.css">
+    <script src="/admin/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css"/>
+    <script src="/admin/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/admin/js/xadmin.js"></script>
+
+</head>
+<!--<shiro:hasPermission name="loginTrue">-->
+<body>
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo"><a href="index.html">L-admin v2.0</a></div>
+        <div class="left_open">
+            <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+        </div>
+        <ul class="layui-nav left fast-add" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">+新增</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a onClick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>
+              <dd><a onClick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>
+               <dd><a onClick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>
+            </dl>
+          </li>
+        </ul>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a onClick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+              <dd><a onClick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+              <dd><a href="login.html">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item to-index"><a href="#">前台首页</a></li>
+        </ul>
+    </div>
+    <!--<input  id="empid" name="empid" type="hidden" th:value="${session.emp.empID}">-->
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+
+     <!-- 左侧菜单开始 -->
+    <div class="left-nav">
+      <div id="side-nav">
+
+      </div>
+    </div>
+    <!-- <div class="x-slide_left"></div> -->
+    <!-- 左侧菜单结束 -->
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+          <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="page-content-bg"></div>
+    <!-- 右侧主体结束 -->
+    <!-- 中部结束 -->
+    <script type="text/javascript">
+        // var emoid = $("#empid").val();
+        var flag = false;    //标识，表示页面上数据还未处理完成
+        $(function(){
+            var flag = false;    //标识，表示页面上数据还未处理完成
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                async: false,//同步
+                url: "/menu/getmenus",//请求接口
+                data:{
+                    // empid:emoid
+                    empid:1
+                },
+                success: function (data) {
+                    //先添加所有的主材单
+                    var content = '<ul id="nav">';
+                    $.each(data, function (i, obj) {
+                        content +='<li><a href="javascript:;"><i class="iconfont">'+obj.menuImg;
+                        content +='</i><cite>'+obj.menuName+'</cite><i class="iconfont nav_right">&#xe6a7;</i></a>';
+                        content +=loadchild(obj.menus);
+                        content +='</li>';
+                    });
+                    content +='</ul>';
+                    // alert(content);
+                    $('#side-nav').html(content);
+                    flag = true;
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            });
+
+            var loadFile;
+            loadFile = setInterval(function() {//定时检测
+                if(flag) {//如果数据已经处理完毕
+                    loadjscssfile('/admin/layui/css/layui.css', "css"); //加载你的css文件
+                    loadjscssfile('/admin/css/xadmin.css', "css"); //加载你的css文件
+                    loadjscssfile('/admin/js/jquery.min.js', "js"); //加载你的js文件
+                    loadjscssfile('/admin/layui/layui.js', "js"); //加载你的js文件
+                    loadjscssfile('/admin/js/xadmin.js', "js"); //加载你的js文件     //开启后  静态无法展开
+                    flag = false;
+                }
+            },50);
+
+        });
+        //组装子菜单的方法
+        function loadchild(obj) {
+            //alert(obj[0].treeTitile);
+            if (obj == null) {
+                return;
+            }
+            if (obj != null && obj.length > 0) {
+                var content = '<ul class="sub-menu">';
+                $.each(obj, function (i, note) {
+                    if (note == null) {
+                        return;
+                    }
+                    content += '<li><a _href="'+note.menuURL+'"><i class="iconfont">'+note.menuImg+'</i><cite>'+note.menuName+'</cite></a></li>';
+                });
+                content += '</ul>';
+            }
+            return content;
+        }
+    </script>
+</body>
+<!--</shiro:hasPermission>-->
+</html>
+
