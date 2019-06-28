@@ -49,4 +49,26 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getMyOrdersByUserID(Integer orderUid) {
         return orderDao.getMyOrdersByUserID(orderUid);
     }
+
+    /**
+     * 后台订单管理  orderShow.html
+     *
+     * @param order
+     * @return
+     */
+    @Override
+    public List<Order> getOrders(Order order) {
+        return orderDao.getOrders(order);
+    }
+
+    /**
+     * 根据ID删除订单
+     *
+     * @param orderID
+     * @return
+     */
+    @Override
+    public int delOrderByID(String orderID) {
+        return orderDao.delOrderByID(orderID);
+    }
 }

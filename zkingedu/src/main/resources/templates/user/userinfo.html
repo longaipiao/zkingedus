@@ -324,9 +324,56 @@
 										</form>
 									</div>
 									<div id="san" class="tab-pane fade" style="height: 300px;">3</div>
-									<div id="si" class="tab-pane fade" style="height: 300px;">4</div>
-									<div id="wu" class="tab-pane fade" style="height: 300px;">5</div>
-									<div id="liu" class="tab-pane fade" style="height: 300px;">6</div>
+                                    <div id="si" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="orderTable" style="height: 150px">
+                                            <caption>我的订单</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>订单名称</th>
+                                                <th>订单积分</th>
+                                                <th>订单时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="orderTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo2" align="center"></div>
+                                    </div>
+                                    <div id="wu" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="chargeTable" style="height: 150px">
+                                            <caption>充值记录</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>充值金额</th>
+                                                <th>所得积分</th>
+                                                <th>充值时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="chargeTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo3" align="center"></div>
+                                    </div>
+                                    <div id="liu" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="billTable" style="height: 150px">
+                                            <caption>账单记录</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>账单内容</th>
+                                                <th>积分</th>
+                                                <th>类型</th>
+                                                <th>账单时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="billTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo4" align="center"></div>
+                                    </div>
 								</div>
 							</div>
 				</div>
@@ -418,7 +465,10 @@
 
 		<script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
         <script src="/admin/lib/layui/layui.js"></script>
-        <script src="/admin/js/likaiTable.js"></script>
+		<!--likai js-->
+        <script src="/admin/js/billTable.js"></script>
+        <script src="/admin/js/chargeTable.js"></script>
+        <script src="/admin/js/orderTable.js"></script>
 		<script>
 			Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
 				release: '3.12.13'
@@ -528,48 +578,6 @@
 					$("#get6").hide();
 					$("#get7").hide();
 				});
-
-
-            //方法二则直接使分用layui-v2.0.2里面的页功能，没有用到core.js里面的方法
-            layui.use('laypage', function(){
-                var laypage = layui.laypage;
-                var config = {page:1,pageSize:2};
-                var url = "/user/MyCharges";
-                $.getJSON(url,config,function(res){
-                    laypage.render({
-                        elem: 'demo3',//必须放id
-                        count: 100,
-                        first: '首页',
-                        last: '尾页',
-                        count: res.count, //总条数
-                        limit:config.pageSize, //每页条数
-                        theme: '#FFB800', //自定义颜色
-                        jump: function(obj, first){
-                            //alert(obj.curr)
-                            if(!first){ //首次则不进入
-                                config.page = obj.curr;
-                                $.getJSON(url,config,function(res){
-                                    parseUserList(res,config.page);
-                                });
-                            }
-                        }
-                    });
-                    parseUserList(res,config.page);
-                });
-            });
-
-            //解析数据，currPage参数为预留参数，当删除一行刷新列表时，可以记住当前页而不至于显示到首页去
-            function parseUserList(res,currPage){
-                var html = "";
-                $.each(res.data,function (i,o) {
-                    html += "<tr>" +
-                        "<td>"+o.chargeMoney+"</td>" +
-                        "<td>"+o.chargeIntegral+"</td>" +
-                        "<td>"+o.chargeTime+"</td>" +
-                        "</tr>"
-                });
-                $("#chargeTbody").html(html);
-            }
 		</script>
 
 		<script src="/user/app/dest/user/index.js?=2016121272249"></script>

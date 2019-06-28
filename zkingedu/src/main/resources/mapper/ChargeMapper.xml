@@ -60,7 +60,8 @@
             t_charge(charge_uid,charge_money,charge_integral,charge_time,charge_state)
         values (#{chargeUid},#{chargeMoney},#{chargeIntegral},#{chargeTime},0)
     </insert>
-    
+
+    <!--删除充值记录-->
     <delete id="delChargeByID">
         delete from t_charge where charge_id=#{chargeID}
     </delete>
