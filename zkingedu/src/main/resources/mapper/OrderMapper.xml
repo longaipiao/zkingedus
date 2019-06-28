@@ -4,6 +4,27 @@
 <mapper namespace="com.zking.zkingedu.common.dao.OrderDao">
 
     <!--订单接口Mapper-->
+    <!--增加一条订单信息-->
+    <sql id="orderAll">
+        order_id ,order_uid ,order_cid ,order_integral ,charge_time
+    </sql>
+    <insert id="insertOrder">
+        insert into
+            t_order(<include refid="orderAll"></include>)
+        values
+            (#{orderID},#{orderUid},#{orderCid},#{orderIntegral},#{chargeTime})
+    </insert>
 
+    <!--根据用户ID得到用户购买的所有课程-->
+    <select id="getOrderCidByUserID" resultType="Integer">
+        select order_cid from t_order where order_uid=#{orderUid} and order_cid = #{orderCid}
+    </select>
+
+    <!--根据用户iD得到自己所有订单-->
+    <select id="getMyOrdersByUserID" resultType="order">
+        select
+            <include refid="orderAll"></include>
+        from t_order where order_uid=#{orderUid}
+    </select>
 
 </mapper>

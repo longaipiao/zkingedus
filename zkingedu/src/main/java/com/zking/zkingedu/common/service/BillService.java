@@ -19,9 +19,9 @@ public interface BillService {
 
     /**
      * 前台用户查看自己的账单
-     * @param userID
+     * @param billID
      * @return
      */
-    List<Bill> myBills(Integer userID);
+    List<Bill> myBills(Integer billID);
 
 }

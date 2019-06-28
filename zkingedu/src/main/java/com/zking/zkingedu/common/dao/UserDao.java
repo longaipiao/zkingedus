@@ -106,4 +106,14 @@ public interface UserDao {
     User queryUserByOpenid(String openId);
 
 
+
+    /**
+     * @author likai
+     * 用户购买（兑换）课程扣除相应的积分
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     */
+    int deducuIntegralWithUser(Integer userID,Integer userIntegrsl);
+
 }

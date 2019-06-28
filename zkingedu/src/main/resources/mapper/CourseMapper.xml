@@ -47,4 +47,17 @@
     <select id="sections" resultType="Map">
         select * from t_section a,t_video b where a.section_id=b.video_sid and section_cid=#{courseID} order by a.section_seq
     </select>
+
+    <!--likai begin-->
+    <!--根据课程id得到所有的课程信息   -->
+    <sql id="courseAll">
+        course_id ,course_sid ,course_eid ,course_name ,course_desc ,course_img ,course_state ,course_free ,course_inte ,course_num ,course_time
+    </sql>
+    <select id="getCourseByCourseID" resultType="course">
+        select
+            <include refid="courseAll"></include>
+        from t_course where course_id=#{courseID}
+    </select>
+    <!--likai end-->
+
 </mapper>

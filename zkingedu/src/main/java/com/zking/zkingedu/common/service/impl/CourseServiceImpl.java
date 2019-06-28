@@ -49,6 +49,7 @@ public class CourseServiceImpl implements CourseService {
         return courseDao.courses(systemID);
     }
 
+
     /**
      * 根据课程Id查询课程、课程类别、讲师
      * @param courseID
@@ -99,4 +100,15 @@ public class CourseServiceImpl implements CourseService {
 ////    public List<Course> courses(Integer free, Integer fid) {
 ////        return courseDao.courses(free,fid);
 ////    }
+
+    /**
+     * @param courseID
+     * @return
+     * @author likai
+     * 根据课程id得到所有的课程信息
+     */
+    @Override
+    public Course getCourseByCourseID(Integer courseID) {
+        return courseDao.getCourseByCourseID(courseID);
+    }
 }

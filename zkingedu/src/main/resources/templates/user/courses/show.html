@@ -30,6 +30,23 @@
 	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
     <link rel="stylesheet" href="../user/app/css/dest/styles.css?=2016121272249">
     <link rel="stylesheet" href="../app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/layui/css/layui.css">
+
+    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
+    <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/static/ace/1.2.5/ace.js"></script>
+    <script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="/user/static/highlight.js/9.8.0/highlight.min.js"></script>
+    <script src="/user/static/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="/user/static/plupload/2.1.9/js/plupload.full.min.js"></script>
+    <script src="/user/static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src="/user/static/videojs/video.min.js"></script>
+    <script src="/user/static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
+    <script src="/user/layui/layui.js"></script>
 
 	<style>
 		@font-face {
@@ -119,12 +136,6 @@
 <body>
 	
         
-        
-            
-
-
-
-
 
 
 <nav class="navbar navbar-default navbar-fixed-top header">
@@ -205,24 +216,6 @@
     <div class="row">
         <div class="col-md-9 layout-body">
             
-    
-    
-
-    
-
-    
-    
-        
-        
-        
-    
-
-    
-    
-        
-    
-
-    
 
     <div class="side-image side-image-mobile">
         <img src="https://dn-simplecloud.shiyanlou.com/ncn1.jpg?imageView2/0/h/300">
@@ -232,7 +225,10 @@
             <h4 class="pull-left course-infobox-title">
                 
                 <span th:text="${course.course_name}"></span>
-                
+                <input type="hidden" id="courseID" th:value="${course.course_id}">
+                <input type="hidden" id="courseInit" th:value="${course.course_inte}">
+
+
             </h4>
             <div class="pull-right course-infobox-follow"
                 data-follow-url="/courses/1/follow"
@@ -251,7 +247,20 @@
             </div>
 
                 <div class="pull-right course-infobox-price">
+                    <!--优酷播放器-->
+                    <div id="youkuplayer"style="width:580px;height:326px"></div>
+
+                    <script type="text/javascript" src="//player.youku.com/jsapi"></script>
+                    <script type="text/javascript">
+                        var player = new YKU.Player('youkuplayer',{
+                            styleid: '0',
+                            client_id: 'YOUR YOUKUOPENAPI CLIENT_ID',
+                            vid: '替换成优酷视频ID',
+                            newPlayer: true
+                        });
+                    </script>
                 </div>
+
         </div>
 
         <div class="clearfix course-infobox-footer">
@@ -295,12 +304,65 @@
     <!--课程名-->
     <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.section_name}" th:text="${section.section_name}"></div>
     <div class="pull-right lab-item-ctrl">
-                <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
-                <a class="btn btn-primary" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+        <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
+       <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
+        <a class="btn btn-primary" onclick="videoURL()" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+        <input type="hidden" id="videoURL" th:value="${section.video_url}">
     </div>
+        <script>
+            layui.use('layer', function(){
+                var layer = layui.layer;
+
+
+            })
+
+            function videoURL() {
+                var courseID = $("#courseID").val();
+                var courseInit = $("#courseInit").val();
+                var videoURL = $("#videoURL").val();
+                console.log("课程ID:"+courseID+";课程积分:"+courseInit);
+                //如果不是免费
+                if(courseInit>0){
+                    $.ajax({
+                        url:"/order/buyOrder",
+                        data:{
+                            courseID:courseID,
+                            integral:courseInit
+                        },
+                        dataType:"text",
+                        success:function (data) {
+                            if("ALREADY_BUY"==data){
+                                //已经购买    直接观看视频
+                                location.href = videoURL;
+                            }
+                            else if("INTEGRAL_FEW"==data){
+                                layer.msg("您的积分不够，请充值")
+                            } else if("USER_NULL"==data){
+                                layer.msg("请登陆后在操作");
+                            }
+                            else if("NOW_BUY"==data){
+                                layer.confirm('是否购买本课程',function (index) {
+                                    $.ajax({
+                                        url:'/order/buyCourse',
+                                        data:{
+                                            courseID:courseID,
+                                            integral:courseInit
+                                        },
+                                        dataType:'text',
+                                        success:function (data) {
+                                            layer.msg("购买成功");
+                                            //观看视频
+                                        }
+                                    })
+                                    layer.close(index);
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        </script>
 </div>
-
-
 
             </div>
             <div role="tabpanel" class="tab-pane course-comment" id="comments">
@@ -893,21 +955,7 @@
         data-msg-system=""
     ></div>
 
-    <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
-    <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
-    <script src="/user/static/ace/1.2.5/ace.js"></script>
-    <script src="/user/static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
-    <script src="/user/static/highlight.js/9.8.0/highlight.min.js"></script>
-    <script src="/user/static/jspdf/1.2.61/jspdf.min.js"></script>
-    <script src="/user/static/plupload/2.1.9/js/plupload.full.min.js"></script>
-    <script src="/user/static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
-    <script src="/user/static/videojs/video.min.js"></script>
-    <script src="/user/static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
-    <script src="/user/static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-    <script src="/user/static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="/user/static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
-    <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
     <script>
         Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
