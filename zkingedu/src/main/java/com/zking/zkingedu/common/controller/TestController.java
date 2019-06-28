@@ -62,4 +62,12 @@ public class TestController {
         return empDao.getemps();
     }
 
+    /**
+     * layui测试页面
+     * @return
+     */
+    @RequestMapping(value = "/layuitest")
+    public String layuitest(){
+        return "user/layuitest.html";
+    }
 }

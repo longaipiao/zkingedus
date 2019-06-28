@@ -251,7 +251,20 @@
             </div>
 
                 <div class="pull-right course-infobox-price">
+                    <!--优酷播放器-->
+                    <div id="youkuplayer"style="width:580px;height:326px"></div>
+
+                    <script type="text/javascript" src="//player.youku.com/jsapi"></script>
+                    <script type="text/javascript">
+                        var player = new YKU.Player('youkuplayer',{
+                            styleid: '0',
+                            client_id: 'YOUR YOUKUOPENAPI CLIENT_ID',
+                            vid: '替换成优酷视频ID',
+                            newPlayer: true
+                        });
+                    </script>
                 </div>
+
         </div>
 
         <div class="clearfix course-infobox-footer">
