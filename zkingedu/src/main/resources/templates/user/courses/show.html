@@ -290,29 +290,26 @@
             
             <div role="tabpanel" class="tab-pane active" id="labs">
                 
-
-    
-    
     <!--课程章节内容-->
     <div class="lab-item " th:each="section:${sections}">
-    <div class="lab-item-status">
+        <div class="lab-item-status">
             <!--章节前的图片-->
             <img src="/user/img/lab-not-ok.png">
-    </div>
-    <!--章节顺序号-->
-    <div class="lab-item-index" th:text="'第'+${section.section_seq}+'节'"></div>
-    <!--课程名-->
-    <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.section_name}" th:text="${section.section_name}"></div>
-    <div class="pull-right lab-item-ctrl">
-        <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
-       <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
-        <a class="btn btn-primary" onclick="videoURL()" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
-        <input type="hidden" id="videoURL" th:value="${section.video_url}">
+        </div>
+        <!--章节顺序号-->
+        <div class="lab-item-index" th:text="'第'+${section.section_seq}+'节'"></div>
+        <!--课程名-->
+        <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.section_name}" th:text="${section.section_name}"></div>
+        <div class="pull-right lab-item-ctrl">
+            <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
+           <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
+            <a class="btn btn-primary" onclick="videoURL()" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+            <input type="hidden" id="videoURL" th:value="${section.video_url}">
+        </div>
     </div>
         <script>
             layui.use('layer', function(){
                 var layer = layui.layer;
-
 
             })
 
@@ -324,7 +321,7 @@
                 //如果不是免费
                 if(courseInit>0){
                     $.ajax({
-                        url:"/order/buyOrder",
+                        url:"/user/buyOrder",
                         data:{
                             courseID:courseID,
                             integral:courseInit
@@ -343,7 +340,7 @@
                             else if("NOW_BUY"==data){
                                 layer.confirm('是否购买本课程',function (index) {
                                     $.ajax({
-                                        url:'/order/buyCourse',
+                                        url:'/user/buyCourse',
                                         data:{
                                             courseID:courseID,
                                             integral:courseInit
@@ -362,7 +359,7 @@
                 }
             }
         </script>
-</div>
+
 
             </div>
             <div role="tabpanel" class="tab-pane course-comment" id="comments">
@@ -383,58 +380,6 @@
                 </div>
             </div>
 
-            <!--实验报告下的内容-->
-            <!--<div role="tabpanel" class="tab-pane" id="reports">
-				<span class="lab-id active" data-lab-id="None">全部</span>
-				
-				<span class="lab-id" data-lab-id="1">第1节</span>
-				
-				<span class="lab-id" data-lab-id="2">第2节</span>
-				
-				<span class="lab-id" data-lab-id="3">第3节</span>
-				
-				<span class="lab-id" data-lab-id="59">第4节</span>
-				
-				<span class="lab-id" data-lab-id="60">第5节</span>
-				
-				<span class="lab-id" data-lab-id="61">第6节</span>
-				
-				<span class="lab-id" data-lab-id="62">第7节</span>
-				
-				<span class="lab-id" data-lab-id="1917">第8节</span>
-				
-				<span class="lab-id" data-lab-id="1918">第9节</span>
-				
-				<span class="lab-id" data-lab-id="63">第10节</span>
-				
-				<span class="lab-id" data-lab-id="337">第11节</span>
-				
-				<span class="lab-id" data-lab-id="346">第12节</span>
-				
-				<span class="lab-id" data-lab-id="354">第13节</span>
-				
-				<span class="lab-id" data-lab-id="356">第14节</span>
-				
-				<span class="lab-id" data-lab-id="1943">第15节</span>
-				
-				<span class="lab-id" data-lab-id="1944">第16节</span>
-				
-				<span class="lab-id" data-lab-id="1945">第17节</span>
-				
-                <div class="report-owner">
-                    <span class="owner-list" data-user-id="">我的报告</span> / <span class="owner-list active" data-user-id="None">所有报告</span>
-                </div>
-                <div class="row report-items"></div>
-                <div class="pagination-container"></div>
-            </div>-->
-
-            <!--实验问答内容-->
-            <!--<div role="tabpanel" class="tab-pane" id="questions">
-                <a class="btn btn-success" data-toggle="modal" data-target="#askquestion">我要提问</a>
-                <hr>
-                <ul class="row question-items"></ul>
-                <div class="pagination-container"></div>
-            </div>-->
         </div>
     </div>
     
@@ -446,11 +391,7 @@
     <div class="side-image side-image-pc">
         <img th:src="${course.course_img}">
     </div>
-    
 
-
-    
-        
 <div class="sidebox mooc-teacher">
     <div class="sidebox-header mooc-header">
         <h4 class="sidebox-title">课程教师</h4>
@@ -477,18 +418,11 @@
     </div>
 </div>
 
-    
-    
-    
     <div class="side-image">
     <a href="/vip" target="_blank">
         <img src="/user/img/banner-vip.png">
     </a>
 </div>
-    
-    
-    
-    
     
     <div class="sidebox adv-course">
         <div class="sidebox-header">
@@ -504,8 +438,6 @@
             
         </div>
     </div>
-    
-    
     
 
         </div>
@@ -552,8 +484,6 @@
 	</div>
     
 
-    
-
 <div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
     <div class="modal-dialog" role=document>
         <div class="modal-content">
@@ -576,8 +506,6 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label">描述</label>
                         <div class="col-md-10">
-                            
-                            
                             
 <div class="tabpanel mkeditor">
     <ul class="nav nav-tabs" role="tablist">
@@ -634,7 +562,6 @@
         </div>
     </div>
 </div>
-
                         </div>
                     </div>
                     <div class="form-group" >
@@ -819,15 +746,6 @@
 </div>
 
 
-
-
-
-	
-		
-			
-		
-	
-
     <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -941,18 +859,12 @@
 
 
     <div id="base-data"
-        
-        
-            data-flash="false"
-            
-        
-        
-        data-is-login=false
-        
-        data-is-jwt=true
-        data-socket-url="wss://comet.shiyanlou.com"
-        data-msg-user=""
-        data-msg-system=""
+         data-flash="false"
+         data-is-login=false
+         data-is-jwt=true
+         data-socket-url="wss://comet.shiyanlou.com"
+         data-msg-user=""
+         data-msg-system=""
     ></div>
 
 
@@ -993,10 +905,7 @@
     ></div>
 <script src="/user/app/dest/course/labs.js?=2016121272249"></script>
 
-	
-        
-            
-            
+
 <div class="footer">
     <div class="container">
         <div class="row">
@@ -1085,8 +994,6 @@
     </div>
 </div>
 
-            
-        
-	
+
 </body>
 </html>
