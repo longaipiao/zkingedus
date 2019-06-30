@@ -116,7 +116,7 @@ public class OrderController {
         }
         else{//如果没有购买
             //如果用户的积分少于该课程的兑换积分
-            if(user.getUserIntegrsl()<Integer.parseInt(integral)){
+            if(userService.getUserByid(user.getUserID()).getUserIntegrsl()<Integer.parseInt(integral)){
                 System.out.println(user.getUserIntegrsl());
                 return "INTEGRAL_FEW";//提示用户积分不够提醒充值
             }
