@@ -170,7 +170,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping("/redis")
     public List<Emp> getEmps(){
-        log.info("请求成功。。。");
+        log.info("请求成功。。");
         return empDao.getemps();
     }
 
