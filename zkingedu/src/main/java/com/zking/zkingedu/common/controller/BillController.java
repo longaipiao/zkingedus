@@ -119,6 +119,7 @@ public class BillController {
             Map<String,Object> maps = new HashMap<>();
             maps.put("billID",bill1.getBillID());
             maps.put("billIntegral",bill1.getBillIntegral());
+            maps.put("billMoney",bill1.getBillIntegral()/10);
             maps.put("billTime",bill1.getBillTime());
             maps.put("userName",bill1.getUser().getUserName());
             maps.put("billContent",bill1.getBillContent());
