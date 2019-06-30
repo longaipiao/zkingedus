@@ -2,20 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.CourseDao">
-    <!--课程接口Mapper-->
-    <!--根据类别和课程体系查询课程-->
-    <!--<select id="courses" resultType="Course">
+    <!--根据课程收费状态、课程类别查询-->
+    <select id="courses2" parameterType="Map" resultType="Map">
         select * from t_course where 1=1
-        &lt;!&ndash;<if test="param1==1">
-            and course_free==0
+        <!--判断课程是否收费-->
+        <if test="free==0">
+            and course_free=0
         </if>
-        <if test="param1==2">
-            and course_free!=0
+        <if test="free==1">
+            and course_free>0
         </if>
-        <if test="param2!=0 and param2!=null">
-            and course_free==#{param2}
-        </if>&ndash;&gt;
-    </select>-->
+        <!--判断课程分类是全部还是单个-->
+        <if test="Tid!=0">
+            and course_type=#{Tid}
+        </if>
+    </select>
 
     <!--根据体系id获取体系下的课程数量-->
     <select id="ccount" resultType="Integer">
@@ -46,4 +47,17 @@
     <select id="sections" resultType="Map">
         select * from t_section a,t_video b where a.section_id=b.video_sid and section_cid=#{courseID} order by a.section_seq
     </select>
+
+    <!--likai begin-->
+    <!--根据课程id得到所有的课程信息   -->
+    <sql id="courseAll">
+        course_id ,course_sid ,course_eid ,course_name ,course_desc ,course_img ,course_state ,course_free ,course_inte ,course_num ,course_time
+    </sql>
+    <select id="getCourseByCourseID" resultType="course">
+        select
+            <include refid="courseAll"></include>
+        from t_course where course_id=#{courseID}
+    </select>
+    <!--likai end-->
+
 </mapper>

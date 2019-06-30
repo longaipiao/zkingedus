@@ -250,50 +250,50 @@
 								<div class="tab-content">
 									<div id="yi" class="tab-pane fade in active" style="height: 300px;">
 										<form method="post" class="form-horizontal" enctype="multipart/form-data" id="formImage" action="/fileUploadPage">
-												  <div class="form-group">
-													<label  class="col-xs-4 control-label">头像:</label>
-													<div class="col-sm-3">
-                                                      <input type="file" id="uploadImage" name="file" style="display: none" onchange="updateImage()"/>
+                                              <div class="form-group">
+                                                <label  class="col-xs-4 control-label">头像:</label>
+                                                <div class="col-sm-3">
+                                                  <input type="file" id="uploadImage" name="file" style="display: none" onchange="updateImage()"/>
 
-                                                      <img id="imgtx" onclick="imgUpload()" title="点击更换头像" th:src="${session.user.userImg}" style="height: 80px;width: 80px;margin-left: 70px" class="layui-nav-img">
-													</div>
-												  </div>
-												  <div class="form-group">
-													<label for="inputName" class="col-xs-4 control-label">昵称</label>
-													<div class="col-xs-3">
-                                                        <!--<label type="text"  class="form-control" id="inputName" value="颜值帅">颜值帅</label>-->
-                                                        <label type="text"  class="form-control" id="inputName"  ><span id="uname" th:text="${session.user.userName}"></span></label>
-													</div>
-												  </div>
-												  <div class="form-group">
-													<label  class="col-xs-4 control-label">手机号</label>
-													<div class="col-xs-3">
-                                                        <!--<label type="text"  class="form-control"  value="颜值帅"><span>15296009413</span></label>-->
-                                                       <label type="text"  class="form-control"  ><span id="uphone" th:text="${session.user.userPhone}">15296009413</span></label>
-													</div>
-												  </div>
-												  <div class="form-group">
-													<label  class="col-xs-4 control-label">邮箱</label>
-													<div class="col-xs-3">
-                                                        <label title="点击绑定邮箱" onclick="updateEmail('绑定邮箱')" style="cursor: pointer;" th:if="${session.user.userEmail}==null" type="text"  class="form-control"  value="颜值帅">未绑定邮箱</label>
-                                                        <input id="checkEmail" type="hidden" th:value="${session.user.userEmail}"/>
-                                                       <!-- <label type="text"  class="form-control"  value="颜值帅">1647799067@qq.com</label>-->
-                                                        <label th:if="${session.user.userEmail}!=null" type="text"  class="form-control" ><span id="uemail" th:text="${session.user.userEmail}">1647799067@qq.com</span></label>
-													</div>
-												  </div>
+                                                  <img id="imgtx" onclick="imgUpload()" title="点击更换头像" th:src="${session.user.userImg}" style="height: 80px;width: 80px;margin-left: 70px" class="layui-nav-img">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label for="inputName" class="col-xs-4 control-label">昵称</label>
+                                                <div class="col-xs-3">
+                                                    <!--<label type="text"  class="form-control" id="inputName" value="颜值帅">颜值帅</label>-->
+                                                    <label type="text"  class="form-control" id="inputName"  ><span id="uname" th:text="${session.user.userName}"></span></label>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label  class="col-xs-4 control-label">手机号</label>
+                                                <div class="col-xs-3">
+                                                    <!--<label type="text"  class="form-control"  value="颜值帅"><span>15296009413</span></label>-->
+                                                   <label type="text"  class="form-control"  ><span id="uphone" th:text="${session.user.userPhone}">15296009413</span></label>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label  class="col-xs-4 control-label">邮箱</label>
+                                                <div class="col-xs-3">
+                                                    <label title="点击绑定邮箱" onclick="updateEmail('绑定邮箱')" style="cursor: pointer;" th:if="${session.user.userEmail}==null" type="text"  class="form-control"  value="颜值帅">未绑定邮箱</label>
+                                                    <input id="checkEmail" type="hidden" th:value="${session.user.userEmail}"/>
+                                                   <!-- <label type="text"  class="form-control"  value="颜值帅">1647799067@qq.com</label>-->
+                                                    <label th:if="${session.user.userEmail}!=null" type="text"  class="form-control" ><span id="uemail" th:text="${session.user.userEmail}">1647799067@qq.com</span></label>
+                                                </div>
+                                              </div>
 
-												  <div class="form-group">
-													<div class="col-xs-offset-4 col-xs-9">
-														<label>
-														  注:完善信息方便找回密码，账号更安全。
-														</label>
-													</div>
-												  </div>
-												  <div class="form-group">
-													<div class="col-xs-offset-5 col-xs-9">
-													  <button  onclick="setData()" type="button" class="btn btn-default">编辑资料</button>
-													</div>
-												  </div>
+                                              <div class="form-group">
+                                                <div class="col-xs-offset-4 col-xs-9">
+                                                    <label>
+                                                      注:完善信息方便找回密码，账号更安全。
+                                                    </label>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="col-xs-offset-5 col-xs-9">
+                                                  <button  onclick="setData()" type="button" class="btn btn-default">编辑资料</button>
+                                                </div>
+                                              </div>
 										</form>
 									</div>
 									<div id="er" class="tab-pane fade" style="height: 300px;">
@@ -323,10 +323,66 @@
 											  </div>
 										</form>
 									</div>
-									<div id="san" class="tab-pane fade" style="height: 300px;">3</div>
-									<div id="si" class="tab-pane fade" style="height: 300px;">4</div>
-									<div id="wu" class="tab-pane fade" style="height: 300px;">5</div>
-									<div id="liu" class="tab-pane fade" style="height: 300px;">6</div>
+                                    <!--我的课程-->
+									<div id="san" class="tab-pane fade" style="height: 300px;">
+                                        <div class="row" id="courseRow">
+
+                                        </div>
+                                        <div id="demoCourse" align="center"></div>
+                                    </div>
+                                    <!--我的订单-->
+                                    <div id="si" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="orderTable" style="height: 150px">
+                                            <caption>我的订单</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>订单名称</th>
+                                                <th>订单积分</th>
+                                                <th>订单时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="orderTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo2" align="center"></div>
+                                    </div>
+                                    <!--我的充值-->
+                                    <div id="wu" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="chargeTable" style="height: 150px">
+                                            <caption>充值记录</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>充值金额</th>
+                                                <th>所得积分</th>
+                                                <th>充值时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="chargeTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo3" align="center"></div>
+                                    </div>
+                                    <!--我的账单-->
+                                    <div id="liu" class="tab-pane fade" style="height: 300px;">
+                                        <table class="table table-hover" id="billTable" style="height: 150px">
+                                            <caption>账单记录</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>账单内容</th>
+                                                <th>积分</th>
+                                                <th>类型</th>
+                                                <th>账单时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="billTbody">
+
+                                            </tbody>
+                                        </table>
+                                        <div id="demo4" align="center"></div>
+                                    </div>
 								</div>
 							</div>
 				</div>
@@ -418,7 +474,10 @@
 
 		<script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
         <script src="/admin/lib/layui/layui.js"></script>
-        <script src="/admin/js/likaiTable.js"></script>
+		<!--likai js-->
+        <script src="/admin/js/billTable.js"></script>
+        <script src="/admin/js/chargeTable.js"></script>
+        <script src="/admin/js/orderTable.js"></script>
 		<script>
 			Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
 				release: '3.12.13'
@@ -528,52 +587,83 @@
 					$("#get6").hide();
 					$("#get7").hide();
 				});
-
-
-            //方法二则直接使分用layui-v2.0.2里面的页功能，没有用到core.js里面的方法
-            layui.use('laypage', function(){
-                var laypage = layui.laypage;
-                var config = {page:1,pageSize:2};
-                var url = "/user/MyCharges";
-                $.getJSON(url,config,function(res){
-                    laypage.render({
-                        elem: 'demo3',//必须放id
-                        count: 100,
-                        first: '首页',
-                        last: '尾页',
-                        count: res.count, //总条数
-                        limit:config.pageSize, //每页条数
-                        theme: '#FFB800', //自定义颜色
-                        jump: function(obj, first){
-                            //alert(obj.curr)
-                            if(!first){ //首次则不进入
-                                config.page = obj.curr;
-                                $.getJSON(url,config,function(res){
-                                    parseUserList(res,config.page);
-                                });
-                            }
-                        }
-                    });
-                    parseUserList(res,config.page);
-                });
-            });
-
-            //解析数据，currPage参数为预留参数，当删除一行刷新列表时，可以记住当前页而不至于显示到首页去
-            function parseUserList(res,currPage){
-                var html = "";
-                $.each(res.data,function (i,o) {
-                    html += "<tr>" +
-                        "<td>"+o.chargeMoney+"</td>" +
-                        "<td>"+o.chargeIntegral+"</td>" +
-                        "<td>"+o.chargeTime+"</td>" +
-                        "</tr>"
-                });
-                $("#chargeTbody").html(html);
-            }
 		</script>
 
 		<script src="/user/app/dest/user/index.js?=2016121272249"></script>
         <script src="/user/layui/layui.js"></script>
+        <!--likai   js-->
+        <script>
+            $(function () {
+                /*
+                *           我的课程   userinfo.html
+                * */
+                //方法二则直接使分用layui-v2.0.2里面的页功能，没有用到core.js里面的方法
+                layui.use('laypage', function(){
+                    var laypage = layui.laypage;
+                    var config = {page:1,pageSize:3};
+                    var url = "/user/Mycourses";
+                    $.getJSON(url,config,function(res){
+                        laypage.render({
+                            elem: 'demoCourse',//必须放id
+                            count: 100,
+                            first: '首页',
+                            last: '尾页',
+                            count: res.count, //总条数
+                            limit:config.pageSize, //每页条数
+                            theme: '#FFB800', //自定义颜色
+                            jump: function(obj, first){
+                                //alert(obj.curr)
+                                if(!first){ //首次则不进入
+                                    config.page = obj.curr;
+                                    getMyCourseByPage(url,config)
+                                }
+                            }
+                        });
+                        parseMyCourse(res,config.page);
+                    });
+                });
+                //点击页数从后台获取数据
+                function getMyCourseByPage(url,config){
+                    $.getJSON(url,config,function(res){
+                        parseMyCourse(res,config.page);
+                    });
+                }
+
+                //解析数据，currPage参数为预留参数，当删除一行刷新列表时，可以记住当前页而不至于显示到首页去
+                function parseMyCourse(res,currPage){
+                    var html = "";
+                    $.each(res.data,function (i,o) {
+
+                        if(res.length!=0){
+                            html +=
+                                '<div class="col-md-4 col-sm-6  course">' +
+                                '<a class="course-box" href="/courseshow/'+o.courseID+'">' +
+                                ' <div class="sign-box">' +
+                                '<i class="fa fa-star-o course-follow pull-right"' +
+                                'data-follow-url="/courses/75/follow"' +
+                                'data-unfollow-url="/courses/75/unfollow" style="display:none" ></i>' +
+                                '</div>' +
+                                '<div class="course-img">' +
+                                '<img alt="'+o.courseName+'" src="'+o.courseImg+'">' +
+                                '</div>' +
+                                '<div class="course-body">' +
+                                '<span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+o.courseName+'">'+o.courseName+'</span>' +
+                                '</div>' +
+                                '<div class="course-footer">' +
+                                '</div>' +
+                                '</a>' +
+                                '</div>'
+                        }
+                        else{
+                            html+="<h1>您还未购买课程！</h1>";
+                        }
+                    });
+                    $("#courseRow").html(html);
+                }
+            })
+        </script>
+
+
     <script>
         var a = $('#yi').html();
         var b = a;

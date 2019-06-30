@@ -20,6 +20,16 @@ public class CourseServiceImpl implements CourseService {
     private CourseDao courseDao;
 
     /**
+     * 根据课程收费状态、课程类别查询
+     * @param query
+     * @return
+     */
+    @Override
+    public List<Course> courses2(Map query) {
+        return courseDao.courses2(query);
+    }
+
+    /**
      * 根据体系id获取体系下的课程数量
      * @param systemID
      * @return
@@ -38,6 +48,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> courses(Integer systemID) {
         return courseDao.courses(systemID);
     }
+
 
     /**
      * 根据课程Id查询课程、课程类别、讲师
@@ -89,4 +100,15 @@ public class CourseServiceImpl implements CourseService {
 ////    public List<Course> courses(Integer free, Integer fid) {
 ////        return courseDao.courses(free,fid);
 ////    }
+
+    /**
+     * @param courseID
+     * @return
+     * @author likai
+     * 根据课程id得到所有的课程信息
+     */
+    @Override
+    public Course getCourseByCourseID(Integer courseID) {
+        return courseDao.getCourseByCourseID(courseID);
+    }
 }

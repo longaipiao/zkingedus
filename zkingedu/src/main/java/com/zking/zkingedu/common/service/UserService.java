@@ -98,6 +98,15 @@ public interface UserService {
     int addIntegral(Integer userID,String userIntegrsl);
 
     /**
+     * @author likai
+     * 用户购买（兑换）课程扣除相应的积分
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     */
+    int deducuIntegralWithUser(Integer userID,Integer userIntegrsl);
+
+    /**
      * 根据OpenId查询用户
      * @param openId
      * @return

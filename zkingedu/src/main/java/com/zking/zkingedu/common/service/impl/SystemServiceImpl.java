@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程体系接口   服务实现层
@@ -34,5 +35,15 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public System system(Integer systemID) {
         return systemDao.system(systemID);
+    }
+
+    /**
+     * 获取所有体系（后台）
+     * @param query
+     * @return
+     */
+    @Override
+    public List<System> sysList(Map query) {
+        return systemDao.sysList(query);
     }
 }

@@ -3,6 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.BillDao">
 
+    <!--使全局的映射器启用或禁用缓存  开启二级缓存-->
+    <!--<cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>-->
 
     <!--账单表所有字段-->
     <sql id="billAll">
@@ -19,7 +21,54 @@
     <select id="myBills" resultType="bill">
         select
             <include refid="billAll"/>
-        from t_bill
+        from t_bill where bill_uid=#{billUid}
     </select>
+
+    <!--后台的账单记录统计-->
+    <resultMap id="bill_user" type="bill">
+        <id property="billID" column="bill_id"/>
+        <result property="billUid" column="bill_uid"/>
+        <result property="billType" column="bill_type"/>
+        <result property="billIntegral" column="bill_integral"/>
+        <result property="billTime" column="bill_time"/>
+        <result property="billContent" column="bill_content"/>
+        <association property="user" javaType="user">
+            <result property="userName" column="user_name"/>
+        </association>
+    </resultMap>
+    <select id="getAdminBills" resultMap="bill_user">
+        select
+            a.bill_id,b.user_name,a.bill_integral,a.bill_type,a.bill_time,a.bill_content,a.bill_uid
+        from
+            t_bill a,t_user b
+        where
+            a.bill_uid=b.user_id
+        <if test="billID!=null">
+            and a.bill_id like '%${billID}%'
+        </if>
+        <if test="billType!=null">
+            and a.bill_type like '%${billType}%'
+        </if>
+        <if test="billIntegral!=null">
+            and a.bill_integral like '%${billIntegral}%'
+        </if>
+        <if test="billTime!=null">
+            and a.bill_time like '%${billTime}%'
+        </if>
+        <if test="billContent!=null">
+            and a.bill_content like '%${billContent}%'
+        </if>
+        <if test="user!=null">
+            <if test="user.userName!=null">
+                and b.user_name like '%${userName}%'
+            </if>
+        </if>
+    </select>
+
+
+    <!--后台账单记录的删除-->
+    <delete id="delBill">
+        delete from t_bill where bill_id=#{billID}
+    </delete>
 
 </mapper>

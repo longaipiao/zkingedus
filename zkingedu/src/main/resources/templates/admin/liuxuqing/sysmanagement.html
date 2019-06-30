@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--引入LayUI CSS-->
+    <link rel="stylesheet" href="/user/layui/css/layui.css" media="all">
+    <title>体系管理</title>
+    <style>
+        /*设置表格分页工具居中*/
+        .layui-table-page{
+            text-align: center
+        }
+
+        /*弹出层input样式*/
+        .layui-col-md10 input{
+            width: 75%;
+        }
+
+    </style>
+</head>
+<body>
+<!--数据表格-->
+<table class="layui-hide" id="sysList" lay-filter="test"></table>
+<!--操作栏-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">修改</a>
+</script>
+<!--查看体系弹出层-->
+<div class="layui-row" id="systemShow" style="display:none;margin-left: 15%;">
+    <div class="layui-col-md10">
+        <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemID" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系名称：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">所属体系：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemFName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系简介：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" readonly="readonly" id="systemDesc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
+            <div class="layui-input-block">
+                <img style="width: 100%;height: 100%;" id="systemImg">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改体系弹出层-->
+<div class="layui-row" id="systemShow" style="display:none;margin-left: 15%;">
+    <div class="layui-col-md10">
+        <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemID" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系名称：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">所属体系：</label>
+            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemFName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系简介：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" readonly="readonly" id="systemDesc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
+            <div class="layui-input-block">
+                <img style="width: 100%;height: 100%;" id="systemImg">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+<!--引入LayUI js-->
+<script src="/user/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['layer', 'table', 'element'], function () {
+        var layer = layui.layer //弹层
+            , table = layui.table //表格
+            , element = layui.element //元素操作
+            , form = layui.form //表单
+
+        //监听操作栏
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得点击行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值，判断进行的操作
+            if(layEvent=='detail'){//查询操作
+                //给弹出层赋值
+                $("#systemID").val(data.systemID);
+                $("#systemName").val(data.systemName);
+                $("#systemFName").val(data.systemFName);
+                $("#systemDesc").val(data.systemDesc);
+                //体系图片赋值
+                $("#systemImg").attr("src",data.systemImg);
+
+                //打开弹出层
+                layer.open({
+                    type: 1
+                    ,title: "信息审核" //弹出层标题
+                    ,area: ['800px', '570px'] //弹出层大小
+                    ,content: $("#systemShow") //弹出层内容
+                    ,btn: '关闭全部' //弹出层按钮
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+            }else if(layEvent=='edit'){ //修改操作
+                alert("修改操作");
+                //打开弹出层
+                layer.open({
+                    type: 1
+                    ,title: "信息审核" //弹出层标题
+                    ,area: ['800px', '570px'] //弹出层大小
+                    ,content: $("#systemShow") //弹出层内容
+                    ,btn: '关闭全部' //弹出层按钮
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        //获取所有体系
+        $.ajax({
+            url: "/sysList",
+            data: {
+                limit:6
+            },
+            success: function(courses){
+                //渲染数据表格
+                table.render({
+                    elem: '#sysList', //数据表格
+                    data: courses.data,  //后台传来的数据
+                    page: true, //开启分页
+                    limit: 6,
+                    limits: [6,12,18,24,30],  //每页条数下拉框选项
+                    cols: [[ //表头
+                            {field: 'systemID', align: 'left', title: '体系ID', sort: true}
+                            ,{field: 'systemName', align: 'left', title: '体系名称'}
+                            ,{field: 'systemFName', align: 'left', title: '父体系', sort: true}
+                            ,{field: 'systemDesc', align: 'left', title: '体系简介'}
+                            ,{field: 'systemState', align: 'left', title: '体系状态', sort: true}
+                            ,{field: 'systemImg', align: 'left', title: '体系图片'}
+                            ,{title: '操作', toolbar: '#barDemo'}
+                        ]]
+                });
+            },
+            error: function(){
+                alert("数据回调异常");
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

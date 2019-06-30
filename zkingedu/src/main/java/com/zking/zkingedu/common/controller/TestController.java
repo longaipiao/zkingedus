@@ -40,7 +40,7 @@ public class TestController {
     private RedisUtil redisUtil;
     @RequestMapping("/")
     public String test(HttpServletRequest request){
-        System.out.println("首页测试");
+//        System.out.println("首页测试");
         return "user/index";
     }
 
@@ -174,4 +174,12 @@ public class TestController {
         return empDao.getemps();
     }
 
+    /**
+     * layui测试页面
+     * @return
+     */
+    @RequestMapping(value = "/layuitest")
+    public String layuitest(){
+        return "user/layuitest.html";
+    }
 }

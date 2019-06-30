@@ -72,7 +72,7 @@ public interface UserDao {
      * @param user
      * @return
      */
-    int addQqLogin(@Param("user") User user);
+    int addQqLogin(User user);
 
     /**
      * 修改手机号码
@@ -147,4 +147,14 @@ public interface UserDao {
      * @return
      */
     int banORout(@Param("userId") Integer userId,@Param("typeId") Integer typeId);
+
+    /**
+     * @author likai
+     * 用户购买（兑换）课程扣除相应的积分
+     * @param userID
+     * @param userIntegrsl
+     * @return
+     */
+    int deducuIntegralWithUser(Integer userID,Integer userIntegrsl);
+
 }

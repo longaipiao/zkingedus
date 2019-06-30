@@ -110,6 +110,11 @@ and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}
     <update id="addIntegral">
         update t_user set user_integrsl= user_integrsl+#{userIntegrsl} where user_id=#{userID}
     </update>
+
+    <!--用户购买（兑换）课程扣除相应的积分-->
+    <update id="deducuIntegralWithUser">
+        update t_user set user_integrsl= user_integrsl-#{userIntegrsl} where user_id=#{userID}
+    </update>
     <!--likai end-->
 
 

@@ -19,7 +19,7 @@ public class Charge implements Serializable {
     //用户id
     private Integer chargeUid;
     //金额
-    private Double chargeMoney;
+    private Integer chargeMoney;
     //积分
     private Integer chargeIntegral;
     //'充值时间
