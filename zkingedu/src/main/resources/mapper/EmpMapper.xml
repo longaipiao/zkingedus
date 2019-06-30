@@ -17,7 +17,7 @@
     </select>
 
     <select id="getempbyempname" resultType="com.zking.zkingedu.common.model.Emp">
-        select * from t_emp where emp_name = #{empname}
+        select * from t_emp where emp_name = #{empname} and emp_state=0
     </select>
 
     <delete id="delempbyid">
@@ -57,4 +57,8 @@
     <insert id="addt_emp_role">
         insert into t_emp_role(emp_id,role_id) values (#{empid},#{roleid})
     </insert>
+
+    <select id="getrole" resultType="java.lang.String">
+         select c.role_name from t_emp_role a,t_emp b,t_role c where a.emp_id = b.emp_id and a.role_id = c.role_id and b.emp_id = #{empid}
+    </select>
 </mapper>

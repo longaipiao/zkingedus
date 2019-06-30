@@ -25,5 +25,6 @@ public interface EmpService {
     int updateemproleid(@Param("empid") Integer empid,@Param("roleid") Integer roleid);
     //添加t_emp_role表
     int addt_emp_role(@Param("empid") Integer empid,@Param("roleid") Integer roleid);
-
+    //按照员工ID查看角色
+    String getrole(@Param("empid") Integer empid);
 }

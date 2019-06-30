@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>题库类别管理</title>
+</head>
+<link rel="stylesheet" th:href="@{/admin/layui/css/layui.css}"/>
+<script th:src="@{/admin/layui/layui.js}" charset="utf-8"></script>
+<body>
+<table class="layui-hide" id="category" lay-filter="category"></table>
+<script>
+  layui.use(['table'], function(){
+    var $ = layui.jquery
+    var table = layui.table
+    ,form = layui.form;
+
+    //方法级渲染
+    var tableIns = table.render({
+        elem: '#category'
+        ,url: '/category/getcategory'
+        ,limit:10
+        ,toolbar:true
+        ,defaultToolbar: ['filter', 'print', 'exports']
+        ,cols: [ [
+            {field:'categoryID', title: '题库类别ID',  sort: true, fixed: true}
+            ,{field:'categoryName', title: '题库名称'}
+            ,{field:'categoryFid', title: '父题库ID'}
+            ,{field:'categoryTime', title: '创建时间'}
+            ,{field:'categoryRank', title: '序号'}
+            ,{field:'categoryState', title: '状态',templet: '#switchTpl', unresize: true}
+            ,{fixed: 'right', title:'操作' ,toolbar: '#barDemo'}
+          ] ]
+        ,id: 'testReload'
+        ,page: true
+        ,height: 550
+      });
+
+
+
+    //监听状态操作    开关
+    form.on('switch(categoryState)', function(obj){
+      var zt = (this.checked ? 'true' : 'false');
+      // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+        $.ajax({
+          datatype:"json",
+          type:"post",
+          url:"/admin/state",
+          data:{
+            empid: this.value,
+            state: zt
+          },
+          success:function(result){
+            if(result!='ok'){
+              layer.msg("出现巨大的bug，请联系9527")
+            }
+            else{
+              if(zt!='false'){
+                layer.msg("已启用");
+              }
+              else{
+                layer.msg("已禁用");
+              }
+            }
+          },
+          error:function () {
+            layer.msg("出现bug了，请联系9527")
+          }
+        })
+    });
+
+
+    //点击操作按钮时按钮时触发
+    table.on('tool(LAY_table_emp)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'del'){
+        layer.confirm('真的删除该员工吗?', function(index){
+          $.ajax({
+            url:'/admin/delemp',
+            type:'post',
+            data:{
+              empid:data.empID
+            },
+            success:function (result) {
+              if(result=="ok"){
+                obj.del();
+                layer.close(index);
+              }else{
+                layer.msg("出现bug了，请联系9527")
+              }
+            },
+            error:function () {
+              layer.msg("出现bug了，请联系921607915")
+            }
+          });
+        });
+      }
+      else if(obj.event === 'editpassword'){//修改密码
+
+      }
+
+    });
+  });
+</script>
+<!--d.empid 是动态的值 {{ d.empState == 0 ? 'checked' : '' }} 状态等于0就选中反之就不选中 -->
+<script type="text/html" id="switchTpl">
+  <input type="checkbox" name="categoryState" value="{{d.categoryID}}" lay-skin="switch" lay-text="正常|停用" lay-filter="categoryState" {{ d.categoryState == 0 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="barDemo">
+  <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="editpassword">修改密码</a>-->
+  <!--<a class="layui-btn layui-btn-xs" lay-event="editrole">角色变更</a>-->
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">&nbsp;&nbsp;删&nbsp;&nbsp;&nbsp;除&nbsp;&nbsp;</a>
+
+</script>
+</body>
+</html>

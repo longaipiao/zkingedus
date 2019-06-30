@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
@@ -20,7 +21,8 @@ public class URLController {
 
     //跳转到登陆界面
     @RequestMapping("/loginpage")
-    public String page1(){
+    public String page1(HttpSession session){
+        session.setAttribute("emp",null);
         return "admin/login";
     }
 
@@ -66,8 +68,19 @@ public class URLController {
         return "admin/jdy/updaterole";
     }
     //跳转到添加角色
-    @RequestMapping("addemp")
+    @RequestMapping("/addemp")
     public String page9(){
         return "admin/jdy/addemp";
+    }
+//    后台跳转到我的信息
+    @RequestMapping("/mymessage")
+    public String page10(){
+        return "admin/jdy/mymessage";
+    }
+
+    //跳转到管理题库类别
+    @RequestMapping("/category")
+    public String page(){
+        return "admin/jdy/admin-category";
     }
 }

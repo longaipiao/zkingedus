@@ -10,13 +10,13 @@
     <delete id="deleterolebyid">
         DELETE from t_menu_role where role_id = #{roleid}
     </delete>
-
-    <delete id="delrolebyid">
-        DELETE from t_role where role_id = #{roleid}
+<!--删除角色菜单-->
+    <delete id="delmenurolebyid">
+        DELETE from t_menu_role where role_id = #{roleid} and menu_id in(${str})
     </delete>
-
-    <insert id="addrolebyid">
-        INSERT into t_menu_role(role_id,menu_id) VALUES(#{roleid},#{menuid});
+<!--添加角色菜单-->
+    <insert id="addmenurolebyid">
+        INSERT into t_menu_role(role_id,menu_id) VALUES ${str}
     </insert>
     <update id="updaterolenamebyid">
         update t_role set role_name = #{rolename} where role_id = ${roleid}
@@ -29,4 +29,5 @@
     <select id="existsrolename" resultType="_int">
         select count(*) from t_role where role_name = #{rolename}
     </select>
+
 </mapper>

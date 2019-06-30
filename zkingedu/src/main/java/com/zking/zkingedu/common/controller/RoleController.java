@@ -74,24 +74,54 @@ public class RoleController {
         if(menujson!=null&&roleid!=null){
             ArrayList<Treedata> treedataArrayList = JSON.parseObject(menujson, new TypeReference<ArrayList<Treedata>>() {});
             List<Integer> ls = new ArrayList<>();//实例化一个装菜单ID的list
+            List<Integer> lsa = new ArrayList<>();
             //遍历取出选中的菜单ID装入list集合中
             for(int i = 0;i < treedataArrayList.size();++i){
                 Integer id = treedataArrayList.get(i).getId();
                 ls.add(id);
+                lsa.add(id);
                 List<Treedata> children = treedataArrayList.get(i).getChildren();
                 for (Treedata child : children) {
                     ls.add(child.getId());
+                    lsa.add(child.getId());
                 }
             }
             int rid = Integer.parseInt(roleid);
-            List<Integer> getrole = menuService.getrole(rid);
+            List<Integer> getrole = menuService.getrole(rid);//根据角色ID查看该权限的菜单id
 
-
-//            roleService.deleterolebyid(rid);//先删除原来的
-//            //后加
-//            for (Integer l : ls) {
-//                roleService.addrolebyid(rid,l);
-//            }
+            //查找出应该添加的菜单
+            for(int j = 0;j < getrole.size();j++){//遍历他原有的菜单id
+                for (int z = 0; z < ls.size();z++){//遍历修改后的菜单ID
+                    if(getrole.get(j)==ls.get(z)){//如果里面有相同的ID
+                        ls.remove(z);//移除ls集合里相同的
+                    }
+                }
+            }
+            //查找出应该删除的
+            for(int j = 0;j < lsa.size();j++){//遍历他原有的菜单id
+                for (int z = 0; z < getrole.size();z++){//遍历修改后的菜单ID
+                    if(lsa.get(j)==getrole.get(z)){//如果里面有相同的ID
+                        getrole.remove(z);//移除ls集合里相同的
+                    }
+                }
+            }
+            //再遍历删除后的两个集合   添加ls集合的  删除getrole集合的
+            if(getrole!=null){
+                StringBuffer str = new StringBuffer();
+                for (Integer integer : getrole) {//应该删除的
+                    str.append(integer+",");
+                }
+                String string = str.substring(0, str.lastIndexOf(","));
+                roleService.delmenurolebyid(rid,string);//批量删除
+            }
+           if(ls!=null){
+               StringBuffer str = new StringBuffer();
+               for (Integer l : ls) {//应该添加的
+                   str.append("("+rid+","+l+"),");
+               }
+               String string = str.substring(0, str.lastIndexOf(","));
+               roleService.addmenurolebyid(rid,string);//批量添加
+           }
         }
         return "ok";
     }

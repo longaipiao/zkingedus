@@ -36,18 +36,18 @@ public class RoleServiceImpl implements RoleService {
      * @param roleid
      */
     @Override
-    public void deleterolebyid(@Param("roleid") Integer roleid){
-        roleDao.deleterolebyid(roleid);
+    public void delmenurolebyid(@Param("roleid") Integer roleid,@Param("str") String str){
+        roleDao.delmenurolebyid(roleid,str);
     }
 
     /**
      * 根据角色添加菜单
      * @param roleid
-     * @param menuid
+     * @param str
      */
     @Override
-    public void addrolebyid(@Param("roleid") Integer roleid,@Param("menuid") Integer menuid){
-        roleDao.addrolebyid(roleid,menuid);
+    public void addmenurolebyid(@Param("roleid") Integer roleid,@Param("str") String str){
+        roleDao.addmenurolebyid(roleid,str);
     }
     /**
      * 删除角色

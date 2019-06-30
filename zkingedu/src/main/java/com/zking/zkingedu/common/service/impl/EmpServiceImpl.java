@@ -65,6 +65,11 @@ public class EmpServiceImpl implements EmpService {
     public int addt_emp_role(Integer empid, Integer roleid) {
         return empDao.addt_emp_role(empid,roleid);
     }
+    //按照员工ID查看角色
+    @Override
+    public String getrole(Integer empid) {
+        return empDao.getrole(empid);
+    }
 
 
     ;

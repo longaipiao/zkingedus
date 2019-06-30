@@ -183,4 +183,19 @@ public class EmpController {
         empService.addt_emp_role(empID,rid);
         return "ok";
     }
+
+    /**
+     * 根据员工ID获取角色
+     * @param empid
+     * @return
+     */
+    @RequestMapping("getrolename")
+    @ResponseBody
+    public String getrolename(String empid){
+        int id=0;
+        if(empid!=null){
+            id = Integer.parseInt(empid);
+        }
+        return empService.getrole(id);
+    }
 }

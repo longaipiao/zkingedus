@@ -22,17 +22,17 @@ public interface RoleDao {
     void updaterolenamebyid(@Param("rolename") String rolename,@Param("roleid") String roleid);
 
     /**
-     * 根据角色删除所有的菜单
+     * 根据角色删除菜单
      * @param roleid
      */
-    void deleterolebyid(@Param("roleid") Integer roleid);
+    void delmenurolebyid(@Param("roleid") Integer roleid,@Param("str") String str);
 
     /**
      * 根据角色添加菜单
      * @param roleid
-     * @param menuid
+     * @param str
      */
-    void addrolebyid(@Param("roleid") Integer roleid,@Param("menuid") Integer menuid);
+    void addmenurolebyid(@Param("roleid") Integer roleid,@Param("str") String str);
 
     /**
      * 删除角色
