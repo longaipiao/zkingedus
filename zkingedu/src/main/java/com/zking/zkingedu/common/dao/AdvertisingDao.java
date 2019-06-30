@@ -1,8 +1,33 @@
 package com.zking.zkingedu.common.dao;
 
+import com.zking.zkingedu.common.model.Advertising;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 /**
  * 广告接口
  */
+@Mapper
 public interface AdvertisingDao {
+    /**
+     * 获取广告列表
+     * @return
+     */
+    List<Advertising> getAllAdvertising();
 
+    /**
+     * 添加广告
+     * @param advertising
+     * @return
+     */
+    int addAdvertising(@Param("advertising") Advertising advertising);
+
+    /**
+     * 修改上下架状态
+     * @param aid type
+     * @return
+     */
+    int updateAdvertising(@Param("aid") Integer aid,@Param("type") Integer type);
 }

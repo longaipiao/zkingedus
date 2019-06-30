@@ -4,6 +4,7 @@ import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IpAddress;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.Soundbank;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class UserNotController {
     @ResponseBody
     @RequestMapping(value = "/loginCheck")
     public String loginCheck(User user, HttpServletRequest request){
+
         User user1 = userService.userLogin(user);
         if(user1!=null){
             request.getSession().setAttribute("user",user1);
@@ -60,7 +63,43 @@ public class UserNotController {
         return "2";
     }
 
+    @RequestMapping(value = "zhPwd")
+    public String zhpwd(){
+        return "user/zhPwd";
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "checkPhoneOrEmail")
+    public String checkPhoneOrEmail(User user,Integer type){
+        User u;
+        try {
+            if(type==1){
+                u = userService.queryUserByEmailOrPhone(user);
+                return u==null?"此账号不存在":"1";
+            }else{
+                u = userService.queryUserByEmailOrPhone(user);
+                return u==null?"此邮箱未绑定账号":"1";
+            }
+        }catch (Exception e){
+            System.out.println("错误：checkPhoneOrEmailError");
+            e.printStackTrace();
+        }
+       return "error";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "zhPassword")
+    public String updatePwdEmailORPhone(String pORe,String pwd){
+
+        int n=0;
+        if(pORe.contains("@")){
+            n = userService.updatePwdByEmail(pORe,pwd);
+        }else{
+
+            n = userService.updatePwdByPhone(pORe,pwd);
+        }
+        return n+"";
+    }
 
 
     /**
