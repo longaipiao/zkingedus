@@ -39,4 +39,26 @@ public class BillServiceImpl implements BillService {
 
         return billDao.myBills(billID);
     }
+
+    /**
+     * 后台的账单记录统计   billShow.html
+     *
+     * @param bill
+     * @return
+     */
+    @Override
+    public List<Bill> getAdminBills(Bill bill) {
+        return billDao.getAdminBills(bill);
+    }
+
+    /**
+     * 后台账单记录的删除  billShow.html
+     *
+     * @param billID
+     * @return
+     */
+    @Override
+    public int delBill(Integer billID) {
+        return billDao.delBill(billID);
+    }
 }

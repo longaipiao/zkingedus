@@ -7,11 +7,12 @@
 
 <div class="demoTable">
     <select id="type" lay-verify="required" style="height: 35px">
-        <option value="序号">序号</option>
+        <option value="账单编号">账单编号</option>
         <option value="用户名">用户名</option>
-        <option value="充值金额">充值金额</option>
-        <option value="所得积分">所得积分</option>
-        <option value="充值时间">充值时间</option>
+        <option value="账单积分">账单积分</option>
+        <option value="账单类型">账单类型</option>
+        <option value="账单详细">账单详细</option>
+        <option value="账单时间">账单时间</option>
     </select>
     搜索：
     <div class="layui-inline">
@@ -37,19 +38,20 @@
 
         table.render({
             elem: '#test'
-            ,url:'/admin/getCharges'
+            ,url:'/admin/billAll'
             ,toolbar:true
             ,defaultToolbar: ['filter', 'print', 'exports']
-            ,title: '充值记录表'
+            ,title: '账单表'
             ,id:"tableReload"
             ,cols: [
                 [
                 {type: 'checkbox', fixed: 'left'}
-                ,{field:'chargeID', title:'序号', fixed: 'left', unresize: true, sort: true}
-                ,{field:'userName', title:'用户名', edit: 'text'}
-                ,{field:'chargeMoney', title:'充值金额',  edit: 'text', sort:true }
-                ,{field:'chargeIntegral', title:'所得积分' ,sort: true}
-                ,{field:'chargeTime', title:'充值时间',sort:true }
+                ,{field:'billID', title:'账单编号', fixed: 'left', unresize: true, sort: true}
+                ,{field:'userName', title:'用户名'}
+                ,{field:'billIntegral', title:'账单积分',   sort:true }
+                ,{field:'billContent', title:'账单详细' ,sort: true}
+                ,{field:'billType', title:'账单类型',sort:true }
+                ,{field:'billTime', title:'账单时间',sort:true }
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
                 ]
             ]
@@ -57,6 +59,7 @@
         });
 
         $("#search").on('click', function(){
+
             //执行重载
             table.reload('tableReload', {
                 page: {
@@ -76,10 +79,10 @@
             if(obj.event === 'del'){
                 layer.confirm('你可是管理员，真的要删除吗？你确定？', function(index){
                     $.ajax({
-                        url:'/admin/delCharge',
+                        url:'/admin/delbill',
                         type:'post',
                         data:{
-                            chargeID:data.chargeID,
+                            billID:data.billID,
                         },
                         success:function () {
                             obj.del();

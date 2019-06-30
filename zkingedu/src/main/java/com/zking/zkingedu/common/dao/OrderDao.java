@@ -1,5 +1,6 @@
 package com.zking.zkingedu.common.dao;
 
+import com.zking.zkingedu.common.model.Course;
 import com.zking.zkingedu.common.model.Order;
 
 import java.util.List;
@@ -43,4 +44,12 @@ public interface OrderDao {
      * @return
      */
     int delOrderByID(String orderID);
+
+
+    /**
+     * userinfo.html 我的课程
+     * @param userID    用户id
+     * @return
+     */
+    List<Course> getMyCourses(Integer userID);
 }

@@ -26,4 +26,7 @@ public class Bill implements Serializable {
     private String billTime;
     //'账单内容
     private String billContent;
+
+    //用户对象
+    private User user;
 }

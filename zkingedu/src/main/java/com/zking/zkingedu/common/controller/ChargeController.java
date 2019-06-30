@@ -35,7 +35,7 @@ public class ChargeController {
 
 
     //后台充值记录
-    @RequestMapping("/chargeURL")
+    @RequestMapping("/admin/chargeURL")
     String chargeURL(){
         return "admin/likai/chargesShow";
     }
@@ -50,7 +50,7 @@ public class ChargeController {
      * 后台chargesShow.html绑定表格数据
      */
     @ResponseBody
-    @RequestMapping("/houtai/getCharges")
+    @RequestMapping("/admin/getCharges")
     Map<String,Object> getCharges(@Param("page") Integer page, @Param("limit") Integer limit,@Param("search") String search,@Param("type") String type,Charge charge){
         Map<String,Object> chargesMap = new HashMap<>();
 
@@ -84,6 +84,7 @@ public class ChargeController {
         List<Charge> charges = chargeService.getCharges(charge);
         for (Charge charge1 : charges) {
             //new一个map集合用来对应前台layui不能多层嵌套问题，取出值放在同一层
+
             Map<String,Object> maps = new HashMap<>();
             maps.put("chargeID",charge1.getChargeID());
             maps.put("chargeIntegral",charge1.getChargeIntegral());
@@ -107,7 +108,7 @@ public class ChargeController {
      * @param chargeID
      */
     @ResponseBody
-    @RequestMapping("/delCharge")
+    @RequestMapping("/admin/delCharge")
     void delLine(@Param("chargeID") String chargeID  ){
         //删除充值记录
         chargeService.delChargeByID(chargeID);

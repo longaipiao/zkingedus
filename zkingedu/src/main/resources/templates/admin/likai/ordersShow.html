@@ -26,8 +26,8 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<link rel="stylesheet" th:href="@{user/layui/css/layui.css}" />
-<script th:src="@{user/layui/layui.js}"  charset="utf-8"></script>
+<link rel="stylesheet" th:href="@{/user/layui/css/layui.css}" />
+<script th:src="@{/user/layui/layui.js}"  charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
@@ -76,7 +76,7 @@
             if(obj.event === 'del'){
                 layer.confirm('你可是管理员，真的要删除吗？你确定？', function(index){
                     $.ajax({
-                        url:'/delOrder',
+                        url:'/admin/delOrder',
                         type:'post',
                         data:{
                             orderID:data.orderID,
