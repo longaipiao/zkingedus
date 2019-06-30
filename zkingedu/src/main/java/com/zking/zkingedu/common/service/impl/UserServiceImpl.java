@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -38,7 +39,40 @@ public class UserServiceImpl implements UserService {
         return userDao.queryUserByOpenid(openId);
     }
 
+    @Override
+    public User queryUserByEmailOrPhone(User user) {
+        return userDao.queryUserByEmailOrPhone(user);
+    }
 
+    @Override
+    public int updatePwdByEmail(String email, String pwd) {
+        return userDao.updatePwdByEmail(email,pwd);
+    }
+
+    @Override
+    public int updatePwdByPhone(String phone, String pwd) {
+        return userDao.updatePwdByPhone(phone, pwd);
+    }
+
+    @Override
+    public List<User> getAlluser(Integer page, Integer size) {
+        return userDao.getAlluser(page, size);
+    }
+
+    @Override
+    public List<User> getAllusery() {
+        return userDao.getAllusery();
+    }
+
+    @Override
+    public List<User> getAlluseryCheck(String value, String type) {
+        return userDao.getAlluseryCheck(value, type);
+    }
+
+    @Override
+    public int banORout(Integer userId, Integer typeId) {
+        return userDao.banORout(userId, typeId);
+    }
 
 
     @Override

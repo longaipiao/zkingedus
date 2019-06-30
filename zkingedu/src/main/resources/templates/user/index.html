@@ -556,11 +556,11 @@
                                         <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
                                     </div>
                                 </div>
-                                <!--<img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">-->`
+
                             </div>
                             <div class="form-group remember-login">
                                 <input name="remember" type="checkbox" value="y"> 下次自动登录
-                                <a class="pull-right" href="reset_password/index.html">忘记密码？</a>
+                                <a class="pull-right" href="javascript:void(0)" onclick="pass()">忘记密码？</a>
                             </div>
                             <div class="form-group">
                                 <input class="btn btn-primary" name="submit" type="button" value="进入实验楼" onclick="loginChek()">
@@ -611,6 +611,7 @@
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -650,9 +651,9 @@
     <script src="/user/loginCheck.js"></script>
     <!--<script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>-->
    <script>
-        Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+       /* Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
-        }).install();
+        }).install();*/
 
         //获取所有体系展示
         $.ajax({
@@ -774,10 +775,10 @@
         <span>Copyright @2013-2016 实验楼在线教育</span>
         <span class="ver-line"> | </span>
         <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
-        <script type="text/javascript">
+        <!--<script type="text/javascript">
             var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
             document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
-        </script>
+        </script>-->
         <script>
             var _hmt = _hmt || [];
             (function() {
@@ -807,9 +808,73 @@
 
     </div>
 </div>
+<script src="/user/layui/layui.js"></script>
+<script>
+    var index;
+    function pass(){
+        layui.use('layer',function () {
+            var layer = layui.layer;
+            index = layer.open({
+                type: 1,
+                title :'找回密码',
+                content:$('#typeX'),
+                area :'auto',
+                maxHeight:200,
+                maxWidth :200
+            });
+        });
+    }
+    function phonePwd() {
+        layui.use('layer',function () {
+            var layer = layui.layer;
+            layer.close(index);
+            index = layer.open({
+                type: 1,
+                title :'找回密码',
+                content:$('#passwordPhone'),
+                area :'auto',
+                maxHeight:500,
+                maxWidth :600
+            });
+        });
+    }
 
-
-
-
+    function emailPwd() {
+        layui.use('layer',function () {
+            var layer = layui.layer;
+            layer.close(index);
+            index = layer.open({
+                type: 1,
+                title :'找回密码',
+                content:$('#passwordEmail'),
+                area :'auto',
+                maxHeight:500,
+                maxWidth :600
+            });
+        });
+    }
+</script>
 </body>
+<div id="typeX" style="display: none;">
+    <button type="button" class="layui-btn layui-btn-normal layui-btn-radius" id="phonePwd" onclick="phonePwd()" style="height: 120px">手机找回</button>
+    <button type="button" class="layui-btn layui-btn-warm layui-btn-radius" id="emailPwd" onclick="emailPwd()" style="height: 120px">邮箱找回</button>
+</div>
+
+<div id="passwordPhone" style="display: none;width: 600px;height: 350px">
+    <form>
+        <table>
+            <tbody>
+                <tr >
+                    <td style="width: 160px"><label style="width: 160px" class="layui-form-label">请输入手机号码：</label></td>
+                    <td style="width: 160px"> <input type="text" name="username" lay-verify="required" placeholder="请输入手机号码"  class="layui-input"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+
+<div id="passwordEmail" style="display: none">
+
+</div>
 </html>

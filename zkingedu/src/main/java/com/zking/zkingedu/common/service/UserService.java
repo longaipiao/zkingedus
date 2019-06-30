@@ -4,6 +4,7 @@ import com.zking.zkingedu.common.model.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zking.zkingedu.common.model.User;
 
@@ -103,6 +104,45 @@ public interface UserService {
      */
     User queryUserByOpenid(String openId);
 
+    /**
+     * 根据手机号或邮箱查询用户
+     * @param user
+     * @return
+     */
+    User queryUserByEmailOrPhone(User user);
 
+    /**
+     * 根据手机号或邮箱修改用户密码
+     * @param email
+     * @param pwd
+     * @return
+     */
+    int updatePwdByEmail(@Param("email") String email,@Param("pwd") String pwd);
 
+    int updatePwdByPhone(@Param("phone") String phone,@Param("pwd") String pwd);
+
+    /**
+     * 查询所有的用户
+     * @return
+     */
+    List<User> getAlluser(@Param("page") Integer page, @Param("size") Integer size);
+
+    /**
+     * 查询所有的用户
+     * @return
+     */
+    List<User> getAllusery();
+
+    /**
+     * 模糊查询所有的用户
+     * @return
+     */
+    List<User> getAlluseryCheck(String value,String type);
+
+    /**
+     * 封禁&解封用户
+     * @param userId
+     * @return
+     */
+    int banORout(@Param("userId") Integer userId,@Param("typeId") Integer typeId);
 }

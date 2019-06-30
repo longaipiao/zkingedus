@@ -16,7 +16,8 @@ function loginChek() {
             userPassword:$("#loginUpwd").val()
         },
         success:function (data) {
-            if(data==1){
+            alert(data);
+            if(data=='1'){
                 alert('登陆成功');
                 location.href='/';
             }else{

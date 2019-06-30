@@ -67,7 +67,7 @@ public class QQLogin {
                 qquser.setUserName(userInfoBean.getNickname());
                 qquser.setUserImg(userInfoBean.getAvatar().getAvatarURL100());
                 qquser.setUserOpenID(userOpenID);
-                request.setAttribute("qquser",qquser);
+                request.getSession().setAttribute("qquser",qquser);
             }
         } catch (QQConnectException e) {
             e.printStackTrace();
@@ -88,5 +88,25 @@ public class QQLogin {
         return "redirect:"+authorizeURL;
     }
 
+    /**
+     * 添加QQ用户
+     * @param user
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("addQQUser")
+    public String addQQuser(User user,HttpServletRequest request){
+        int n = 0;
+        try {
+            user.setUserIntegrsl(0);
+            user.setUserState(0);
+            user.setUserRegTime(new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date()));
+            n = userService.addQqLogin(user);
+        }catch (Exception e){
+            System.out.println("qq用户添加错误");
+            e.printStackTrace();
+        }
 
+        return n+"";
+    }
 }
