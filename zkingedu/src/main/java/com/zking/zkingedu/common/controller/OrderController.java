@@ -11,6 +11,7 @@ import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.OrderService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IdGeneratorUtils;
+import lombok.val;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +56,7 @@ public class OrderController {
     String nowDate = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
 
     //后台订单记录
-    @RequestMapping("/orderURL")
+    @RequestMapping("/admin/orderURL")
     String chargeURL(){
         return "admin/likai/ordersShow";
     }
@@ -167,12 +168,21 @@ public class OrderController {
     }
 
 
+    /**
+     * orderShow.html 页面数据绑定及查询
+     * @param page
+     * @param limit
+     * @param search
+     * @param type
+     * @param order
+     * @return
+     */
     @ResponseBody
     @RequestMapping ("/admin/ordersAll")
     Map<String,Object> getOrdersAll(@Param("page")Integer page,@Param("limit")Integer limit,@Param("search") String search,@Param("type") String type,Order order){
         Map<String,Object> orderMaps = new HashMap<>();
 
-        System.out.println("类型："+type+"；文本框的值"+search);
+        System.out.println("类型："+type+"；文本框的值："+search);
 
         try {
             if(search!=null){
@@ -193,11 +203,10 @@ public class OrderController {
         } catch (NumberFormatException e) {
             search = null;
         }
-
+        //开启分页
         Page orderPage = PageHelper.startPage(page, limit);
-
+        //
         List<Order> orders = orderService.getOrders(order);
-
         List<Map<String,Object>> ls = new ArrayList<>();
 
         for (Order order1 : orders) {
@@ -224,9 +233,34 @@ public class OrderController {
      * @param orderID
      */
     @ResponseBody
-    @RequestMapping("/delOrder")
+    @RequestMapping("/admin/delOrder")
     void delLine(@Param("orderID") String orderID  ){
         //删除充值记录
         orderService.delOrderByID(orderID);
+    }
+
+    /**
+     * userinfo.html 我的课程
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/user/Mycourses")
+    Map<String,Object> userMycourse(@Param("page")Integer page,@Param("pageSize")Integer pageSize,HttpServletRequest request){
+        System.out.println("============================我的课程============================");
+        User user = (User) request.getSession().getAttribute("user");
+
+        Map<String,Object> myCourseMaps = new HashMap<>();
+
+        Page myCoursePage = PageHelper.startPage(page, pageSize);
+
+        List<Course> myCourses = orderService.getMyCourses(user.getUserID());
+
+        myCourseMaps.put("count",myCoursePage.getTotal());
+        myCourseMaps.put("code","");
+        myCourseMaps.put("msg","");
+        myCourseMaps.put("data",myCourses);
+
+        return myCourseMaps;
     }
 }

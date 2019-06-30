@@ -73,11 +73,11 @@ spring:
     timeout: 1000
 
   #配置热部署
-  devtools:
-    restart:
-      enabled: true
-      #设置重启的目录
-      additional-paths: src/main/java
+#  devtools:
+#    restart:
+#      enabled: true
+#      #设置重启的目录
+#      additional-paths: src/main/java
 
 #配置Mybatis参数
 mybatis:
@@ -96,8 +96,8 @@ mybatis:
   #logging:
   #config: classpath:text.xml
 #pagehelper分页插件配置
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql

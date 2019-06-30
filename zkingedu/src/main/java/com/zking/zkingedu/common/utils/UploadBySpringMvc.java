@@ -1,5 +1,6 @@
 package com.zking.zkingedu.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.UserService;
@@ -13,11 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UploadBySpringMvc{
     @Autowired
     private UserService userService;
+
 
     @RequestMapping(value = "fileUploadPage",produces = "application/text;charset=utf-8")
     public String fileUploadPage(MultipartFile file, HttpServletRequest request){
@@ -52,4 +56,36 @@ public class UploadBySpringMvc{
     }
 
 
+    @RequestMapping(value = "UploadPage")
+    @ResponseBody
+    public String fileUploadPage2(MultipartFile file, HttpServletRequest request){
+        System.out.println("来了");
+        //判断文件是否为空
+        if(!file.isEmpty()){
+            //文件存放路径
+            String path = request.getServletContext().getRealPath("/images/");
+            //文件名称
+            String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
+            File destFile = new File("F:\\git\\zkingedu2\\zkingedu\\target\\classes\\static\\user\\img",name);
+            System.out.println(name);
+            try {
+                //转存文件
+                file.transferTo(destFile);
+            } catch (IOException e) {
+                System.out.println("123");
+                e.printStackTrace();
+            }
+
+            Gson gson = new Gson();
+            Map<String,Object> map = new HashMap<>();
+            map.put("name","/user/img/"+name);
+            String str = gson.toJson(map);
+            return str;
+        }
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap<>();
+        map.put("name","为空");
+        String str = gson.toJson(map);
+        return str;
+    }
 }

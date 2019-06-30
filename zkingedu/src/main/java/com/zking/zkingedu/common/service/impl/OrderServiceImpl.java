@@ -1,6 +1,7 @@
 package com.zking.zkingedu.common.service.impl;
 
 import com.zking.zkingedu.common.dao.OrderDao;
+import com.zking.zkingedu.common.model.Course;
 import com.zking.zkingedu.common.model.Order;
 import com.zking.zkingedu.common.service.OrderService;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int delOrderByID(String orderID) {
         return orderDao.delOrderByID(orderID);
+    }
+
+    /**
+     * userinfo.html 我的课程
+     *
+     * @param userID 用户id
+     * @return
+     */
+    @Override
+    public List<Course> getMyCourses(Integer userID) {
+        return orderDao.getMyCourses(userID);
     }
 }

@@ -13,7 +13,7 @@
 
     <insert id="addQqLogin" parameterType="user">
         insert into t_user(user_img,user_phone,user_name,user_password,user_integrsl,user_state,user_regTime,user_openid)
-        values(#{user.userImg},#{user.userPhone},#{user.userName},#{user.userPassword},#{user.userIntegrsl},#{user.userState},#{user.userRegTime},#{user.user_openid});
+        values(#{user.userImg},#{user.userPhone},#{user.userName},#{user.userPassword},#{user.userIntegrsl},#{user.userState},#{user.userRegTime},#{user.userOpenID});
     </insert>
 
     <select id="queryPhone" resultType="String">
@@ -49,7 +49,7 @@
        <if test="user.userImg != null">
            update t_user set user_img=#{user.userImg} where user_id=#{user.userID}
        </if>
-       <if test="user.userPassword!=null">
+       <if test="user.userPassword ! =null">
            update t_user set user_password=#{user.userPassword} where user_id=#{user.userID}
        </if>
     </update>
@@ -59,7 +59,47 @@
         where user_openid=#{openId}
     </select>
 
+    <select id="queryUserByEmailOrPhone" resultType="user">
+        <if test="user.userEmail!=null">
+            select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+            where user_email=#{user.userEmail}
+        </if>
+        <if test="user.userPhone!=null">
+            select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+            where user_phone=#{user.userPhone}
+        </if>
+    </select>
 
+    <update id="updatePwdByEmail">
+            update t_user set user_password=#{pwd} where user_email=#{email}
+    </update>
+
+    <update id="updatePwdByPhone">
+            update t_user set user_password=#{pwd} where user_phone=#{phone}
+    </update>
+
+    <select id="getAlluser" resultType="user">
+        select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+        limit #{page},#{size}
+    </select>
+
+    <select id="getAllusery" resultType="user">
+        select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+    </select>
+
+    <update id="banORout">
+        <if test="typeId==1">
+            update t_user set user_state=1  where user_id=#{userId};
+        </if>
+        <if test="typeId==0">
+            update t_user set user_state=0  where user_id=#{userId};
+        </if>
+    </update>
+
+    <select id="getAlluseryCheck" resultType="user">
+       select user_id,user_img,user_email,user_phone,user_name,user_password,user_integrsl,user_state,user_IP,user_lastTime,user_regTime,user_openid from t_user
+       where ${type} like '%${value}%'
+    </select>
     <!--<select id="getUserByname" resultMap="userRolePermission" >
       select * from t_user a, t_role b ,t_permission c ,t_user_role d ,t_role_permission e where a.uid=d.uid
 and b.rid=d.rid and b.rid = e.rid and c.pid = e.pid and uname=#{uname}

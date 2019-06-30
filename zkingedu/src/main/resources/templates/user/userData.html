@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>yhjm</title>
+    <link rel="stylesheet" href="/user/layui/css/layui.css">
+</head>
+<body onload="userData()">
+
+<script type="text/html" id="a">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">解封</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">封禁</a>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <a class="layui-btn layui-btn-xs" lay-event="out">解封</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ban">封禁</a>
+    </div>
+</script>
+
+
+    <table id="userTable" lay-filter="test"></table>
+<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/layui/layui.js"></script>
+    <script th:inline="none">
+        function userData(value,type) {
+            var date;
+            if(value==null&&type==null){
+                value='';
+                $.ajax({
+                    url:'/userAll',
+                    type:'post',
+                    async:false,
+                    success:function (data) {
+                        date = eval(""+data+"");
+                    },error:function () {
+                    }
+                });
+            }else{
+                $.ajax({
+                    url:'/userAllCheck',
+                    type:'post',
+                    async:false,
+                    data:{
+                      value:value,
+                      type:type
+                    },
+                    success:function (data) {
+                        date = eval(""+data+"");
+                    },error:function () {
+                    }
+                });
+            }
+
+
+
+            layui.use('table', function(){
+                var table = layui.table;
+                table.render({
+                    title:'用户表',
+                    elem: '#userTable',
+                    data:date,
+                    page: {limit:2,limits:[2,4,6,8,10]},
+                    toolbar:'<div class="layui-input-inline">\n' +
+                        '<div class="layui-form-item">\n' +
+                        '    <div class="layui-input-inline">\n' +
+                        '      <select id="type">\n' +
+                        '        <option value="user_name" >按用户名</option>\n' +
+                        '        <option value="user_phone">按手机号</option>\n' +
+                        '      </select>\n' +
+                        '    </div>'+
+                        '        <input type="text" id="value" class="layui-form-label" value="'+value+'" lay-event="fan"  placeholder="请输入搜索内容"  style="margin-top: 3px;width: 200px;height:32px;text-align: left"/>\n' +
+                        '        <button class="layui-btn layui-btn-sm" lay-event="fan" style="margin-top: 3px;" onclick="check()">搜索</button>\n' +
+                        '    </div>',
+                    cols: [[
+                        {type:'radio'}
+                        ,{field:'userID',  title: 'ID', sort: true}
+                        ,{field:'userEmail',  title: '用户邮箱'}
+                        ,{field:'userPhone',  title: '用户手机', sort: true}
+                        ,{field:'userName',  title: '用户名'}
+                        ,{field:'userIntegrsl', title: '积分', minWidth: 100}
+                        ,{field:'userState',  title: '封禁状态', sort: true}
+                        ,{field:'userIP',  title: '上次登录IP地址'}
+                        ,{field:'userLastTime',  title: '上次登录时间',width:180}
+                        ,{field:'userOpenID',  title: '用户类型', sort: true}
+                        ,{field:'userRegTime',  title: '注册时间', sort: true,width:180}
+                        ,{field:'right',title:'操作',toolbar:'#toolbarDemo'}
+                    ]]
+                });
+
+
+            });
+        }
+
+
+        layui.use('table', function(){
+            var table = layui.table;
+            //头工具栏事件
+            table.on('tool(test)', function(obj){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    if(obj.event=='out'){
+                        if(obj.data.userState=='封禁'){
+                            layer.confirm('确认解封该用户吗？',function (index) {
+                                $.ajax({
+                                    url:'/outORban',
+                                    type:'post',
+                                    async:false,
+                                    data:{
+                                        userId:obj.data.userID,
+                                        typeId:0
+                                    },
+                                    success:function (data) {
+                                        if(data==1){
+                                            layer.msg('操作完成',{time:1200});
+                                            userData();
+                                        }else{
+                                            layer.msg('操作失败',{time:1200});
+                                            userData();
+                                        }
+                                    },
+                                    error:function () {
+                                        console.log("解封错误");
+                                        userData();
+                                    }
+                                });
+
+                                layer.close(index);
+                            });
+
+                        }else{
+                            layer.msg('该用户未被封禁', {
+                                time: 1200
+                            });
+                        }
+                    }else{
+                        if(obj.data.userState=='正常'){
+                            layer.confirm('确认封禁该用户吗？',function (index) {
+                                $.ajax({
+                                    url:'/outORban',
+                                    type:'post',
+                                    async:false,
+                                    data:{
+                                        userId:obj.data.userID,
+                                        typeId:1
+                                    },
+                                    success:function (data) {
+                                        if(data==1){
+                                            layer.msg('操作完成',{time:1200});
+                                            userData();
+                                        }else{
+                                            layer.msg('操作失败',{time:1200});
+                                            userData();
+                                        }
+                                    },
+                                    error:function () {
+                                        console.log("封禁错误");
+                                        userData();
+                                    }
+                                });
+                                layer.close(index);
+                            });
+
+                        }else{
+                            layer.msg('该用户已被封禁', {
+                                time: 1200
+                            });
+                        }
+                    }
+                });
+
+            });
+        });
+
+        function check() {
+            userData($('#value').val(),$('#type').val());
+        }
+    </script>
+</body>
+</html>

@@ -4,6 +4,15 @@
 <mapper namespace="com.zking.zkingedu.common.dao.AdvertisingDao">
 
     <!--广告接口Mapper-->
+    <select id="getAllAdvertising" resultType="advertising">
+        select advertising_id,advertising_img,advertising_url,advertising_state from t_advertising
+    </select>
 
+    <insert id="addAdvertising" parameterType="advertising">
+        insert into t_advertising(advertising_img,advertising_url,advertising_state) values (#{advertising.advertisingImg},#{advertising.advertisingURL},#{advertising.advertisingState})
+    </insert>
 
+    <update id="updateAdvertising">
+        update t_advertising set advertising_state=${type} where advertising_id=${aid}
+    </update>
 </mapper>

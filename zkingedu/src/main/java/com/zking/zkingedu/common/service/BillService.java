@@ -24,4 +24,18 @@ public interface BillService {
      */
     List<Bill> myBills(Integer billID);
 
+    /**
+     * 后台的账单记录统计   billShow.html
+     * @param bill
+     * @return
+     */
+    List<Bill> getAdminBills(Bill bill);
+
+    /**
+     * 后台账单记录的删除  billShow.html
+     * @param billID
+     * @return
+     */
+    int delBill(Integer billID);
+
 }
