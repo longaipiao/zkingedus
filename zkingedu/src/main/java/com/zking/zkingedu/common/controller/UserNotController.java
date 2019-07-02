@@ -3,6 +3,7 @@ package com.zking.zkingedu.common.controller;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IpAddress;
+import com.zking.zkingedu.common.utils.MailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,20 @@ public class UserNotController {
             n = userService.updatePwdByPhone(pORe,pwd);
         }
         return n+"";
+    }
+
+    @RequestMapping(value = "/sendMail")
+    @ResponseBody
+    public String sEmail(String Email,String code){
+        System.out.println(Email+":::::"+code);
+        try {
+            MailUtil.configMail(Email, code);
+            return "1";
+        } catch (Exception e) {
+            System.out.println("发送邮件错误");
+            e.printStackTrace();
+        }
+        return "2";
     }
 
 

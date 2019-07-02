@@ -82,7 +82,6 @@
 }
 </style>
 
-    <!--自定义js-->
 
 </head>
 
@@ -173,17 +172,17 @@
 <!-- 图片轮播部分 -->
 <div class="carousel slide" id="lb" style="width:100%;">
     <!-- 三个小按钮区域 -->
-    <ol class="carousel-indicators">
+    <ol class="carousel-indicators" id="buttonx">
         <li data-target="#lb" data-slide-to="0"></li>
         <li data-target="#lb" data-slide-to="1"></li>
         <li data-target="#lb" data-slide-to="2"></li>
     </ol>
     <!-- 图片区域 -->
-    <div class="carousel-inner">
+    <div class="carousel-inner" id="GgImg">
         <div class="item active">
             <a href="/user/index"><img src="/user/img/banner_001.jpg" ></a>
         </div>
-        <div class="item">
+        <div class="item ">
             <a href="/user/index"><img src="/user/img/banner_002.jpg" ></a>
         </div>
         <div class="item">
@@ -312,7 +311,6 @@
             <span class="line"></span>
         </div>
 		<div class="clearfix courses">
-
 
 
 
@@ -650,6 +648,32 @@
     <script src="/user/zc.js"></script>
     <script src="/user/loginCheck.js"></script>
     <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
+    <script>
+        $.ajax({
+            url:'/getGg',
+            type:'post',
+            async:false,
+            success:function (data) {
+                var Ggdata = eval(""+data+"");
+                var text = "";
+                var text2 = "";
+                for(var i=0; i<Ggdata.length; i++){
+                    text2 += "<li data-target=\"#lb\" data-slide-to=\""+i+"\"></li>";
+                    if(i==0){
+                        text+='<div class="item active"><a href="/user/index"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
+                    }else{
+                        text+='<div class="item"><a href="/user/index"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
+                    }
+                }
+                $('#buttonx').html(text2);
+                $('#GgImg').html(text);
+            },
+            error:function () {
+                console.log('Ggs Error');
+            }
+        });
+
+    </script>
    <script>
        /* Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
             release: '3.12.13'
@@ -695,7 +719,7 @@
                 }
             },
             error:function(){
-                alert("接口回调异常");
+               console.log("接口回调异常");
             }
         });
     </script>
@@ -802,79 +826,13 @@
         <!-- 轮播图自动切换 -->
         <script type="text/javascript">
             $("#lb").carousel({
-                interval:5000 //每隔2秒自动切换图片
+                interval:3000 //每隔2秒自动切换图片
             })
         </script>
 
     </div>
 </div>
 <script src="/user/layui/layui.js"></script>
-<script>
-    var index;
-    function pass(){
-        layui.use('layer',function () {
-            var layer = layui.layer;
-            index = layer.open({
-                type: 1,
-                title :'找回密码',
-                content:$('#typeX'),
-                area :'auto',
-                maxHeight:200,
-                maxWidth :200
-            });
-        });
-    }
-    function phonePwd() {
-        layui.use('layer',function () {
-            var layer = layui.layer;
-            layer.close(index);
-            index = layer.open({
-                type: 1,
-                title :'找回密码',
-                content:$('#passwordPhone'),
-                area :'auto',
-                maxHeight:500,
-                maxWidth :600
-            });
-        });
-    }
 
-    function emailPwd() {
-        layui.use('layer',function () {
-            var layer = layui.layer;
-            layer.close(index);
-            index = layer.open({
-                type: 1,
-                title :'找回密码',
-                content:$('#passwordEmail'),
-                area :'auto',
-                maxHeight:500,
-                maxWidth :600
-            });
-        });
-    }
-</script>
 </body>
-<div id="typeX" style="display: none;">
-    <button type="button" class="layui-btn layui-btn-normal layui-btn-radius" id="phonePwd" onclick="phonePwd()" style="height: 120px">手机找回</button>
-    <button type="button" class="layui-btn layui-btn-warm layui-btn-radius" id="emailPwd" onclick="emailPwd()" style="height: 120px">邮箱找回</button>
-</div>
-
-<div id="passwordPhone" style="display: none;width: 600px;height: 350px">
-    <form>
-        <table>
-            <tbody>
-                <tr >
-                    <td style="width: 160px"><label style="width: 160px" class="layui-form-label">请输入手机号码：</label></td>
-                    <td style="width: 160px"> <input type="text" name="username" lay-verify="required" placeholder="请输入手机号码"  class="layui-input"></td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-</div>
-
-
-<div id="passwordEmail" style="display: none">
-
-</div>
 </html>

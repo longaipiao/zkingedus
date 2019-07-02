@@ -164,6 +164,20 @@ public class TestController {
         return "user/userData";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getGg")
+    public String testGg(){
+        List<Advertising> allAdvertising = advertisingService.getAllAdvertising();
+        List<Advertising> s = new ArrayList<>();
+        for (Advertising advertising : allAdvertising) {
+            if(advertising.getAdvertisingState()==0){
+                s.add(advertising);
+            }
+        }
+        Gson gson = new Gson();
+        return gson.toJson(s);
+    }
+
     @Resource
     private EmpDao empDao;
 

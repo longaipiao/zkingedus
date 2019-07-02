@@ -15,4 +15,8 @@
     <update id="updateAdvertising">
         update t_advertising set advertising_state=${type} where advertising_id=${aid}
     </update>
+
+    <select id="queryAdvertisingSum" resultType="long">
+        select count(*) from t_advertising where advertising_state=0;
+    </select>
 </mapper>

@@ -30,4 +30,9 @@ public class AdvertisingServiceImpl implements AdvertisingService {
     public int updateAdvertising(Integer aid, Integer type) {
         return advertisingDao.updateAdvertising(aid, type);
     }
+
+    @Override
+    public long queryAdvertisingSum() {
+        return advertisingDao.queryAdvertisingSum();
+    }
 }

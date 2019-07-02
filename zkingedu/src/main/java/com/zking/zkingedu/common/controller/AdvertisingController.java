@@ -26,6 +26,17 @@ public class AdvertisingController {
     @RequestMapping(value = "/state")
     @ResponseBody
     public String updateAdvertisingState(Integer type,Integer aid){
+        Long l = advertisingService.queryAdvertisingSum();
+        if(type==1){
+            if(l<=1){
+                return "4";
+            }
+        }else {
+            if(l>=5){
+                return "3";
+            }
+        }
+
         return advertisingService.updateAdvertising(aid,type)>0?"1":"2";
     }
 }

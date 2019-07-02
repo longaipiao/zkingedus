@@ -7,27 +7,24 @@ $(function(){
             code+=Math.floor(Math.random()*10);
         }
         alert(code);
-        /*$.ajax({
-                 type: 'post',
-                url: 'http://route.showapi.com/28-1',
+        $.ajax({
+                type: 'post',
+                url: 'user/sendMail',
                 dataType: 'json',
                 data: {
-                    "showapi_appid": '90784', //这里需要改成自己的appid
-                    "showapi_sign": '36bb53e6712946d5b8bfd554e602cd17',  //这里需要改成自己的应用的密钥secret
-                    "mobile":$('#phone').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
-                    "tNum":"T170317004265",
-                    "big_msg":""
-
+                    Email:$('#email').val(),
+                    code:code
                 },
-                error: function(XmlHttpRequest, textStatus, errorThrown) {
-                    alert("操作失败!");
+                error: function() {
+                    console.log('邮件验证码发送失败');
                 },
                 success: function(result) {
-                    console.log(result) //console变量在ie低版本下不能用
-                    //alert(result.showapi_res_code)
+                    if(result==1){
+                        console.log('邮件发送成功');
+                    }
                 }
-        });*/
+        });
+
         timeStart1();
     });
 
@@ -37,7 +34,7 @@ function timeStart1(){
         $('#getEmailCode').css("pointer-events","none");
         time=time-1;
         $('#getEmailCode').text("重新获取("+time+")");
-        setTimeout(timeStart,1000);
+        setTimeout(timeStart1,1000);
     }else{
         time=60;
         $('#getEmailCode').css("pointer-events","auto");

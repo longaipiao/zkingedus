@@ -28,4 +28,10 @@ public interface AdvertisingService {
      * @return
      */
     int updateAdvertising(@Param("aid") Integer aid, @Param("type") Integer type);
+
+    /**
+     * 查询已启用的广告数量
+     * @return
+     */
+    long queryAdvertisingSum();
 }

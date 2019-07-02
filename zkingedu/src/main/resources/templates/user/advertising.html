@@ -66,6 +66,8 @@ layui.use('table',function () {
                                 if(data=='1'){
                                     layer.msg('操作成功',{time:1200});
                                     loadGg();
+                                }else if(data=='3'){
+                                    layer.msg('已超过最大可上架广告数，最多上架五个广告',{time:1200});
                                 }else{
                                     layer.msg('操作失败',{time:1200});
                                 }
@@ -100,6 +102,8 @@ layui.use('table',function () {
                                 if(data=='1'){
                                     layer.msg('操作成功',{time:1200});
                                     loadGg();
+                                }else if(data=='4'){
+                                    layer.msg('已超过最大可下架广告数，最少保留一个广告',{time:1200});
                                 }else{
                                     layer.msg('操作失败',{time:1200});
                                 }

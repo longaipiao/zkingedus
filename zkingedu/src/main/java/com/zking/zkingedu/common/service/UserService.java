@@ -154,4 +154,6 @@ public interface UserService {
      * @return
      */
     int banORout(@Param("userId") Integer userId,@Param("typeId") Integer typeId);
+
+
 }
