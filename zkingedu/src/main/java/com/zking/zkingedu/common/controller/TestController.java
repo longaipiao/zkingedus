@@ -181,12 +181,12 @@ public class TestController {
     @Resource
     private EmpDao empDao;
 
-    @ResponseBody
-    @RequestMapping("/redis")
-    public List<Emp> getEmps(){
-        log.info("请求成功。。");
-        return empDao.getemps();
-    }
+//    @ResponseBody
+//    @RequestMapping("/redis")
+//    public List<Emp> getEmps(){
+//        log.info("请求成功。。");
+////        return empDao.getemps();
+//    }
 
     /**
      * layui测试页面

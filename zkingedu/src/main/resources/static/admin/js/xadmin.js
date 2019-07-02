@@ -19,8 +19,6 @@ $(function () {
         ,tabDelete: function(othis){
           //删除指定Tab项
           element.tabDelete('xbs_tab', '44'); //删除：“商品管理”
-          
-          
           othis.addClass('layui-btn-disabled');
         }
         ,tabChange: function(id){
@@ -111,10 +109,11 @@ $(function () {
 	//点击菜单显示效果	
 	$(document).ready(function() {
        $('.left-nav #nav li .sub-menu li ').click(function(){
-		   $(this).addClass('menu-current').siblings().removeClass('menu-current');
+		    $(this).addClass('menu-current').siblings().removeClass('menu-current');
 		   })
-    });	
-	
+    });
+
+    // $('body .left-nav #side-nav #nav .show-id').click(function (event) {
     $('.left-nav #nav li').click(function (event) {
 
         if($(this).children('.sub-menu').length){
@@ -133,7 +132,6 @@ $(function () {
                 $(this).siblings().removeClass('open');
             }
         }else{
-
             var url = $(this).children('a').attr('_href');
             var title = $(this).find('cite').html();
             var index  = $('.left-nav #nav li').index($(this));
@@ -149,9 +147,9 @@ $(function () {
             tab.tabAdd(title,url,index+1);
             tab.tabChange(index+1);
         }
-        
+
         event.stopPropagation();
-         
+
     })
     
 })
@@ -198,6 +196,83 @@ function x_admin_show(title,url,w,h){
         content: url
     });
 }
+function updatepwd(){
+    layer.open({
+        id:1,
+        type: 1,
+        title:'修改密码',
+        skin:'layui-layer-rim',
+        area: ['400px','260px'],
+        content: '<div class="layui-form-item">'
+            +'<label class="layui-form-label"> 旧密码</label>'
+            +' <div class="layui-input-block">'
+            +'<input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd0">'
+            +'</div></div>'
+            +'<div class="layui-form-item">'
+            +'<label class="layui-form-label"> 新 密 码</label>'
+            +' <div class="layui-input-block">'
+            +'<input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd1">'
+            +'</div></div>'
+            +'<div class="layui-form-item">'
+            +'<label class="layui-form-label">确认密码</label>'
+            +' <div class="layui-input-block">'
+            +'<input type="password" name="password" placeholder="请再次输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd2">'
+            +'</div></div>'
+        ,
+        btn:['保存','取消'],
+        btn1: function (index,layero) {
+            if($("#pwd0").val()==""){
+                layer.msg("旧密码不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                $("#pwd0").select();
+            }
+            else if($("#pwd").val()!=$("#pwd0").val()){
+                layer.msg("旧密码输入有误",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                $("#pwd0").select();
+            }
+            else if($("#pwd1").val()==""){
+                layer.msg("新密码不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                $("#pwd1").select();
+            }
+            else if($("#pwd2").val()==""){
+                layer.msg("再次输入不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                $("#pwd2").select();
+            }
+            else if($("#pwd1").val()!=$("#pwd2").val()){
+                layer.msg("两次密码输入不一致",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                $("#pwd2").select();
+            }
+            else{
+                $.ajax({
+                    url:'/admin/updateemp',
+                    type:'post',
+                    data:{
+                        empID:$("#empid").val(),
+                        empPassword:$("#pwd2").val()
+                    },
+                    success:function (result) {
+                        if(result=="ok"){
+                            layer.confirm('修改成功,跳转至登录页面,请重新登录', {
+                                btn : [ '确定' ]//按钮
+                            }, function(index) {
+                                window.location.href='/url/loginpage';
+                            });
+                        }else{
+                            layer.msg("出现bug了，请联系9527")
+                        }
+                    },
+                    error:function () {
+                        layer.msg("出现bug了，请联系921607915")
+                    }
+                });
+            }
+        },
+        btn2:function (index,layero) {
+            layer.close(index);
+        }
+    });
+}
+
+
 
 /*关闭弹出框口*/
 function x_admin_close(){
@@ -205,4 +280,20 @@ function x_admin_close(){
     parent.layer.close(index);
 }
 
+//动态加载 js /css
+function loadjscssfile(filename, filetype) {
+    if (filetype == "js") { //判定文件类型
+        var fileref = document.createElement('script')//创建标签
+        fileref.setAttribute("type", "text/javascript")//定义属性type的值为text/javascript
+        fileref.setAttribute("src", filename)//文件的地址
+    }
+    else if (filetype == "css") { //判定文件类型
+        var fileref = document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    if (typeof fileref != "undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+}
 

@@ -61,6 +61,7 @@ public class AliPayService {
         String form = "";
         try {
 
+            User user = (User) request.getSession().getAttribute("user");
             //充值金额
             charge.setChargeMoney(Integer.parseInt(totalAmount));
             //积分
@@ -68,30 +69,23 @@ public class AliPayService {
             //充值时间
             charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
-            //最后调试后修改正常数据
-            /*User user = (User) request.getSession().getAttribute("user");
-            charge.setChargeUid(user.getUserID());*/
+            //用户ID
+            charge.setChargeUid(user.getUserID());
 
-            //测试数据   用户ID
-            charge.setChargeUid(36);
             int i = chargeService.insertCharge(charge);
             if(i==0){
                 return "user/userInfo";
             } else {
                 //增加账单表的信息
                 bill.setBillIntegral(Integer.parseInt(body));//积分
-                bill.setBillType(1);//充值类型为1：收入
+                bill.setBillType(0);//充值类型为0：收入
                 bill.setBillTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//生成账单时间
                 bill.setBillContent(subject);//账单内容
-                //用户ID  后期修改
-                //bill.setBillUid(user.getUserID());
-                bill.setBillUid(36);//用户ID   测试
+                bill.setBillUid(user.getUserID());//用户ID
                 billService.insertBill(bill);
 
-                //后期修改
-                //userService.addIntegral(user.getUserID,body);
                 //用户增加积分
-                userService.addIntegral(36,body);
+                userService.addIntegral(user.getUserID(),body);
             }
 
 

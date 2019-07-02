@@ -22,6 +22,6 @@ public class Answer implements Serializable {
     private String answerAbcd;
     //答案内容
     private String answerContent;
-    //状态0正常1下架
+    //0对1错
     private Integer answerState;
 }

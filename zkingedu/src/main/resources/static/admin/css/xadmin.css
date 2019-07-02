@@ -52,8 +52,8 @@ body{
     font-size: 16px;
 }
 .login #darkbannerwrap {
-/*    background: url(../images/aiwrap.png);
-*/  width: 18px;
+    background: url();
+    width: 18px;
     height: 10px;
     margin: 0 0 20px -58px;
     position: relative;
@@ -399,7 +399,7 @@ xblock{
 .x-slide_left {
     width: 17px;
     height: 61px;
-    background: url(../images/icon.png) 0 0 no-repeat;
+    background: url() 0 0 no-repeat;
     position: absolute;
     top: 200px;
     left: 221px;

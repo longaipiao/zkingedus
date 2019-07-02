@@ -4,6 +4,8 @@
 <mapper namespace="com.zking.zkingedu.common.dao.CategoryDao">
 
     <!--题库类别接口Mapper-->
-
+    <select id="getCategory" resultType="Category">
+        select * from t_category
+    </select>
 
 </mapper>

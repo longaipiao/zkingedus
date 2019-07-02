@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>员工管理</title>
+</head>
+<link rel="stylesheet" th:href="@{/admin/lib/layui/css/layui.css}"/>
+<script th:src="@{/admin/lib/layui/layui.js}" charset="utf-8"></script>
+<body>
+<input  id="roleid" name="roleid" type="hidden" th:value="${roleid}">
+<input  id="empid" name="empid" type="hidden" th:value="${empid}">
+<form class="layui-form"  lay-filter="example">
+<div class="layui-form-item">
+  <label class="layui-form-label">角色选择</label>
+  <div class="layui-input-block" style="width: 200px;margin-top: 20px">
+    <select name="interest" lay-filter="aihao" id="xm">
+      <option value=""></option>
+    </select>
+  </div>
+</div>
+  <div class="layui-form-item" style="margin-top: 100px;margin-left: 100px">
+    <input class="layui-btn" type="button" lay-submit lay-filter="formDemo" value="修改">
+  </div>
+</form>
+
+<script>
+  layui.use(['table'], function(){
+    var $ = layui.jquery
+    var table = layui.table
+    ,form = layui.form;
+    var roleid = $("#roleid").val();
+    var empid = $("#empid").val();
+    //检查项目添加到下拉框中
+        $.ajax({
+          url: '/role/getrole',
+          dataType: 'json',
+          type: 'post',
+          success: function (data) {
+            $.each(data, function (index, item) {
+              $('#xm').append(new Option(item.roleName, item.roleID));// 下拉菜单里添加元素
+            });
+            layui.form.render("select");
+            var select = 'dd[lay-value=' + roleid + ']';
+            $('#xm').siblings("div.layui-form-select").find('dl').find(select).click();//设置选中
+            //重新渲染 固定写法
+          }
+        })
+
+    //提交监听
+
+    //监听提交
+    form.on('submit(formDemo)', function(data) {
+      $.ajax({
+        datatype: "json",
+        type: "post",
+        url: "/admin/updateemproleid",
+        data: {
+          empid: empid,
+          roleid:$("#xm").val()
+        },
+        success: function (result) {
+          if(result=='ok'){
+            layer.alert("角色修改成功",function(){
+              window.parent.location.reload();//刷新父页面
+              parent.layer.close(index);//关闭弹出层
+            });
+          }else{
+            layer.msg("出现bug了，请联系9527")
+          }
+        },
+        error: function () {
+          layer.msg("出现bug了，请联系110")
+        }
+      });
+
+    });
+  });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!--suppress ALL-->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+>
+<head>
+	<meta charset="UTF-8">
+	<title>zking小课堂</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/admin/css/font.css">
+    <link rel="stylesheet" href="/admin/css/xadmin.css">
+    <script src="/admin/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css"/>
+    <script src="/admin/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/admin/js/xadmin.js"></script>
+
+</head>
+<!--<shiro:hasPermission name="loginTrue">-->
+<body>
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo"><a href="index.html">zking小课堂</a></div>
+        <div class="left_open">
+            <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+        </div>
+
+        <ul class="layui-nav right" lay-filter="">
+            <li class="layui-nav-item">
+                <img th:src="${session.emp.empIntegral}" src="/user/img/1.jpg" class="layui-nav-img">
+            </li>
+          <li class="layui-nav-item">
+
+            <a href="javascript:;" th:text="${session.emp.empName}">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a onClick="x_admin_show('个人信息','/url/mymessage','500','600')">个人信息</a></dd>
+              <dd><a onClick="updatepwd()">修改密码</a></dd>
+              <dd><a href="/url/loginpage" onclick="if(confirm('确认退出登录吗？')==false)return false;">退出登录</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item to-index"><a href="http://localhost:8800" target=_blank>前台首页</a></li>
+        </ul>
+    </div>
+    <input  id="empid" name="empid" type="hidden" th:value="${session.emp.empID}">
+    <input  id="pwd" name="emppwd" type="hidden" th:value="${session.emp.empPassword}">
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+
+     <!-- 左侧菜单开始 -->
+    <div class="left-nav">
+      <div id="side-nav">
+
+      </div>
+    </div>
+    <!-- <div class="x-slide_left"></div> -->
+    <!-- 左侧菜单结束 -->
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+          <ul class="layui-tab-title">
+            <li class="home" id="zmsy"><i class="layui-icon">&#xe68e;</i>首页桌面</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src="https://www.baidu.com"></iframe>
+                <!--这里是首页桌面-->
+                <!--<iframe src="https://www.128gd.com"></iframe>-->
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="page-content-bg"></div>
+    <!-- 右侧主体结束 -->
+    <!-- 中部结束 -->
+    <script type="text/javascript">
+
+        //加载弹出层
+        layui.use(['form','element'],
+            function() {
+                layer = layui.layer;
+                element = layui.element;
+            });
+        $("#aid").on('click', function(){//设置菜单选中
+           $("#zmsy").click();
+        });
+
+        var empid = $("#empid").val();
+        var flag = false;    //标识，表示页面上数据还未处理完成
+        $(function(){
+            var flag = false;    //标识，表示页面上数据还未处理完成
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                async: false,//同步
+                url: "/menu/getmenus",//请求接口
+                data:{
+                    empid:empid
+                    // empid:1
+                },
+                success: function (data) {
+                    //先添加所有的主材单
+                    var content = '<ul id="nav">';
+                    $.each(data, function (i, obj) {
+                        content +='<li><a href="javascript:;"><i class="layui-icon">'+obj.menuImg;
+                        content +='</i><cite>'+obj.menuName+'</cite><i class="iconfont nav_right">&#xe6a7;</i></a>';
+                        content +=loadchild(obj.menus);
+                        content +='</li>';
+                    });
+                    content +='</ul>';
+                    // alert(content);
+                    $('#side-nav').html(content);
+                    flag = true;
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            });
+
+            var loadFile;
+            loadFile = setInterval(function() {//定时检测
+                if(flag) {//如果数据已经处理完毕
+                    loadjscssfile('/admin/layui/css/layui.css', "css"); //加载你的css文件
+                    loadjscssfile('/admin/css/xadmin.css', "css"); //加载你的css文件
+                    loadjscssfile('/admin/js/jquery.min.js', "js"); //加载你的js文件
+                    loadjscssfile('/admin/layui/layui.js', "js"); //加载你的js文件
+                    loadjscssfile('/admin/js/xadmin.js', "js"); //加载你的js文件     //开启后  静态无法展开
+                    flag = false;
+                }
+            },50);
+
+        });
+        //组装子菜单的方法
+        function loadchild(obj) {
+            //alert(obj[0].treeTitile);
+            if (obj == null) {
+                return;
+            }
+            if (obj != null && obj.length > 0) {
+                var content = '<ul class="sub-menu">';
+                $.each(obj, function (i, note) {
+                    if (note == null) {
+                        return;
+                    }
+                    content += '<li><a _href="'+note.menuURL+'"><i class="layui-icon">'+note.menuImg+'</i><cite>'+note.menuName+'</cite></a></li>';
+                });
+                content += '</ul>';
+            }
+            return content;
+        }
+    </script>
+</body>
+<!--</shiro:hasPermission>-->
+</html>
+

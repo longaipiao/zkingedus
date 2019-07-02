@@ -6,22 +6,59 @@
     <!--员工接口Mapper-->
 
     <!--使全局的映射器启用或禁用缓存  开启二级缓存-->
-    <cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>
+    <!--<cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>-->
     
     
-    <select id="getemps" resultType="emp">
-        select * from t_emp
+    <select id="getemps" resultType="Emp">
+        select * from t_emp where emp_name != 'admin'
+        <if test="str !=null">
+            and emp_name like #{str}
+        </if>
     </select>
 
-    <select id="getempbyempname" resultType="emp">
-        select * from t_emp where emp_name = #{empname}
+    <select id="getempbyempname" resultType="com.zking.zkingedu.common.model.Emp">
+        select * from t_emp where emp_name = #{empname} and emp_state=0
     </select>
 
-    <select id="getmenus" resultType="menu">
-        select e.* from t_emp a,t_role b,t_emp_role c,t_menu_role d,t_menu e
-        where a.emp_id=c.emp_id and b.role_id=c.role_id
-        and d.menu_id = e.menu_id and d.role_id = b.role_id
-        and a.emp_id = #{empid}
+    <delete id="delempbyid">
+        delete from t_emp where emp_id = #{empid}
+    </delete>
+
+    <update id="updateempbyid">
+        update t_emp set
+            <if test="empPassword != null">
+                emp_password = #{empPassword}
+            </if>
+            <if test="empState != null">
+                emp_state = #{empState}
+            </if>
+            <if test="empIntegral != null">
+                emp_integral = #{empIntegral}
+            </if>
+            <if test="empError != null">
+                emp_error = #{empError}
+            </if>
+        where emp_id = #{empID}
+    </update>
+    <!--添加后返回主键-->
+     <insert id="addemp" parameterType="Emp"  useGeneratedKeys="true" keyProperty="empID" keyColumn="emp_id">
+         insert into t_emp(emp_name,emp_password,emp_integral,emp_time,emp_state,emp_error)
+         values (#{empName},#{empPassword},#{empIntegral},#{empTime},#{empState},#{empError})
+     </insert>
+
+    <select id="getroleid" resultType="_int" >
+        select role_id from t_emp_role where emp_id = #{empid}
     </select>
 
+    <update id="updateemproleid">
+        update t_emp_role set role_id=#{roleid} where emp_id = #{empid}
+    </update>
+
+    <insert id="addt_emp_role">
+        insert into t_emp_role(emp_id,role_id) values (#{empid},#{roleid})
+    </insert>
+
+    <select id="getrole" resultType="java.lang.String">
+         select c.role_name from t_emp_role a,t_emp b,t_role c where a.emp_id = b.emp_id and a.role_id = c.role_id and b.emp_id = #{empid}
+    </select>
 </mapper>

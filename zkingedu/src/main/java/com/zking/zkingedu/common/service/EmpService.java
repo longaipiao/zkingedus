@@ -1,7 +1,7 @@
 package com.zking.zkingedu.common.service;
 
 import com.zking.zkingedu.common.model.Emp;
-import com.zking.zkingedu.common.model.Menu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,9 +10,21 @@ import java.util.List;
  */
 public interface EmpService {
     //查询所有员工
-    List<Emp> getemps();
+    List<Emp> getemps(String str);
     //按照条件查询查询员工
     Emp getempbyempname(String empname);
-    //根据用户ID查询该用户该用户所有的菜单
-    List<Menu> getmenus(Integer empid);
+    //删除员工
+    int delempbyid(@Param("empid") Integer empid);
+    //增加员工
+    int addemp(Emp emp);
+    //修改员工
+    int updateempbyid(Emp emp);
+    //按照员工ID查看角色ID
+    int getroleid(Integer empid);
+    //修改员工的角色ID
+    int updateemproleid(@Param("empid") Integer empid,@Param("roleid") Integer roleid);
+    //添加t_emp_role表
+    int addt_emp_role(@Param("empid") Integer empid,@Param("roleid") Integer roleid);
+    //按照员工ID查看角色
+    String getrole(@Param("empid") Integer empid);
 }
