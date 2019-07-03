@@ -46,4 +46,15 @@ public class SystemServiceImpl implements SystemService {
     public List<System> sysList(Map query) {
         return systemDao.sysList(query);
     }
+
+    /**
+     * 根据体系Id修改体系图片路径
+     * @param systemID
+     * @param systemImg
+     * @return
+     */
+    @Override
+    public Integer upSysimg(String systemID, String systemImg) {
+        return systemDao.upSysimg(systemID,systemImg);
+    }
 }

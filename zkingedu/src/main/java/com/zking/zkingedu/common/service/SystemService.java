@@ -28,4 +28,12 @@ public interface SystemService {
      * @return
      */
     List<System> sysList(Map query);
+
+    /**
+     * 根据体系Id修改体系图片路径
+     * @param systemID
+     * @param systemImg
+     * @return
+     */
+    Integer upSysimg(String systemID,String systemImg);
 }

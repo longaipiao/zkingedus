@@ -6,12 +6,12 @@
     <cache />
     <!--获取所有体系-->
     <select id="systems" resultType="System">
-        select * from t_system where system_fid=#{systemFid} and system_state=0
+        select * from t_system where system_fid=#{systemFid}
     </select>
 
     <!--根据体系Id查询体系-->
     <select id="system" resultType="System">
-        select * from t_system where system_id=#{systemID} and system_state=0
+        select * from t_system where system_id=#{systemID}
     </select>
 
 
@@ -19,5 +19,10 @@
     <select id="sysList" resultType="System">
         select * from t_system
     </select>
+
+    <!--根据体系Id修改体系图片路径-->
+    <update id="upSysimg">
+        update t_system set system_img=#{systemImg} where system_id=#{systemID}
+    </update>
 
 </mapper>

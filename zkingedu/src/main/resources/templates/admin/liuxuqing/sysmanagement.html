@@ -56,48 +56,65 @@
 </div>
 
 <!--修改体系弹出层-->
-<div class="layui-row" id="systemShow" style="display:none;margin-left: 15%;">
-    <div class="layui-col-md10">
-        <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
-            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemID" autocomplete="off" class="layui-input" >
+<form class="layui-form" action="aa">
+    <div class="layui-row" id="systemUpd" style="display:none;margin-left: 15%;">
+        <div class="layui-col-md10">
+            <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
+                <div class="layui-input-block"><input type="text" readonly="readonly" name="systemID" id="upsystemID" autocomplete="off" class="layui-input" >
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item"><label class="layui-form-label">体系名称：</label>
-            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemName" autocomplete="off" class="layui-input">
+            <div class="layui-form-item"><label class="layui-form-label">体系名称：</label>
+                <div class="layui-input-block"><input type="text" id="upsystemName" name="systemName" autocomplete="off" class="layui-input">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item"><label class="layui-form-label">所属体系：</label>
-            <div class="layui-input-block"><input type="text" readonly="readonly" id="systemFName" autocomplete="off" class="layui-input">
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属体系</label>
+                <div class="layui-input-block">
+                    <select id="upsystemFName" name="systemFid">
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item"><label class="layui-form-label">体系简介：</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" readonly="readonly" id="systemDesc" class="layui-textarea"></textarea>
+            <div class="layui-form-item"><label class="layui-form-label">体系简介：</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" id="upsystemDesc" name="systemDesc" class="layui-textarea"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
-            <div class="layui-input-block">
-                <img style="width: 100%;height: 100%;" id="systemImg">
+
+            <!--图片上传以及展示-->
+            <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
+                <div class="layui-input-block">
+                    <img style="width: 100%;height: 100%;" id="upsystemImg" name="systemImg">
+                    <!--图片上传失败重试按钮-->
+                    <p id="demoText"></p>
+                </div>
+            </div>
+            <!--form表单提交-->
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="upsys">修改完成</button>
+                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
-<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
 <!--引入LayUI js-->
 <script src="/user/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">
-    layui.use(['layer', 'table', 'element'], function () {
-        var layer = layui.layer //弹层
+    layui.use(['layer', 'table', 'element','form','upload'], function () {
+        var $= layui.jquery
+            , layer = layui.layer //弹层
             , table = layui.table //表格
             , element = layui.element //元素操作
             , form = layui.form //表单
+            , upload= layui.upload //文件上传
 
-        //监听操作栏
+        //监听操作栏(查看、修改)
         table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得点击行数据
                 ,layEvent = obj.event; //获得 lay-event 对应的值，判断进行的操作
-            if(layEvent=='detail'){//查询操作
+            if(layEvent=='detail'){//查看操作
                 //给弹出层赋值
                 $("#systemID").val(data.systemID);
                 $("#systemName").val(data.systemName);
@@ -109,7 +126,7 @@
                 //打开弹出层
                 layer.open({
                     type: 1
-                    ,title: "信息审核" //弹出层标题
+                    ,title: "体系详情" //弹出层标题
                     ,area: ['800px', '570px'] //弹出层大小
                     ,content: $("#systemShow") //弹出层内容
                     ,btn: '关闭全部' //弹出层按钮
@@ -120,21 +137,101 @@
                     }
                 });
             }else if(layEvent=='edit'){ //修改操作
-                alert("修改操作");
-                //打开弹出层
-                layer.open({
-                    type: 1
-                    ,title: "信息审核" //弹出层标题
-                    ,area: ['800px', '570px'] //弹出层大小
-                    ,content: $("#systemShow") //弹出层内容
-                    ,btn: '关闭全部' //弹出层按钮
-                    ,btnAlign: 'c' //按钮居中
-                    ,shade: 0 //不显示遮罩
-                    ,yes: function(){
-                        layer.closeAll();
+                //获取所有父体系
+                $.ajax({
+                    url: "/systems",
+                    type:"post",
+                    contentType : "application/json",//应用类型/json
+                    data:JSON.stringify({
+                        systemID:0
+                    }),
+                    success:function (systems) {
+                        //拼接下拉框
+                        var content='<option value="0" selected="selected">无</option>';
+                        for(var i=0;i<systems.data.length;i++){
+                            //判断选中
+                            content+='<option value="'+systems.data[i].systemID+'">'+systems.data[i].systemName+'</option>';
+                        }
+                        //给弹出层赋值
+                        $("#upsystemFName").html(content);
+                        $("#upsystemID").val(data.systemID);
+                        $("#upsystemName").val(data.systemName);
+                        $("#upsystemDesc").val(data.systemDesc);
+                        //体系图片赋值
+                        $("#upsystemImg").attr("src",data.systemImg);
+                        //设置下拉框选中
+                        $("#upsystemFName").find("option[value='"+data.systemFid+"']").prop("selected",true);
+                        //渲染form表单
+                        form.render();
+
+                        //打开弹出层
+                        layer.open({
+                            type: 1
+                            ,title: "体系修改" //弹出层标题
+                            ,area: ['800px', '570px'] //弹出层大小
+                            ,content: $("#systemUpd") //弹出层内容
+                            ,shade: 0 //不显示遮罩
+                            ,yes: function(){
+                                layer.closeAll();
+                            }
+                        });
+
+                        //体系图片自动上传
+                        var uploadInst = upload.render({
+                            elem: '#upsystemImg' //图片上传点击事件
+                            ,url: '/admin/upSysimg'
+                            //传体系Id
+                            ,data: {
+                                sid: data.systemID
+                            }
+                            ,before: function(obj){
+                                //预读本地文件示例，不支持ie8
+                                obj.preview(function(index, file, result){
+                                    //图片预览（base64）
+                                    $('#upsystemImg').attr('src', result);
+                                });
+                            }
+                            //文件上传成功返回的参数
+                            ,done: function(res){
+                                alert(res.code);
+                                //上传失败
+                                if(res.code > 0){
+                                    return layer.msg('上传失败');
+                                }
+                            }
+                            ,error: function(){
+                                //演示失败状态，并实现重传
+                                var demoText = $('#demoText');
+                                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                                demoText.find('.demo-reload').on('click', function(){
+                                    uploadInst.upload();
+                                });
+                            }
+                        });
+
+                    },
+                    error:function () {
+                        alert("数据回调异常");
                     }
                 });
             }
+        });
+
+        //监听修改体系表单提交
+        form.on('submit(upsys)', function(data){
+            alert("控制提交"+JSON.stringify(data.field));
+            $.ajax({
+                url:'/admin/systemUpd',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    alert(res);
+                },
+                error:function (data) {
+                    layui.alert("接口回调失败");
+                }
+            }) ;
+            return false;
         });
 
         //获取所有体系

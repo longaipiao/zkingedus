@@ -7,14 +7,14 @@ import com.zking.zkingedu.common.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 体系Controller
@@ -131,6 +131,65 @@ public class SystemController {
         map1.put("data",systems);
 
         return map1;
+    }
+
+    /**
+     * 体系图片的修改
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/admin/upSysimg")
+    @ResponseBody
+    public String uploadSource(@RequestParam("file") MultipartFile file , HttpServletRequest request) {
+        java.lang.System.out.println("修改体系图片的方法");
+        //获取传来的体系Id
+        String sid = request.getParameter("sid");
+        //存放图片路径
+        String pathString = null;
+        //获取当前时间
+        String time=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        //获取图片在此项目的路径
+        String systemImg=null;
+        if(file!=null) {
+            pathString = "E:/代码/Y2/SpringBoot/zkingedus/zkingedu/src/main/resources/static/user/img/system/"+time+"_" +file.getOriginalFilename();
+            systemImg="/user/img/system/"+time+"_" +file.getOriginalFilename();
+        }
+        try {
+            File files=new File(pathString);
+            //打印查看上传路径
+            if(!files.getParentFile().exists()){
+                files.getParentFile().mkdirs();
+            }
+            file.transferTo(files);
+
+            java.lang.System.out.println("pathString:"+pathString+"  systemImg："+systemImg);
+
+            //根据体系Id修改图片路径
+            Integer integer = systemService.upSysimg(sid,systemImg);
+
+            java.lang.System.out.println(integer);
+
+            //图片上传成功返回参数
+            return "{\"code\":0}";
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            //上传失败返回参数
+            return "{\"code\":1}";
+        }
+    }
+
+    @RequestMapping(value = "/admin/systemUpd")
+    @ResponseBody
+    public String systemUpd(HttpServletRequest request){
+        //接收提交过来的体系数据
+        String systemID = request.getParameter("systemID");
+//        String systemID = request.getParameter("systemID");
+//        String systemID = request.getParameter("systemID");
+
+
+        return "";
     }
 
 }
