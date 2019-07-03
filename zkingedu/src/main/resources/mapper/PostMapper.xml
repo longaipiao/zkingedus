@@ -4,6 +4,33 @@
 <mapper namespace="com.zking.zkingedu.common.dao.PostDao">
 
     <!--帖子接口Mapper-->
+    <!--查询所有帖子和其发帖人-->
+    <select id="queryAllPost" resultType="map">
+        select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+        b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+        d.sort_name
+         from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id
+    </select>
 
+    <select id="queryPostByid" resultType="map">
+        <if test="post.postID!=null">
+            select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+            b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+            d.sort_name
+            from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id and a.post_id=#{post.postID}
+        </if>
+        <if test="post.postUid!=null">
+            select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+            b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+            d.sort_name
+            from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id and a.post_uid=#{post.postUid}
+        </if>
+    </select>
+
+
+    <insert id="addPost" parameterType="post">
+        insert into t_post(post_uid,post_name,post_content,post_time,post_num,post_state,sort_id)
+        values (#{post.postUid},#{post.postName},#{post.postConten},#{post.postTime},#{post.postNum},#{post.postState},#{post.sortID});
+    </insert>
 
 </mapper>

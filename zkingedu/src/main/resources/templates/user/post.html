@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Title</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="/user/styles/simditor.css" />
+<link rel="stylesheet" type="text/css" href="/user/layui/css/layui.css" />
+
+
+<body>
+
+<!--隐藏的表单-->
+
+
+
+
+
+<form class="layui-form"  id="formTable" style="">
+
+    <label class="layui-form-label" style="margin-left: -40px">标题：</label>
+    <input style="width: 190px" type="text" name="postName" id="postName" required lay-verify="required"  autocomplete="off" class="layui-input">
+    <div class="layui-form-item" style="float:left;margin-top: -38px;margin-left: 228px;">
+        <label class="layui-form-label" style='width: 120px'>请选择分区：</label>
+        <div class="layui-input-inline">
+            <select name="bbsType" id="bbsType">
+                <option th:each="type:${sorts}" th:value="${type.sortID}"><span th:text="${type.sortName}">浙江省111</span></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: -53px;float: left;margin-left: 588px;">
+        <label class="layui-form-label">帖子类型：</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="openOR" checked="" id="openOR" lay-skin="switch" lay-filter="switchTest" lay-text="公开|私密">
+        </div>
+    </div>
+    <textarea lay-verify="required" id="editor" name="content" placeholder="请勿发布、传播、储存违反国家法律法规帖子" autofocus></textarea>
+    <button style="margin-left: 20px;margin-top: 20px" type="button" lay-submit lay-filter="yikuze" class="layui-btn layui-btn-warm" >发布</button>
+    <button style="margin-left: 54px;margin-top: 20px" type="button" class="layui-btn layui-btn-danger" >取消发布</button>
+</form>
+<p></p>
+
+<script type="text/javascript" src="/user/layui/layui.js"></script>
+<script type="text/javascript" src="/user/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/user/scripts/module.js"></script>
+<script type="text/javascript" src="/user/scripts/hotkeys.js"></script>
+<script type="text/javascript" src="/user/scripts/uploader.js"></script>
+<script type="text/javascript" src="/user/scripts/simditor.js"></script>
+
+<script>
+    $(function(){
+        Simditor.locale = 'zh-CN';//设置中文
+        var editor = new Simditor({
+            textarea: $("#editor"),  //textarea的id
+            placeholder: '',
+            toolbar:  ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'], //工具条都包含哪些内容
+            pasteImage: true,//允许粘贴图片
+            defaultImage: '/simditor/images/image.png',//编辑器插入的默认图片，此处可以删除
+            upload : {
+                url : 'UploadPage', //文件上传的接口地址
+                params: null, //键值对,指定文件上传接口的额外参数,上传的时候随文件一起提交
+                fileKey:'file', //服务器端获取文件数据的参数名
+                connectionCount: 3,
+                leaveConfirm: '正在上传文件'
+            }
+        });
+
+        layui.use(['form','layer'],function () {
+            var form = layui.form;
+            var layer = layui.layer;
+            form.on('submit(yikuze)',function(data){
+                var formData = data.field;
+                var openOR;
+                (formData.openOR=='on')?openOR=0:openOR=1;
+
+                $.ajax({
+                    url:'/addBbs',
+                    type:'post',
+                    data:{
+                        postName:formData.postName,
+                        sortID:formData.bbsType,
+                        postState:openOR,
+                        postConten:formData.content
+                    },
+                    success:function(result){
+                        if(result=='1'){
+                            layer.msg('发布完成',{time:2000});
+                            location.href='/bbsIndex';
+                        }else{
+                            layer.msg('发布失败',{time:2000});
+                        }
+                    },
+                    error:function(){
+                        console.log('发布错误');
+                    }
+                });
+                return false;
+            });
+        });
+    });
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

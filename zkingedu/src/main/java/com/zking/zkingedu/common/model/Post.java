@@ -18,8 +18,6 @@ public class Post implements Serializable {
     private Integer postID;
     //用户id
     private Integer postUid;
-    //帖子类别
-    private Integer postCategory;
     //帖子标题
     private String postName;
     //帖子内容
@@ -30,5 +28,8 @@ public class Post implements Serializable {
     private Integer postNum;
     //状态0正常1封禁
     private Integer postState;
+    //帖子所属板块
+    private Integer sortID;
+
 
 }

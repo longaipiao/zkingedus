@@ -30,7 +30,7 @@ public class UploadBySpringMvc{
         if(!file.isEmpty()){
             //文件存放路径
             String path = request.getServletContext().getRealPath("/images/");
-            System.out.println(path);
+
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
             File destFile = new File("F:\\git\\zkingedu2\\zkingedu\\target\\classes\\static\\user\\img",name);
@@ -46,8 +46,9 @@ public class UploadBySpringMvc{
                 userService.updateData(u);
                 user.setUserImg("/user/img/"+name);
                 request.getSession().setAttribute("user",user);
+                System.out.println(name);
             } catch (IOException e) {
-                System.out.println("");
+
                 e.printStackTrace();
             }
             return "user/userinfo";

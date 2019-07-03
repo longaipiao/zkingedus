@@ -622,8 +622,6 @@
 
             data-flash="false"
 
-
-
         data-is-login=false
 
         data-is-jwt=true
@@ -660,9 +658,9 @@
                 for(var i=0; i<Ggdata.length; i++){
                     text2 += "<li data-target=\"#lb\" data-slide-to=\""+i+"\"></li>";
                     if(i==0){
-                        text+='<div class="item active"><a href="/user/index"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
+                        text+='<div class="item active"><a href="'+Ggdata[i].advertisingURL+'"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
                     }else{
-                        text+='<div class="item"><a href="/user/index"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
+                        text+='<div class="item"><a href="'+Ggdata[i].advertisingURL+'"><img style="width: 1920px;height: 700px" src="'+Ggdata[i].advertisingImg+'" ></a></div>';
                     }
                 }
                 $('#buttonx').html(text2);

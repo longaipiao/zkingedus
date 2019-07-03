@@ -4,5 +4,8 @@
 <mapper namespace="com.zking.zkingedu.common.dao.SortDao">
 
     <!--论坛类别接口Mapper-->
+    <select id="queryAllSort" resultType="sort">
+        select sort_id,sort_name from t_sort
+    </select>
 
 </mapper>

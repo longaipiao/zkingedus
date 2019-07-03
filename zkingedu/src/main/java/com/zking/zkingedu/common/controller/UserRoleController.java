@@ -32,6 +32,13 @@ public class UserRoleController {
         return "user/user123";
     }
 
+    /**
+     * 修改手机号码
+     * @param userId
+     * @param phone
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "updatePhone",method = RequestMethod.POST)
     public String updatePhone(Integer userId,String phone,HttpServletRequest request){
@@ -48,6 +55,13 @@ public class UserRoleController {
         return n+"";
     }
 
+    /**
+     * 修改邮箱地址
+     * @param userId
+     * @param email
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "updateEmail",method = RequestMethod.POST)
     public String updateEmail(Integer userId,String email,HttpServletRequest request){
@@ -65,6 +79,14 @@ public class UserRoleController {
         return n+"";
     }
 
+
+    /**
+     * 修改名字
+     * @param userId
+     * @param inputName
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "updateName",method = RequestMethod.POST)
     public String updateUname(Integer userId,String inputName,HttpServletRequest request){
@@ -84,6 +106,13 @@ public class UserRoleController {
         return n+"";
     }
 
+    /**
+     * 修改密码
+     * @param userId
+     * @param pwd
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "updatePwd",method = RequestMethod.POST)
     public String updatePwd(Integer userId,String pwd,HttpServletRequest request){

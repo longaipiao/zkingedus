@@ -4,24 +4,19 @@ package com.zking.zkingedu.common.controller;
 import com.google.gson.Gson;
 import com.zking.zkingedu.common.dao.EmpDao;
 import com.zking.zkingedu.common.model.Advertising;
-import com.zking.zkingedu.common.model.Emp;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.AdvertisingService;
+import com.zking.zkingedu.common.service.PostService;
 import com.zking.zkingedu.common.service.UserService;
-import com.zking.zkingedu.common.utils.IpAddress;
 import com.zking.zkingedu.common.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -38,6 +33,8 @@ public class TestController {
     private AdvertisingService advertisingService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private PostService postService;
     @RequestMapping("/")
     public String test(HttpServletRequest request){
 //        System.out.println("首页测试");
@@ -85,6 +82,12 @@ public class TestController {
         return gson.toJson(l);
     }
 
+    /**
+     * 展示后台用户数据
+     * @param value
+     * @param type
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/userAllCheck")
     public String dataTestCheck(String value,String type){
@@ -124,11 +127,19 @@ public class TestController {
     }
 
 
+    /**
+     * 广告入口
+     * @return
+     */
     @RequestMapping(value = "/advertising")
     public String checkadvertisingData(){
         return "user/advertising";
     }
 
+    /**
+     * 广告管理
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/advertisingData")
     public String getAllAdvertising(){
@@ -192,6 +203,34 @@ public class TestController {
      * layui测试页面
      * @return
      */
+    @RequestMapping(value = "bbsIndex")
+    public String test1(HttpServletRequest request){
+        request.setAttribute("Bbss",postService.queryAllPost());
+        return "user/bbsIndex";
+    }
+
+    @RequestMapping(value = "show")
+    public String test3(){
+        return "user/show";
+    }
+    @RequestMapping(value = "show2")
+    public String test4(){
+        return "user/show2";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @RequestMapping(value = "/layuitest")
     public String layuitest(){
         return "user/layuitest.html";

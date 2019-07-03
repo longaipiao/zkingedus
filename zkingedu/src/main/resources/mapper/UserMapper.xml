@@ -49,7 +49,7 @@
        <if test="user.userImg != null">
            update t_user set user_img=#{user.userImg} where user_id=#{user.userID}
        </if>
-       <if test="user.userPassword ! =null">
+       <if test="user.userPassword != null">
            update t_user set user_password=#{user.userPassword} where user_id=#{user.userID}
        </if>
     </update>

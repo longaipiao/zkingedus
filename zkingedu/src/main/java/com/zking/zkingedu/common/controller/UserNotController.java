@@ -27,6 +27,11 @@ public class UserNotController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 注册方法
+     * @param user
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/zc")
     public String zc(User user){
@@ -39,6 +44,11 @@ public class UserNotController {
         return userService.addUser(user)>0?"注册成功":"注册失败";
     }
 
+    /**
+     * 检查手机号是否已被注册
+     * @param userPhone
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/checkPhone")
     public String checkPhone(String userPhone){
@@ -49,6 +59,12 @@ public class UserNotController {
         return "2";
     }
 
+    /**
+     * 登录方法
+     * @param user
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/loginCheck")
     public String loginCheck(User user, HttpServletRequest request){
@@ -64,11 +80,21 @@ public class UserNotController {
         return "2";
     }
 
+    /**
+     * 跳转找回密码界面
+     * @return
+     */
     @RequestMapping(value = "zhPwd")
     public String zhpwd(){
         return "user/zhPwd";
     }
 
+    /**
+     * 检查账号或邮箱是否有在平台注册或绑定账号
+     * @param user
+     * @param type
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "checkPhoneOrEmail")
     public String checkPhoneOrEmail(User user,Integer type){
@@ -88,6 +114,12 @@ public class UserNotController {
        return "error";
     }
 
+    /**
+     * 找回密码方法
+     * @param pORe
+     * @param pwd
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "zhPassword")
     public String updatePwdEmailORPhone(String pORe,String pwd){
@@ -102,6 +134,12 @@ public class UserNotController {
         return n+"";
     }
 
+    /**
+     * 发送邮件方法
+     * @param Email
+     * @param code
+     * @return
+     */
     @RequestMapping(value = "/sendMail")
     @ResponseBody
     public String sEmail(String Email,String code){
@@ -115,6 +153,14 @@ public class UserNotController {
         }
         return "2";
     }
+
+
+
+
+
+
+
+
 
 
     /**
@@ -143,5 +189,6 @@ public class UserNotController {
         }
         return ret;
     }
+
 
 }
