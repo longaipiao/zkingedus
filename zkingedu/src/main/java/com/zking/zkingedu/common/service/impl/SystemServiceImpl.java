@@ -48,6 +48,16 @@ public class SystemServiceImpl implements SystemService {
     }
 
     /**
+     * 获取所有体系数量（后台）
+     * @param query
+     * @return
+     */
+    @Override
+    public Integer syscount(Map query) {
+        return systemDao.syscount(query);
+    }
+
+    /**
      * 根据体系Id修改体系图片路径
      * @param systemID
      * @param systemImg
@@ -56,5 +66,15 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public Integer upSysimg(String systemID, String systemImg) {
         return systemDao.upSysimg(systemID,systemImg);
+    }
+
+    /**
+     * 根据体系Id修改体系
+     * @param system
+     * @return
+     */
+    @Override
+    public Integer upSys(System system) {
+        return systemDao.upSys(system);
     }
 }

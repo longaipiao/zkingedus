@@ -76,6 +76,8 @@ public class SystemController {
         return "user/paths/show.html";
     }
 
+
+
     /**
      * 跳转到后台体系展示界面
      * @return
@@ -86,16 +88,28 @@ public class SystemController {
         return "admin/liuxuqing/sysmanagement.html";
     }
 
-
     /**
      * 获取所有体系（后台）
      * @return
      */
-    @RequestMapping("/sysList")
+    @RequestMapping("/admin/sysList")
     @ResponseBody
     public Map<String,Object> sysList(HttpServletRequest request){
         //查询体系的条件
         Map<String,Object> query=new HashMap<>();
+
+        //获取页码及展示数
+        Integer limit = Integer.parseInt(request.getParameter("limit"));
+        Integer page = (Integer.parseInt(request.getParameter("page"))-1)*limit;
+        String sysName = request.getParameter("sysName");
+        String fid = request.getParameter("fid");
+
+        java.lang.System.out.println("page："+page+"  limit："+limit+"  sysName："+sysName+"  fid："+fid);
+
+        query.put("page",page);
+        query.put("limit",limit);
+        query.put("sysName",sysName);
+        query.put("fid",fid);
 
         //获取所有体系
         List<System> sysList = systemService.sysList(query);
@@ -126,9 +140,14 @@ public class SystemController {
         }
         java.lang.System.out.println(systems);
 
+        //获取体系数量
+        Integer syscount = systemService.syscount(query);
+
         //返回的集合
         Map map1=new HashMap();
+        map1.put("code",0);
         map1.put("data",systems);
+        map1.put("count",syscount);
 
         return map1;
     }
@@ -180,16 +199,30 @@ public class SystemController {
         }
     }
 
+    /**
+     * 体系修改
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/admin/systemUpd")
     @ResponseBody
     public String systemUpd(HttpServletRequest request){
         //接收提交过来的体系数据
         String systemID = request.getParameter("systemID");
-//        String systemID = request.getParameter("systemID");
-//        String systemID = request.getParameter("systemID");
+        String systemName = request.getParameter("systemName");
+        String systemDesc = request.getParameter("systemDesc");
+        String systemFid = request.getParameter("systemFid");
 
+        System system=new System();
+        system.setSystemID(Integer.parseInt(systemID));
+        system.setSystemName(systemName);
+        system.setSystemFid(Integer.parseInt(systemFid));
+        system.setSystemDesc(systemDesc);
 
-        return "";
+        //根据体系Id修改体系
+        Integer n = systemService.upSys(system);
+
+        return n.toString();
     }
 
 }

@@ -33,10 +33,24 @@ public interface SystemDao {
     List<System> sysList(Map query);
 
     /**
+     * 获取所有体系数量（后台）
+     * @param query
+     * @return
+     */
+    Integer syscount(Map query);
+
+    /**
      * 根据体系Id修改体系图片路径
      * @param systemID
      * @param systemImg
      * @return
      */
     Integer upSysimg(@Param("systemID") String systemID, @Param("systemImg") String systemImg);
+
+    /**
+     * 根据体系Id修改体系
+     * @param system
+     * @return
+     */
+    Integer upSys(System system);
 }

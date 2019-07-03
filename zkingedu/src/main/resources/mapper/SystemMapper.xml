@@ -14,15 +14,45 @@
         select * from t_system where system_id=#{systemID}
     </select>
 
-
     <!--获取所有体系（后台）-->
     <select id="sysList" resultType="System">
-        select * from t_system
+        select * from t_system where 1=1
+        <if test="fid==0 or fid==null">
+            and system_fid=0
+        </if>
+        <if test="fid!=0 and fid!=null">
+            and system_fid>0
+        </if>
+        <if test="sysName!=null">
+            and system_name like '%${sysName}%'
+        </if>
+        <if test="page!=null">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <!--获取所有体系数量（后台）-->
+    <select id="syscount" resultType="Integer">
+        select count(*) from t_system where 1=1
+        <if test="fid==0 or fid==null">
+            and system_fid=0
+        </if>
+        <if test="fid!=0 and fid!=null">
+            and system_fid>0
+        </if>
+        <if test="sysName!=null">
+            and system_name like '%${sysName}%'
+        </if>
     </select>
 
     <!--根据体系Id修改体系图片路径-->
     <update id="upSysimg">
         update t_system set system_img=#{systemImg} where system_id=#{systemID}
+    </update>
+
+    <!--根据体系Id修改体系-->
+    <update id="upSys">
+        update t_system set system_name=#{systemName},system_fid=#{systemFid},system_desc=#{systemDesc} where system_id=#{systemID}
     </update>
 
 </mapper>
