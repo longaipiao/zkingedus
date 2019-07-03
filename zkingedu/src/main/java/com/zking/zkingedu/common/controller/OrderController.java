@@ -11,13 +11,14 @@ import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.OrderService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IdGeneratorUtils;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,30 +28,32 @@ import java.util.*;
  * @Author likai
  **/
 @Controller
+@Slf4j
+@Transactional
 public class OrderController {
 
-    @Autowired
+    @Resource
     private OrderService orderService;
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private BillService billService;
 
-    @Autowired
+    @Resource
     private CourseService courseService;
 
-    @Autowired
+    @Resource
     private Order order;
 
-    @Autowired
+    @Resource
     private Bill bill;
 
-    @Autowired
+    @Resource
     private User user;
 
-    @Autowired
+    @Resource
     private Course course;
     //当前时间
     String nowDate = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
@@ -78,7 +81,7 @@ public class OrderController {
         for (Order myOrder : myOrders) {
             myOrder.setCourse(courseService.getCourseByCourseID(myOrder.getOrderCid()));
         }
-
+        System.out.println();
         Map<String,Object> maps = new HashMap<>();
         maps.put("count",pageLine.getTotal());
         maps.put("code","");
@@ -99,7 +102,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/user/buyOrder")
     String  bitBuyCourse(String integral, String courseID, HttpServletRequest request){
-        System.out.println("============================>积分："+integral+"课程ID："+courseID+"<============================");
+        log.info("============================>积分："+integral+"课程ID："+courseID+"<============================");
 
         //得到session得到用户的所有信息
         User user = (User)request.getSession().getAttribute("user");
@@ -111,13 +114,14 @@ public class OrderController {
         Integer orderCid = orderService.getOrderCidByUserID(user.getUserID(),Integer.parseInt(courseID));
         //如果该用户已经购买
         if (orderCid!=null) {
-            System.out.println("==============================================已经购买");
+            log.info("==============================================已经购买");
             return "ALREADY_BUY";//让用户直接观看
         }
         else{//如果没有购买
             //如果用户的积分少于该课程的兑换积分
             if(userService.getUserByid(user.getUserID()).getUserIntegrsl()<Integer.parseInt(integral)){
-                System.out.println(user.getUserIntegrsl());
+                log.info("如果用户的积分少于该课程的兑换积分");
+                log.info("用户积分："+userService.getUserByid(user.getUserID()).getUserIntegrsl());
                 return "INTEGRAL_FEW";//提示用户积分不够提醒充值
             }
             else {
@@ -128,7 +132,7 @@ public class OrderController {
 
 
     /**
-     * show.html  开始学习没有购买   确认购买
+     * show.html  购买
      * @param integral
      * @param courseID
      * @param request
@@ -138,7 +142,7 @@ public class OrderController {
     @RequestMapping("/user/buyCourse")
     String buyCourse(String integral, String courseID, HttpServletRequest request){
 
-        System.out.println("============================>积分："+integral+"课程ID："+courseID+"<============================");
+        log.info("============================>积分："+integral+"课程ID："+courseID+"<============================");
         //得到session得到用户的所有信息
         User user = (User)request.getSession().getAttribute("user");
 
@@ -146,7 +150,7 @@ public class OrderController {
         //1.用户扣除积分
         userService.deducuIntegralWithUser(user.getUserID(),Integer.parseInt(integral));
         Course course = courseService.getCourseByCourseID(Integer.parseInt(courseID));
-        System.out.println("================================用户扣除积分成功================================");
+        log.info("================================用户扣除积分成功================================");
         //2.增加订单记录
         order.setOrderID(new IdGeneratorUtils().nextId());
         order.setOrderUid(user.getUserID());
@@ -154,7 +158,7 @@ public class OrderController {
         order.setChargeTime(nowDate);
         order.setOrderCid(Integer.parseInt(courseID));
         orderService.insertOrder(order);
-        System.out.println("================================添加订单成功================================");
+        log.info("================================添加订单成功================================");
         //3.增加账单记录
         bill.setBillUid(user.getUserID());
         bill.setBillType(1);
@@ -162,8 +166,7 @@ public class OrderController {
         bill.setBillIntegral(Integer.parseInt(integral));
         bill.setBillContent("购买《"+course.getCourseName()+"》,消费："+integral+"积分");
         billService.insertBill(bill);
-        System.out.println("================================添加账单成功================================");
-        //return "NOW_BUY";
+
         return "BUY_SUCCESS";
     }
 
@@ -179,10 +182,12 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping ("/admin/ordersAll")
-    Map<String,Object> getOrdersAll(@Param("page")Integer page,@Param("limit")Integer limit,@Param("search") String search,@Param("type") String type,Order order){
+    Map<String,Object> getOrdersAll(@Param("page")Integer page,@Param("limit")Integer limit,
+                                    @Param("search") String search,
+                                    @Param("type") String type,Order order){
         Map<String,Object> orderMaps = new HashMap<>();
 
-        System.out.println("类型："+type+"；文本框的值："+search);
+        log.info("类型："+type+"；文本框的值："+search);
 
         try {
             if(search!=null){
@@ -247,7 +252,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/user/Mycourses")
     Map<String,Object> userMycourse(@Param("page")Integer page,@Param("pageSize")Integer pageSize,HttpServletRequest request){
-        System.out.println("============================我的课程============================");
+        log.info("============================我的课程============================");
         User user = (User) request.getSession().getAttribute("user");
 
         Map<String,Object> myCourseMaps = new HashMap<>();
