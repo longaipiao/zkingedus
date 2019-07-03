@@ -4,16 +4,21 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.zking.zkingedu.common.config.AlipayConfig;
 import com.zking.zkingedu.common.model.Bill;
 import com.zking.zkingedu.common.model.Charge;
+import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.AliPayService;
 import com.zking.zkingedu.common.service.BillService;
 import com.zking.zkingedu.common.service.ChargeService;
+import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.PayUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
@@ -29,20 +34,21 @@ import java.util.Map;
  * @Author likai
  **/
 @Controller
+@Slf4j
+@Transactional
 public class AlipayController {
 
-    @Autowired
+    @Resource
     private AliPayService aliPayService;
-    @Autowired
+    @Resource
     private ChargeService chargeService;
-
-    @Autowired
+    @Resource
+    private UserService userService;
+    @Resource
     private BillService billService;
-
-    @Autowired
+    @Resource
     private Charge charge;
-
-    @Autowired
+    @Resource
     private Bill bill;
 
 
@@ -60,17 +66,11 @@ public class AlipayController {
      * @param body   商品描述
      * @return String
      */
-    String integral = "";
-    String money = "";
-    String content = "";
     @RequestMapping(value = "/pay")
     public String aliPay(String outTradeNo, String subject, String totalAmount, String body, HttpServletRequest request , HttpServletResponse response){
         // 为防止订单号重否 此处模拟生成唯一订单号
         outTradeNo = PayUtils.createUnilCode();
         subject = "充值积分";
-        integral = body;
-        money = totalAmount;
-        content = subject;
         //支付宝支付
         return aliPayService.alipay(outTradeNo,subject,totalAmount.toString(),body,AlipayConfig.notify_url,request,response);
     }
@@ -78,37 +78,38 @@ public class AlipayController {
     /**
      * 支付宝异步回调
      */
-    @GetMapping(value = "/alipay/orderNotify")
-    public String orderNotify(HttpServletRequest request,  HttpServletResponse response) throws Exception {
-        System.out.println("回调成功");
-        //充值金额
-        /*charge.setChargeMoney(Double.parseDouble(money));
+    /*@GetMapping(value = "/alipay/orderNotify")
+    public String orderNotify(HttpServletRequest request) throws Exception {
+        log.info("回调成功");
+
+        User user = (User) request.getSession().getAttribute("user");
+
+        //接收的金额
+        String total_amount = request.getParameter("total_amount");
+        //金额
+        int money = Integer.parseInt(total_amount.substring(0, total_amount.lastIndexOf(".")));
+
         //积分
-        charge.setChargeIntegral(Integer.parseInt(integral));
-        //充值时间
-        charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        int integral = money*10;
 
-        //最后调试后修改正常数据
-            *//*User user = (User) request.getSession().getAttribute("user");
-            charge.setChargeUid(user.getUserID());*//*
+        charge.setChargeMoney(money);//充值金额
+        charge.setChargeIntegral(integral);//积分
+        charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//充值时间
+        charge.setChargeUid(user.getUserID());//用户ID
+        log.info("================================充值记录添加成功================================");
 
-        //测试数据   用户ID
-        charge.setChargeUid(36);
-        int i = chargeService.insertCharge(charge);
-        if(i==0){
-            return "user/userInfo";
-        } else {
-            //增加账单表的信息
-            bill.setBillIntegral(Integer.parseInt(integral));//积分
-            bill.setBillType(1);//充值类型为1：收入
-            bill.setBillTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//生成账单时间
-            bill.setBillContent(content);//账单内容
-            //用户ID
-            //bill.setBillUid(user.getUserID());
-            bill.setBillUid(36);//用户ID   测试
-            billService.insertBill(bill);
-        }*/
-        return "user/userInfo";
-    }
+        //增加账单表的信息
+        bill.setBillIntegral(integral);//积分
+        bill.setBillType(0);//充值类型为0：收入
+        bill.setBillTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//生成账单时间
+        bill.setBillContent("充值积分");//账单内容
+        bill.setBillUid(user.getUserID());//用户ID
+        billService.insertBill(bill);
+        log.info("================================充值积分成功================================");
 
+        //用户增加积分
+        userService.addIntegral(user.getUserID(), "+integral+");
+        return "redirect:user/userInfo.html";
+
+    }*/
 }

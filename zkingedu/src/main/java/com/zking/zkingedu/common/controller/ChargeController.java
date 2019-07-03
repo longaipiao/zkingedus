@@ -5,12 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.zking.zkingedu.common.model.Charge;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.ChargeService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,15 +24,17 @@ import java.util.Map;
  * @Author likai
  **/
 @Controller
+@Slf4j
+@Transactional
 public class ChargeController {
 
-    @Autowired
+    @Resource
     private ChargeService chargeService;
 
-    @Autowired
+    @Resource
     private Charge charge;
 
-    @Autowired
+    @Resource
     private User user;
 
 
@@ -54,7 +58,7 @@ public class ChargeController {
     Map<String,Object> getCharges(@Param("page") Integer page, @Param("limit") Integer limit,@Param("search") String search,@Param("type") String type,Charge charge){
         Map<String,Object> chargesMap = new HashMap<>();
 
-        System.out.println("类型："+type+"；文本框的值"+search);
+        log.info("类型："+type+"；文本框的值："+search);
 
 
         try {
@@ -103,7 +107,7 @@ public class ChargeController {
     }
 
     /**
-     * @ResponseBody  处理前台404错误。Spring框架问题
+     * ResponseBody  处理前台404错误。Spring框架问题
      * 根据充值记录ID删除记录
      * @param chargeID
      */

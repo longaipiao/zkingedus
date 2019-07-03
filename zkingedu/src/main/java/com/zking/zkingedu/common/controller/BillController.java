@@ -3,16 +3,16 @@ package com.zking.zkingedu.common.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zking.zkingedu.common.model.Bill;
-import com.zking.zkingedu.common.model.Order;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.BillService;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +24,14 @@ import java.util.Map;
  * @Author likai
  **/
 @Controller
+@Slf4j
+@Transactional
 public class BillController {
 
-    @Autowired
+    @Resource
     private BillService billService;
 
-    @Autowired
+    @Resource
     private User user;
 
     @RequestMapping("/admin/billURL")
@@ -75,7 +77,7 @@ public class BillController {
     Map<String,Object> getOrdersAll(@Param("page")Integer page, @Param("limit")Integer limit, @Param("search") String search, @Param("type") String type,Bill bill){
         Map<String,Object> billMaps = new HashMap<>();
 
-        System.out.println("类型："+type+"；文本框的值："+search);
+        log.info("类型："+type+"；文本框的值："+search);
 
         try {
             if(search!=null){

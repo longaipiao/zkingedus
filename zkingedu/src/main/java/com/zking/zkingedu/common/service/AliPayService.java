@@ -10,9 +10,10 @@ import com.zking.zkingedu.common.model.AlipayBean;
 import com.zking.zkingedu.common.model.Bill;
 import com.zking.zkingedu.common.model.Charge;
 import com.zking.zkingedu.common.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,21 +25,20 @@ import java.util.Date;
  * @Author likai
  **/
 @Service
+@Slf4j
 public class AliPayService {
 
-    @Autowired
-    private ChargeService chargeService;
 
-    @Autowired
+    @Resource
     private BillService billService;
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private Charge charge;
 
-    @Autowired
+    @Resource
     private Bill bill;
 
     // 支付宝支付
@@ -61,32 +61,31 @@ public class AliPayService {
         String form = "";
         try {
 
-            User user = (User) request.getSession().getAttribute("user");
-            //充值金额
-            charge.setChargeMoney(Integer.parseInt(totalAmount));
-            //积分
-            charge.setChargeIntegral(Integer.parseInt(body));
-            //充值时间
-            charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            //得到session得到用户的所有信息
+            User sessionUser = (User)request.getSession().getAttribute("user");
+            //从DB获取用户信息
+            User user = userService.getUserByid(sessionUser.getUserID());
 
-            //用户ID
-            charge.setChargeUid(user.getUserID());
 
-            int i = chargeService.insertCharge(charge);
-            if(i==0){
-                return "user/userInfo";
-            } else {
-                //增加账单表的信息
-                bill.setBillIntegral(Integer.parseInt(body));//积分
-                bill.setBillType(0);//充值类型为0：收入
-                bill.setBillTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//生成账单时间
-                bill.setBillContent(subject);//账单内容
-                bill.setBillUid(user.getUserID());//用户ID
-                billService.insertBill(bill);
+            charge.setChargeMoney(Integer.parseInt(totalAmount));//充值金额
+            charge.setChargeIntegral(Integer.parseInt(body));//积分
+            charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//充值时间
+            charge.setChargeUid(user.getUserID());//用户ID
+            log.info("================================充值记录成功================================");
 
-                //用户增加积分
-                userService.addIntegral(user.getUserID(),body);
-            }
+            //增加账单表的信息
+            bill.setBillIntegral(Integer.parseInt(body));//积分
+            bill.setBillType(0);//充值类型为0：收入
+            bill.setBillTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//生成账单时间
+            bill.setBillContent(subject);//账单内容
+            bill.setBillUid(user.getUserID());//用户ID
+            billService.insertBill(bill);
+            log.info("================================充值账单成功================================");
+
+            //用户增加积分
+            userService.addIntegral(user.getUserID(),body);
+            log.info("================================用户增加积分成功================================");
+
 
 
             // 调用SDK生成表单
