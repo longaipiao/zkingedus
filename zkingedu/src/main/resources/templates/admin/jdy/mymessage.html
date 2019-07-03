@@ -10,9 +10,13 @@
 <div class="layui-inline" style="margin-left: 200px;margin-top: 20px">
   <img th:src="${session.emp.empIntegral}" src="//cdn.layui.com/avatar/168.jpg?t=1490352249902" class="layui-circle" width="100px" height="100px">
 </div>
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+
+<fieldset class="layui-elem-field">
   <legend>个人信息</legend>
-</fieldset>
+  <div class="layui-field-box">
+
+
+
 
 <form class="layui-form" action="" lay-filter="example">
 
@@ -31,20 +35,7 @@
     </div>
   </div>
 
-  <!--<div class="layui-form-item" style="display:none">-->
-    <!--<label class="layui-form-label">密码</label>-->
-    <!--<div class="layui-input-inline">-->
-      <!--<input th:value="${session.emp.empPassword}" id="pwd1" type="text" name="password"  lay-verify="pass" autocomplete="off" class="layui-input" style="width: 300px" disabled="disabled">-->
-    <!--</div>-->
-  <!--</div>-->
 
-  <!--<div class="layui-form-item">-->
-    <!--<label class="layui-form-label">密码</label>-->
-    <!--<div class="layui-input-inline">-->
-      <!--<input th:value="${session.emp.empPassword}" id="pwd2" type="password" name="password"  lay-verify="passb" autocomplete="off" class="layui-input" style="width: 300px" disabled="disabled">-->
-      <!--<i class="layui-icon" style="float:left;">&#xe673;</i>-->
-    <!--</div>-->
-  <!--</div>-->
 
   <div class="layui-form-item">
     <label class="layui-form-label">角色</label>
@@ -62,20 +53,19 @@
 
 
 
-  <!--<div class="layui-form-item">-->
-    <!--<div class="layui-input-block">-->
-      <!--<input class="layui-btn" type="button" lay-submit lay-filter="demo1" value="立即提交">-->
-    <!--</div>-->
-  <!--</div>-->
+
 </form>
-<input  id="empid" name="empid" type="hidden" th:value="${session.emp.empID}">
+
+  </div>
+</fieldset>
+
 <script>
   layui.use(['table'], function(){
     var $ = layui.jquery
     var table = layui.table
     ,form = layui.form;
 
-    var empid = $("#empid").val();
+    var empid = [[${session.emp.empID}]]
     //检查项目添加到下拉框中
     $.ajax({
       url: '/admin/getrolename',

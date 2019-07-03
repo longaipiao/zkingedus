@@ -4,6 +4,8 @@ package com.zking.zkingedu.common.controller;
 import com.zking.zkingedu.common.model.Emp;
 import com.zking.zkingedu.common.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +21,27 @@ public class URLController {
     @Autowired
     private EmpService empService;
 
-    //跳转到登陆界面
+    /**
+     *注销
+     * @param request
+     * @return
+     */
     @RequestMapping("/loginpage")
-    public String page1(HttpSession session){
-        session.setAttribute("emp",null);
+    public String logOut(HttpServletRequest request) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        request.getSession().removeAttribute("emp");
         return "admin/login";
     }
+
+
+
+//    //跳转到登陆界面
+//    @RequestMapping("/loginpage")
+//    public String page1(HttpSession session){
+//        session.setAttribute("emp",null);
+//        return "admin/login";
+//    }
 
 
     //树界面
@@ -80,7 +97,13 @@ public class URLController {
 
     //跳转到管理题库类别
     @RequestMapping("/category")
-    public String page(){
+    public String page11(){
         return "admin/jdy/admin-category";
+    }
+
+    //跳转到管理题库
+    @RequestMapping("/title")
+    public String page12(){
+        return "admin/jdy/admin-title";
     }
 }

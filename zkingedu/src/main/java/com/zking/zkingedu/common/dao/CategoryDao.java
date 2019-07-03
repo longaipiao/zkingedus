@@ -1,6 +1,7 @@
 package com.zking.zkingedu.common.dao;
 
 import com.zking.zkingedu.common.model.Category;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,4 +14,28 @@ public interface CategoryDao {
      * @return
      */
     List<Category> getCategory();
+
+    /**
+     * 查询所有的父体系
+     */
+    List<Category> getFCategory();
+
+    /**
+     * 添加题库类别
+     */
+    int addCategory(Category category);
+
+    /**
+     * 修改状态
+     * @param category
+     * @return
+     */
+    int updatecategoryState(Category category);
+
+    /**
+     * 删除题库类别
+     * @param categoryID
+     * @return
+     */
+    int delcategory(@Param("categoryID") Integer categoryID);
 }
