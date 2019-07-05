@@ -35,8 +35,6 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
     </div>
 </script>
 <!--数据表格-->
@@ -75,8 +73,8 @@
 </div>
 
 <!--修改体系弹出层-->
-<form class="layui-form" action="">
-    <div class="layui-row" id="systemUpd" style="display:none;margin-left: 15%;">
+<div class="layui-row" id="systemUpd" style="display:none;margin-left: 15%;">
+    <form class="layui-form">
         <div class="layui-col-md10">
             <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
                 <div class="layui-input-block"><input type="text" readonly="readonly" name="systemID" id="upsystemID" autocomplete="off" class="layui-input" >
@@ -87,7 +85,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">所属体系</label>
+                <label class="layui-form-label">所属体系：</label>
                 <div class="layui-input-block">
                     <select id="upsystemFName" name="systemFid">
                     </select>
@@ -102,11 +100,14 @@
             <!--图片上传以及展示-->
             <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
                 <div class="layui-input-block">
-                    <img style="width: 100%;height: 100%;" id="upsystemImg" name="systemImg">
+                    <img style="width: 100%;height: 100%;" id="upsystemImg" />
                     <!--图片上传失败重试按钮-->
                     <p id="demoText"></p>
                 </div>
             </div>
+            <!--隐藏域（放图片路径）-->
+            <input type="hidden" id="simg" name="systemImg" />
+
             <!--form表单提交-->
             <div class="layui-form-item">
                 <div class="layui-input-block">
@@ -115,8 +116,55 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
+<!--增加体系弹出层-->
+<div class="layui-row" id="systemAdd" style="display:none;margin-left: 15%;">
+    <form class="layui-form" id="sysAdd">
+        <div class="layui-col-md10">
+            <div class="layui-form-item"><label class="layui-form-label">体系名称：</label>
+                <div class="layui-input-block"><input type="text" id="adsystemName" name="systemName" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属体系：</label>
+                <div class="layui-input-block">
+                    <select id="adsystemFName" name="systemFid">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item"><label class="layui-form-label">体系简介：</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" id="adsystemDesc" name="systemDesc" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <!--图片上传以及展示-->
+            <div class="layui-form-item"><label class="layui-form-label">体系图片：</label>
+                <div class="layui-input-block">
+                    <img style="width: 100%;height: 100%;" id="adsystemImg" />
+                    <!--图片上传失败重试按钮-->
+                    <p id="demoText1"></p>
+                </div>
+            </div>
+            <!--隐藏域（放图片路径）-->
+            <input type="hidden" id="simg1" name="systemImg" />
+
+            <!--form表单提交-->
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" id="test1">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                    <button class="layui-btn" lay-submit="" lay-filter="adsys">添加体系</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 <!--引入LayUI js-->
 <script src="/user/layui/layui.js" charset="utf-8"></script>
@@ -139,15 +187,83 @@
             switch(obj.event){
                 //添加
                 case 'add':
-                    // layer.msg('添加');
-                    break;
-                case 'delete':
-                    // layer.msg('删除');
-                    break;
-                case 'update':
-                    // layer.msg('编辑');
+                    //给下拉框赋值
+                    $("#adsystemFName").html(active.sele());
+
+                    //打开弹出层
+                    layer.open({
+                        type: 1
+                        ,title: "添加体系" //弹出层标题
+                        ,area: ['800px', '570px'] //弹出层大小
+                        ,content: $("#systemAdd") //弹出层内容
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            layer.closeAll();
+                        }
+                    });
+
+                    //表单渲染
+                    form.render();
                     break;
             };
+        });
+
+        //监听增加体系表单提交
+        form.on('submit(adsys)', function(data){
+            $.ajax({
+                url:'/admin/systemAdd',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    if(res!=0){
+                        //获取当前页码数
+                        var curr=$(".layui-laypage-em").next().html();
+                        //重载刷新数据
+                        active.reload(curr,sysName,fid);
+                        //关闭弹出层
+                        layer.closeAll();
+                        //清空添加form表单的数据
+                        document.getElementById("sysAdd").reset();
+                        alert("添加成功");
+                    }
+                },
+                error:function (data) {
+                    layui.alert("接口回调失败");
+                }
+            }) ;
+            return false;
+        });
+
+        //添加体系图片（增加方法）
+        var uploadInst1 = upload.render({
+            elem: '#test1' //图片上传点击事件
+            ,url: '/admin/upSysimg'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    //图片预览（base64）
+                    $('#adsystemImg').attr('src', result);
+                });
+            }
+            //文件上传成功返回的参数
+            ,done: function(res){
+                alert(res.code);
+                //上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }else{//上传成功
+                    //将返回的图片路径放进隐藏域
+                    $('#simg1').val(res.data.src);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst1.upload();
+                });
+            }
         });
 
         //自定义方法
@@ -165,6 +281,32 @@
                         }
                     });
                 }, 800);
+            },
+            //获取下拉框数据的方法
+            sele: function () {
+                var content='';
+                //获取所有父体系
+                $.ajax({
+                    url: "/systems",
+                    type:"post",
+                    contentType : "application/json",//应用类型/json
+                    async: false,
+                    data:JSON.stringify({
+                        systemID:0
+                    }),
+                    success:function (systems) {
+                        //拼接下拉框
+                        content+='<option value="0" selected="selected">无</option>';
+                        for(var i=0;i<systems.data.length;i++){
+                            //判断选中
+                            content+='<option value="'+systems.data[i].systemID+'">'+systems.data[i].systemName+'</option>';
+                        }
+                    },
+                    error:function () {
+                        alert("数据回调异常");
+                    }
+                });
+                return content;
             }
         };
 
@@ -213,82 +355,33 @@
                     }
                 });
             }else if(layEvent=='edit'){ //修改操作
-                //获取所有父体系
-                $.ajax({
-                    url: "/systems",
-                    type:"post",
-                    contentType : "application/json",//应用类型/json
-                    data:JSON.stringify({
-                        systemID:0
-                    }),
-                    success:function (systems) {
-                        //拼接下拉框
-                        var content='<option value="0" selected="selected">无</option>';
-                        for(var i=0;i<systems.data.length;i++){
-                            //判断选中
-                            content+='<option value="'+systems.data[i].systemID+'">'+systems.data[i].systemName+'</option>';
-                        }
-                        //给弹出层赋值
-                        $("#upsystemFName").html(content);
-                        $("#upsystemID").val(data.systemID);
-                        $("#upsystemName").val(data.systemName);
-                        $("#upsystemDesc").val(data.systemDesc);
-                        //体系图片赋值
-                        $("#upsystemImg").attr("src",data.systemImg);
-                        //设置下拉框选中
-                        $("#upsystemFName").find("option[value='"+data.systemFid+"']").prop("selected",true);
-                        //渲染form表单
-                        form.render();
+                var sele = active.sele();
+                //给弹出层赋值
+                $("#upsystemFName").html(sele);
+                $("#upsystemID").val(data.systemID);
+                $("#upsystemName").val(data.systemName);
+                $("#upsystemDesc").val(data.systemDesc);
+                //体系图片赋值
+                $("#upsystemImg").attr("src",data.systemImg);
+                //隐藏域赋值
+                $('#simg').val(data.systemImg);
+                //设置下拉框选中
+                $("#upsystemFName").find("option[value='"+data.systemFid+"']").prop("selected",true);
 
-                        //打开弹出层
-                        layer.open({
-                            type: 1
-                            ,title: "体系修改" //弹出层标题
-                            ,area: ['800px', '570px'] //弹出层大小
-                            ,content: $("#systemUpd") //弹出层内容
-                            ,shade: 0 //不显示遮罩
-                            ,yes: function(){
-                                layer.closeAll();
-                            }
-                        });
-
-                        //体系图片自动上传
-                        var uploadInst = upload.render({
-                            elem: '#upsystemImg' //图片上传点击事件
-                            ,url: '/admin/upSysimg'
-                            //传体系Id
-                            ,data: {
-                                sid: data.systemID
-                            }
-                            ,before: function(obj){
-                                //预读本地文件示例，不支持ie8
-                                obj.preview(function(index, file, result){
-                                    //图片预览（base64）
-                                    $('#upsystemImg').attr('src', result);
-                                });
-                            }
-                            //文件上传成功返回的参数
-                            ,done: function(res){
-                                alert(res.code);
-                                //上传失败
-                                if(res.code > 0){
-                                    return layer.msg('上传失败');
-                                }
-                            }
-                            ,error: function(){
-                                //演示失败状态，并实现重传
-                                var demoText = $('#demoText');
-                                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                                demoText.find('.demo-reload').on('click', function(){
-                                    uploadInst.upload();
-                                });
-                            }
-                        });
-                    },
-                    error:function () {
-                        alert("数据回调异常");
+                //打开弹出层
+                var a=layer.open({
+                    type: 1
+                    ,title: "体系修改" //弹出层标题
+                    ,area: ['800px', '570px'] //弹出层大小
+                    ,content: $("#systemUpd") //弹出层内容
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
                     }
                 });
+
+                //渲染form表单
+                form.render();
             }
         });
 
@@ -299,7 +392,7 @@
                 data:data.field,
                 dataType:'JSON',
                 success:function(res){
-                    if(res==1){
+                    if(res!=0){
                         //获取当前页码数
                         var curr=$(".layui-laypage-em").next().html();
                         //重载刷新数据
@@ -314,6 +407,38 @@
                 }
             }) ;
             return false;
+        });
+
+        //体系图片修改
+        var uploadInst = upload.render({
+            elem: '#upsystemImg' //图片上传点击事件
+            ,url: '/admin/upSysimg'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    //图片预览（base64）
+                    $('#upsystemImg').attr('src', result);
+                });
+            }
+            //文件上传成功返回的参数
+            ,done: function(res){
+                alert(res.code);
+                //上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }else{//上传成功
+                    //将返回的图片路径放进隐藏域
+                    $('#simg').val(res.data.src);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
         });
 
         //渲染数据表格（获取所有体系）

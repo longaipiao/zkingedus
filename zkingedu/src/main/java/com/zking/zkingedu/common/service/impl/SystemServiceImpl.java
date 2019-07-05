@@ -77,4 +77,14 @@ public class SystemServiceImpl implements SystemService {
     public Integer upSys(System system) {
         return systemDao.upSys(system);
     }
+
+    /**
+     * 添加体系
+     * @param system
+     * @return
+     */
+    @Override
+    public Integer systemAdd(System system) {
+        return systemDao.systemAdd(system);
+    }
 }
