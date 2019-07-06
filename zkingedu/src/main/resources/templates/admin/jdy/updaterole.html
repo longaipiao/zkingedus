@@ -6,9 +6,14 @@
 </head>
 <link rel="stylesheet" th:href="@{/admin/lib/layui/css/layui.css}"/>
 <script th:src="@{/admin/lib/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript">
+
+  var roleid = [[${roleid}]]
+  var empid=[[${empid}]]  
+
+</script>
 <body>
-<input  id="roleid" name="roleid" type="hidden" th:value="${roleid}">
-<input  id="empid" name="empid" type="hidden" th:value="${empid}">
+
 <form class="layui-form"  lay-filter="example">
 <div class="layui-form-item">
   <label class="layui-form-label">角色选择</label>
@@ -28,8 +33,6 @@
     var $ = layui.jquery
     var table = layui.table
     ,form = layui.form;
-    var roleid = $("#roleid").val();
-    var empid = $("#empid").val();
     //检查项目添加到下拉框中
         $.ajax({
           url: '/role/getrole',

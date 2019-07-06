@@ -52,7 +52,12 @@
 
     <!--根据体系Id修改体系-->
     <update id="upSys">
-        update t_system set system_name=#{systemName},system_fid=#{systemFid},system_desc=#{systemDesc} where system_id=#{systemID}
+        update t_system set system_name=#{systemName},system_fid=#{systemFid},system_desc=#{systemDesc},system_img=#{systemImg} where system_id=#{systemID}
     </update>
+
+    <!--添加体系-->
+    <insert id="systemAdd">
+        insert into t_system(system_name,system_fid,system_desc,system_img) values(#{systemName},#{systemFid},#{systemDesc},#{systemImg})
+    </insert>
 
 </mapper>

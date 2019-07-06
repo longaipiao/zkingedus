@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="/admin/layui/css/layui.css"/>
     <script src="/admin/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/admin/js/xadmin.js"></script>
+    <script th:inline="javascript">
+
+        var empid = [[${session.emp.empID}]]
+        var xx=[[${session.emp.empPassword}]]   //--获取session中的值
+
+    </script>
 
 </head>
 <!--<shiro:hasPermission name="loginTrue">-->
@@ -32,9 +38,9 @@
             </li>
           <li class="layui-nav-item">
 
-            <a href="javascript:;" th:text="${session.emp.empName}">admin</a>
+            <a href="javascript:;" th:text="${session.emp.empName}">***</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onClick="x_admin_show('个人信息','/url/mymessage','500','600')">个人信息</a></dd>
+              <dd><a onClick="x_admin_show('个人信息','/url/mymessage','500','450')">个人信息</a></dd>
               <dd><a onClick="updatepwd()">修改密码</a></dd>
               <dd><a href="/url/loginpage" onclick="if(confirm('确认退出登录吗？')==false)return false;">退出登录</a></dd>
             </dl>
@@ -42,8 +48,6 @@
           <li class="layui-nav-item to-index"><a href="http://localhost:8800" target=_blank>前台首页</a></li>
         </ul>
     </div>
-    <input  id="empid" name="empid" type="hidden" th:value="${session.emp.empID}">
-    <input  id="pwd" name="emppwd" type="hidden" th:value="${session.emp.empPassword}">
     <!-- 顶部结束 -->
     <!-- 中部开始 -->
 
@@ -85,8 +89,7 @@
            $("#zmsy").click();
         });
 
-        var empid = $("#empid").val();
-        var flag = false;    //标识，表示页面上数据还未处理完成
+
         $(function(){
             var flag = false;    //标识，表示页面上数据还未处理完成
             $.ajax({
@@ -96,7 +99,6 @@
                 url: "/menu/getmenus",//请求接口
                 data:{
                     empid:empid
-                    // empid:1
                 },
                 success: function (data) {
                     //先添加所有的主材单
@@ -148,6 +150,86 @@
             }
             return content;
         }
+
+
+        function updatepwd(){
+            layer.open({
+                id:1,
+                type: 1,
+                title:'修改密码',
+                skin:'layui-layer-rim',
+                area: ['400px','260px'],
+                content: '<div class="layui-form-item">'
+                    +'<label class="layui-form-label"> 旧密码</label>'
+                    +' <div class="layui-input-block">'
+                    +'<input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd0">'
+                    +'</div></div>'
+                    +'<div class="layui-form-item">'
+                    +'<label class="layui-form-label"> 新 密 码</label>'
+                    +' <div class="layui-input-block">'
+                    +'<input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd1">'
+                    +'</div></div>'
+                    +'<div class="layui-form-item">'
+                    +'<label class="layui-form-label">确认密码</label>'
+                    +' <div class="layui-input-block">'
+                    +'<input type="password" name="password" placeholder="请再次输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd2">'
+                    +'</div></div>'
+                ,
+                btn:['保存','取消'],
+                btn1: function (index,layero) {
+                    if($("#pwd0").val()==""){
+                        layer.msg("旧密码不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                        $("#pwd0").select();
+                    }
+                    else if($("#pwd1").val()==""){
+                        layer.msg("新密码不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                        $("#pwd1").select();
+                    }
+                    else if($("#pwd2").val()==""){
+                        layer.msg("再次输入不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                        $("#pwd2").select();
+                    }
+                    else if($("#pwd1").val()!=$("#pwd2").val()){
+                        layer.msg("两次密码输入不一致",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                        $("#pwd2").select();
+                    }
+                    else if(xx != $("#pwd0").val()){
+                        layer.msg("旧密码输入有误",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+                        $("#pwd0").select();
+                    }
+                    else{
+                        $.ajax({
+                            url:'/admin/updateemp',
+                            type:'post',
+                            data:{
+                                empID:empid,
+                                empPassword:$("#pwd2").val()
+                            },
+                            success:function (result) {
+                                if(result=="ok"){
+                                    layer.confirm('修改成功,跳转至登录页面,请重新登录', {
+                                        btn : [ '确定' ]//按钮
+                                    }, function(index) {
+                                        window.location.href='/url/loginpage';
+                                    });
+                                }else{
+                                    layer.msg("出现bug了，请联系9527")
+                                }
+                            },
+                            error:function () {
+                                layer.msg("出现bug了，请联系921607915")
+                            }
+                        });
+                    }
+                },
+                btn2:function (index,layero) {
+                    layer.close(index);
+                }
+            });
+        }
+
+
+
     </script>
 </body>
 <!--</shiro:hasPermission>-->

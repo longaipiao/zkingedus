@@ -88,21 +88,29 @@
           },
           success:function (result) {
             if(result=="ok"){
-              layer.confirm('添加成功', {
-                btn: ['确认', '取消'] //可以无限个按钮
-                ,btn3: function(index, layero){
-                  //按钮【按钮三】的回调
-                  window.parent.location.reload();//刷新父页面
-                  // parent.layer.close(index);//关闭弹出层
-                  // layer.close(index);
-                }
-              }, function(index, layero){
-                //按钮【按钮一】的回调
+              layer.alert("添加成功", {icon: 6},function () {
                 window.parent.location.reload();//刷新父页面
-              }, function(index){
-                //按钮【按钮二】的回调
-                window.parent.location.reload();//刷新父页面
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前frame
+                parent.layer.close(index);
               });
+
+              // layer.confirm('添加成功',{icon: 6}, {
+              //   btn: ['确认'] //可以无限个按钮
+              //   ,btn3: function(index, layero){
+              //     //按钮【按钮三】的回调
+              //     window.parent.location.reload();//刷新父页面
+              //     // parent.layer.close(index);//关闭弹出层
+              //     // layer.close(index);
+              //   }
+              // }, function(index, layero){
+              //   //按钮【按钮一】的回调
+              //   window.parent.location.reload();//刷新父页面
+              // }, function(index){
+              //   //按钮【按钮二】的回调
+              //   window.parent.location.reload();//刷新父页面
+              // });
 
             }else{
               layer.msg("出现bug了，请联系9527")
@@ -123,7 +131,7 @@
     form.verify({
       title: function(value){
         if(value.length < 5){
-          return '标题至少得5个字符啊';
+          return '账号至少得5个字符啊';
         }
         if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
           return '用户名不能有特殊字符';

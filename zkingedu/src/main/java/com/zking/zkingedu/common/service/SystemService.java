@@ -50,4 +50,11 @@ public interface SystemService {
      * @return
      */
     Integer upSys(System system);
+
+    /**
+     * 添加体系
+     * @param system
+     * @return
+     */
+    Integer systemAdd(System system);
 }

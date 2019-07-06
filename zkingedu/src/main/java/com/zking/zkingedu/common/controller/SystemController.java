@@ -162,8 +162,6 @@ public class SystemController {
     @ResponseBody
     public String uploadSource(@RequestParam("file") MultipartFile file , HttpServletRequest request) {
         java.lang.System.out.println("修改体系图片的方法");
-        //获取传来的体系Id
-        String sid = request.getParameter("sid");
         //存放图片路径
         String pathString = null;
         //获取当前时间
@@ -171,7 +169,7 @@ public class SystemController {
         //获取图片在此项目的路径
         String systemImg=null;
         if(file!=null) {
-            pathString = "E:/代码/Y2/SpringBoot/zkingedus/zkingedu/src/main/resources/static/user/img/system/"+time+"_" +file.getOriginalFilename();
+            pathString = "E:\\代码\\Y2\\SpringBoot\\zkingedus\\zkingedu\\target\\classes\\static\\user\\img\\system\\"+time+"_" +file.getOriginalFilename();
             systemImg="/user/img/system/"+time+"_" +file.getOriginalFilename();
         }
         try {
@@ -184,45 +182,46 @@ public class SystemController {
 
             java.lang.System.out.println("pathString:"+pathString+"  systemImg："+systemImg);
 
-            //根据体系Id修改图片路径
-            Integer integer = systemService.upSysimg(sid,systemImg);
-
-            java.lang.System.out.println(integer);
-
-            //图片上传成功返回参数
-            return "{\"code\":0}";
+            //图片上传成功返回图片路径
+            return "{\"code\": 0,\"data\": {\"src\": \""+systemImg+"\"}}";
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             //上传失败返回参数
-            return "{\"code\":1}";
+            return "{\"code\": 1}";
         }
     }
 
     /**
      * 体系修改
-     * @param request
+     * @param system
      * @return
      */
     @RequestMapping(value = "/admin/systemUpd")
     @ResponseBody
-    public String systemUpd(HttpServletRequest request){
-        //接收提交过来的体系数据
-        String systemID = request.getParameter("systemID");
-        String systemName = request.getParameter("systemName");
-        String systemDesc = request.getParameter("systemDesc");
-        String systemFid = request.getParameter("systemFid");
-
-        System system=new System();
-        system.setSystemID(Integer.parseInt(systemID));
-        system.setSystemName(systemName);
-        system.setSystemFid(Integer.parseInt(systemFid));
-        system.setSystemDesc(systemDesc);
+    public Integer systemUpd(System system){
+        java.lang.System.out.println(system);
 
         //根据体系Id修改体系
         Integer n = systemService.upSys(system);
 
-        return n.toString();
+        return n;
+    }
+
+    /**
+     * 添加体系
+     * @param system
+     * @return
+     */
+    @RequestMapping(value = "/admin/systemAdd")
+    @ResponseBody
+    public Integer systemAdd(System system){
+        java.lang.System.out.println(system);
+
+        //添加体系
+        Integer n = systemService.systemAdd(system);
+
+        java.lang.System.out.println(n);
+        return n;
     }
 
 }

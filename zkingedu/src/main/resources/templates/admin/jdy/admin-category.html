@@ -1,115 +1,320 @@
 <!DOCTYPE html>
+<!--suppress ALL-->
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>题库类别管理</title>
-</head>
-<link rel="stylesheet" th:href="@{/admin/layui/css/layui.css}"/>
-<script th:src="@{/admin/layui/layui.js}" charset="utf-8"></script>
-<body>
-<table class="layui-hide" id="category" lay-filter="category"></table>
-<script>
-  layui.use(['table'], function(){
-    var $ = layui.jquery
-    var table = layui.table
-    ,form = layui.form;
-
-    //方法级渲染
-    var tableIns = table.render({
-        elem: '#category'
-        ,url: '/category/getcategory'
-        ,limit:10
-        ,toolbar:true
-        ,defaultToolbar: ['filter', 'print', 'exports']
-        ,cols: [ [
-            {field:'categoryID', title: '题库类别ID',  sort: true, fixed: true}
-            ,{field:'categoryName', title: '题库名称'}
-            ,{field:'categoryFid', title: '父题库ID'}
-            ,{field:'categoryTime', title: '创建时间'}
-            ,{field:'categoryRank', title: '序号'}
-            ,{field:'categoryState', title: '状态',templet: '#switchTpl', unresize: true}
-            ,{fixed: 'right', title:'操作' ,toolbar: '#barDemo'}
-          ] ]
-        ,id: 'testReload'
-        ,page: true
-        ,height: 550
-      });
+  <head>
+    <meta charset="UTF-8">
+    <title>权限列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/admin/css/font.css">
+    <link rel="stylesheet" href="/admin/css/xadmin.css">
+    <script src="/admin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/admin/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 
+  </head>
+  
+  <body>
+    <div class="x-body">
+      <div class="layui-row">
+        <span class="layui-breadcrumb" >
+          <div class="layui-form layui-col-md10 x-so layui-form-pane">
+            <!--下拉框-->
+        <div class="layui-inline">
+          <label class="layui-form-label">父体系选择</label>
+          <div class="layui-input-inline">
+            <select name="quiz" id="xm">
+              <option value="0">无</option>
+            </select>
+          </div>
 
-    //监听状态操作    开关
-    form.on('switch(categoryState)', function(obj){
-      var zt = (this.checked ? 'true' : 'false');
-      // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+          <div class="layui-input-inline">
+            <input class="layui-input" placeholder="体系名" name="cate_name" id="tiximin">
+            <button type="button" class="layui-btn" id="but1">
+              <i class="layui-icon">&#xe608;</i> 添加体系
+            </button>
+          </div>
+        </div>
+          </div>
+        </span>
+        <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+          <i class="layui-icon" style="line-height:38px">ဂ</i>
+        </a>
+      </div>
+
+
+      <table class="layui-table layui-form" lay-filter="test">
+        <thead>
+          <tr>
+            <th width="12%">题库类别ID</th>
+            <th width="20%">题库名称</th>
+            <th width="12%">父题库ID</th>
+            <th width="20%">创建时间</th>
+            <th width="10%">添加员工</th>
+            <th width="10%">状态</th>
+            <th width="16%">操作</th>
+        </thead>
+
+        <tbody class="x-cate"></tbody>
+
+      </table>
+    </div>
+    <style type="text/css">
+      
+    </style>
+
+    <script>
+      layui.use(['form','table'], function(){
+        var $ = layui.jquery,
+        table = layui.table,
+        form = layui.form;
+        //渲染下拉框里面的值
+
+
         $.ajax({
-          datatype:"json",
-          type:"post",
-          url:"/admin/state",
-          data:{
-            empid: this.value,
-            state: zt
-          },
-          success:function(result){
-            if(result!='ok'){
-              layer.msg("出现巨大的bug，请联系9527")
-            }
-            else{
-              if(zt!='false'){
-                layer.msg("已启用");
-              }
-              else{
-                layer.msg("已禁用");
-              }
-            }
-          },
-          error:function () {
-            layer.msg("出现bug了，请联系9527")
+          url: '/category/getfcategory',
+          dataType: 'json',
+          type: 'post',
+          success: function (data) {
+            $.each(data, function (index, item) {
+              $('#xm').append(new Option(item.categoryName, item.categoryID));// 下拉菜单里添加元素
+            });
+            layui.form.render("select");
+            // var select = 'dd[lay-value=' + roleid + ']';
+            // $('#xm').siblings("div.layui-form-select").find('dl').find(select).click();//设置选中
+            //重新渲染 固定写法
           }
         })
-    });
+        //给表格赋值
+        var flag = false;    //标识，表示页面上数据还未处理完成
+        var categoryState;
+        $.ajax({
+          url: '/category/getcategory',
+          dataType: 'json',
+          type: 'post',
+          success:function(data){
+            // alert(JSON.stringify(data));
+              var text="";
+            $.each(data, function (i, obj) {
+              text += '<tr cate-id="'+obj.categoryID+'" fid="'+obj.categoryFid+'" >\n' +
+                      '            <td>'+obj.categoryID+'</td>\n' +
+                      '            <td >'
+              text += '          <i class="layui-icon x-show" status="true">&#xe623;</i>'
+              text +=  obj.categoryName+'            </td>\n' +
+                      '            <td>'+obj.categoryFid+'</td>\n' +
+                      '            <td>'+obj.categoryTime+'</td>\n' +
+                      '            <td>'+obj.categoryEid+'</td>\n'
 
+              if(obj.categoryState==0){
+                text +=  '            <td>已开启</td>\n' +
+                        '            <td class="td-manage">\n'+
+                        '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_update('+obj.categoryState+','+obj.categoryID+')"><i class="layui-icon">&#xe631;</i>停用</button>\n'
+              }
+              else if(obj.categoryState==1){
+                text += '            <td>已停用</td>\n' +
+                        '            <td class="td-manage">\n'+
+                        '              <button class="layui-btn layui-btn layui-btn-xs"  onclick="member_update('+obj.categoryState+','+obj.categoryID+')"><i class="layui-icon">&#xe631;</i>开启</button>\n'
+              }
+              text +='              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe642;</i>修改</button>\n' +
+                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe642;</i>删除</button>\n' +
+                      '            </td>\n' +
+                      '          </tr>'
+              text +=loadchild(obj.categories);
+            })
+            $(".x-cate").html(text);
+            flag = true;
+          },
+          error:function(){
+            layer.msg("出现bug了，请联系110")
+          }
+        })
 
-    //点击操作按钮时按钮时触发
-    table.on('tool(LAY_table_emp)', function(obj){
-      var data = obj.data;
-      if(obj.event === 'del'){
-        layer.confirm('真的删除该员工吗?', function(index){
+        //组装子菜单的方法
+        function loadchild(obj) {
+          // alert(JSON.stringify(obj));
+          var text ='';
+          if (obj == null) {
+            return;
+          }
+          if (obj != null && obj.length > 0) {
+            $.each(obj, function (i, obja) {
+              if (obja == null) {
+                return;
+              }
+              text += '<tr cate-id="'+obja.categoryID+'" fid="'+obja.categoryFid+'" >\n' +
+                      '            <td>'+obja.categoryID+'</td>\n' +
+                      '            <td>'
+              text += '&nbsp;&nbsp;&nbsp;&nbsp;├  '
+              text +=  obja.categoryName+'</td>\n' +
+                      '            <td>'+obja.categoryFid+'</td>\n' +
+                      '            <td>'+obja.categoryTime+'</td>\n' +
+                      '            <td>'+obja.categoryEid+'</td>\n' +
+                      '            <td><i class="layui-icon">&#xe619;</i></td>\n' +
+                      '            <td class="td-manage">\n' +
+                      '              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obja.categoryID+')"><i class="layui-icon">&#xe642;</i>修改</button>\n' +
+                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obja.categoryID+')"  ><i class="layui-icon">&#xe642;</i>删除</button>\n' +
+                      '            </td>\n' +
+                      '          </tr>'
+            });
+          }
+          return text;
+        }
+
+        //点击添加体系
+        $("#but1").on('click', function() {
+          var sid = $("#xm").val();//下拉框ID
+          var text = $("#tiximin").val();//添加的文本的值
+          var empid = [[${session.emp.empID}]]//获取作用域的值
           $.ajax({
-            url:'/admin/delemp',
-            type:'post',
-            data:{
-              empid:data.empID
+            datatype: "json",
+            type: "post",
+            url: "/category/addcategory",
+            data: {
+              categoryName:text,
+              categoryFid:sid,
+              categoryEid:empid
             },
-            success:function (result) {
-              if(result=="ok"){
-                obj.del();
-                layer.close(index);
+            success: function (result) {
+              if(result=='ok'){
+                layer.alert("体系添加成功",function(){
+                  location.replace(location.href);
+                });
               }else{
                 layer.msg("出现bug了，请联系9527")
               }
             },
-            error:function () {
-              layer.msg("出现bug了，请联系921607915")
+            error: function () {
+              layer.msg("出现bug了，请联系110")
             }
           });
         });
+
+        var loadFile;
+        loadFile = setInterval(function() {//定时检测
+          if(flag) {//如果数据已经处理完毕
+            loadjscssfile('/admin/layui/css/layui.css', "css"); //加载你的css文件
+            loadjscssfile('/admin/css/xadmin.css', "css"); //加载你的css文件
+            loadjscssfile('/admin/js/jquery.min.js', "js"); //加载你的js文件
+            loadjscssfile('/admin/layui/layui.js', "js"); //加载你的js文件
+            loadjscssfile('/admin/js/xadmin.js', "js"); //加载你的js文件     //开启后  静态无法展开
+            flag = false;
+          }
+        },50);
+
+      });
+
+
+      /*修改体系名*/
+      function updatename(id){
+        layer.open({
+          title:'修改体系名',
+          skin:'layui-layer-rim',
+          area:['450px', 'auto'],
+          content: '<div class="layui-form-item">'
+                  +'<label class="layui-form-label">新名称</label>'
+                  +' <div class="layui-input-block">'
+                  +'<input type="text" name="text" value="" autocomplete="off" class="layui-input" style="width: 200px" id="namea">'
+                  +'</div></div>'
+          ,
+          btn:['保存','取消'],
+          btn1: function (index,layero) {
+           if($("#namea").val()==""){
+              layer.msg("请输入,不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+              $("#namea").select();
+            }
+            else{
+             //修改体系名
+             $.ajax({
+               type:"post",
+               datatype:"json",
+               url:"/category/updatecategory",
+               data:{
+                 categoryID:id,
+                 categoryName:$("#namea").val()
+               },
+               success:function(result){
+                 if(result=='ok'){
+                   layer.alert("修改成功",function(){
+                     location.replace(location.href);
+                   });
+                 }else{
+                   layer.msg("出现bug了，请联系9527")
+                 }
+               },
+               error:function(){
+                 layer.msg("出现bug了，请联系110")
+               }
+             })
+            }
+          },
+          btn2:function (index,layero) {
+            layer.close(index);
+          }
+        });
       }
-      else if(obj.event === 'editpassword'){//修改密码
 
+      /*用户-切换状态*/
+      function member_update(categoryState,id){
+        //修改他的状态
+        $.ajax({
+            type:"post",
+            datatype:"json",
+            url:"/category/updatecategory",
+            data:{
+              categoryID:id,
+              categoryState:categoryState
+            },
+            success:function(result){
+              if(result=='ok'){
+                layer.alert("修改成功",function(){
+                  location.replace(location.href);
+                });
+              }else{
+                layer.msg("出现bug了，请联系9527")
+              }
+            },
+            error:function(){
+              layer.msg("出现bug了，请联系110")
+            }
+        })
       }
 
-    });
-  });
-</script>
-<!--d.empid 是动态的值 {{ d.empState == 0 ? 'checked' : '' }} 状态等于0就选中反之就不选中 -->
-<script type="text/html" id="switchTpl">
-  <input type="checkbox" name="categoryState" value="{{d.categoryID}}" lay-skin="switch" lay-text="正常|停用" lay-filter="categoryState" {{ d.categoryState == 0 ? 'checked' : '' }}>
-</script>
+      /*用户-删除*/
+      function member_del(obj,id){
+          layer.confirm('确认要删除吗？',function(index){
+            //删除体系
+            $.ajax({
+              type:"post",
+              datatype:"json",
+              url:"/category/delcategory",
+              data:{
+                categoryID:id,
+              },
+              success:function(result){
+                if(result=='ok'){
+                  //发异步删除数据
+                  $(obj).parents("tr").remove();
+                  layer.msg('已删除!',{icon:1,time:1000});
+                }else{
+                  layer.msg("出现bug了，请联系9527")
+                }
+              },
+              error:function(){
+                layer.msg("出现bug了，请联系110")
+              }
+            })
+          });
+      }
 
-<script type="text/html" id="barDemo">
-  <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="editpassword">修改密码</a>-->
-  <!--<a class="layui-btn layui-btn-xs" lay-event="editrole">角色变更</a>-->
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">&nbsp;&nbsp;删&nbsp;&nbsp;&nbsp;除&nbsp;&nbsp;</a>
 
-</script>
-</body>
+    </script>
+  </body>
+
 </html>

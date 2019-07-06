@@ -106,7 +106,7 @@ public class RoleController {
                 }
             }
             //再遍历删除后的两个集合   添加ls集合的  删除getrole集合的
-            if(getrole!=null){
+            if(getrole!=null&getrole.size()!=0){
                 StringBuffer str = new StringBuffer();
                 for (Integer integer : getrole) {//应该删除的
                     str.append(integer+",");
@@ -114,7 +114,8 @@ public class RoleController {
                 String string = str.substring(0, str.lastIndexOf(","));
                 roleService.delmenurolebyid(rid,string);//批量删除
             }
-           if(ls!=null){
+
+           if(ls!=null&ls.size()!=0){
                StringBuffer str = new StringBuffer();
                for (Integer l : ls) {//应该添加的
                    str.append("("+rid+","+l+"),");
@@ -125,7 +126,6 @@ public class RoleController {
         }
         return "ok";
     }
-
 
     /**
      * 修改角色名称
