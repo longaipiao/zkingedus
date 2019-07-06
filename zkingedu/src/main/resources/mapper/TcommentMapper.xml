@@ -5,5 +5,46 @@
 
     <!--帖子评论接口Mapper-->
 
+    <insert id="addComment" parameterType="tcomment">
+        INSERT INTO t_tcomment(tcomment_cid,tcomment_uid,tcomment_content,tcomment_time,tcomment_fid) VALUES(#{tcomment.tcommentCid},#{tcomment.tcommentUid},#{tcomment.tcommentContent},#{tcomment.tcommentTime},#{tcomment.tcommentFid});
+    </insert>
 
+    <select id="queryTcomment" resultType="map">
+        SELECT a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+        b.tcomment_id,b.tcomment_cid,b.tcomment_uid,b.tcomment_content,b.tcomment_time,b.tcomment_fid,
+        d.user_id,d.user_img,d.user_email,d.user_phone,d.user_name,d.user_password,d.user_integrsl,d.user_state,d.user_IP,d.user_lastTime,d.user_regTime,d.user_openid
+        FROM t_post a,t_tcomment b,t_user d WHERE a.post_id=b.tcomment_cid AND b.tcomment_uid = d.user_id and a.post_id=#{pid} ORDER BY b.tcomment_time
+    </select>
+
+    <insert id="addCollection">
+        INSERT INTO t_collection(collection_zpid,collection_uid,collection_state,collection_time) VALUES(#{post_id},#{user_id},#{type_id},#{cTime});
+    </insert>
+
+    <delete id="deleteConllection">
+        DELETE FROM t_collection WHERE collection_zpid=#{post_id} AND collection_uid=#{user_id}
+    </delete>
+
+    <select id="queryCollection" resultType="map">
+        SELECT collection_id,collection_zpid,collection_uid,collection_state,collection_time FROM t_collection WHERE collection_zpid=#{post_id} AND collection_uid=#{user_id}
+    </select>
+
+    <insert id="addGive">
+        INSERT INTO t_give(give_pid,give_uid,give_time) VALUES(#{give_pid},#{give_uid},#{give_time});
+    </insert>
+
+    <delete id="delGive">
+        DELETE FROM t_give WHERE give_pid=#{give_pid} AND give_uid=#{give_uid};
+    </delete>
+
+    <select id="queryGiveById" resultType="give">
+        SELECT give_id,give_pid,give_uid,give_time FROM t_give WHERE give_pid=#{give_pid} AND give_uid=#{give_uid};
+    </select>
+    
+    <select id="queryCountPost" resultType="int">
+        SELECT COUNT(*) FROM t_collection WHERE collection_zpid=#{post_id}
+    </select>
+
+    <select id="queryCountGive" resultType="int">
+        SELECT COUNT(*) FROM t_give WHERE give_pid=#{post_id}
+    </select>
 </mapper>

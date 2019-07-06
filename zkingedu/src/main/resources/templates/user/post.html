@@ -12,11 +12,6 @@
 
 <body>
 
-<!--隐藏的表单-->
-
-
-
-
 
 <form class="layui-form"  id="formTable" style="">
 
@@ -37,7 +32,7 @@
         </div>
     </div>
     <textarea lay-verify="required" id="editor" name="content" placeholder="请勿发布、传播、储存违反国家法律法规帖子" autofocus></textarea>
-    <button style="margin-left: 20px;margin-top: 20px" type="button" lay-submit lay-filter="yikuze" class="layui-btn layui-btn-warm" >发布</button>
+    <button style="margin-left: 20px;margin-top: 20px" type="button" lay-submit lay-filter="ikuze" class="layui-btn layui-btn-warm" >发布</button>
     <button style="margin-left: 54px;margin-top: 20px" type="button" class="layui-btn layui-btn-danger" >取消发布</button>
 </form>
 <p></p>
@@ -70,7 +65,7 @@
         layui.use(['form','layer'],function () {
             var form = layui.form;
             var layer = layui.layer;
-            form.on('submit(yikuze)',function(data){
+            form.on('submit(ikuze)',function(data){
                 var formData = data.field;
                 var openOR;
                 (formData.openOR=='on')?openOR=0:openOR=1;
