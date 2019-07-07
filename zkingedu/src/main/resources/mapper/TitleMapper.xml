@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zking.zkingedu.common.dao.AdvertisingDao">
+<mapper namespace="com.zking.zkingedu.common.dao.TitleDao">
 
     <!--题目接口Mapper-->
+<select id="gettitles" resultMap="titlemap">
+    select * from t_title a,t_answer b where a.title_id = b.answer_tid ORDER BY a.title_id
+</select>
 
+    <resultMap id="titlemap" type="title">
+        <id property="titleID" column="title_id"></id>
+        <result property="titleCid" column="title_cid"></result>
+        <result property="titleContent" column="title_content"></result>
+        <result property="titleDescribe" column="title_describe"></result>
+        <result property="titleTime" column="title_time"></result>
+        <result property="titleState" column="title_state"></result>
+        <collection property="answers" ofType="answer" column="answer_tid">
+            <id property="answerID" column="answer_id"></id>
+            <result property="answerTid" column="answer_tid"></result>
+            <result property="answerAbcd" column="answer_abcd"></result>
+            <result property="answerContent" column="answer_content"></result>
+            <result property="answerState" column="answer_state"></result>
+        </collection>
+    </resultMap>
 
 </mapper>

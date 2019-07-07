@@ -15,7 +15,7 @@
 
 
 
-<input  id="roleid" name="roleid" type="hidden" th:value="${roleID}">
+<!--<input  id="roleid" name="roleid" type="hidden" th:value="${roleID}">-->
 <div id="test7" class="demo-tree" style="margin-top: 2%;margin-left: 5%"></div>
 
 <div class="layui-btn-container" style="margin-top: 15%;margin-left: 10%">
@@ -24,7 +24,7 @@
 <script src="/admin/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-  var roleid = $("#roleid").val();
+  var roleid = [[${roleID}]]
   layui.use(['tree', 'util'], function(){
     $.ajax({
       datetype:"json",

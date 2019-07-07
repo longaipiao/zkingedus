@@ -1,75 +1,100 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>题库类别管理</title>
+  <title>题库管理</title>
 </head>
 <link rel="stylesheet" th:href="@{/admin/layui/css/layui.css}"/>
 <script th:src="@{/admin/layui/layui.js}" charset="utf-8"></script>
 <body>
-<table class="layui-hide" id="category" lay-filter="category"></table>
+<table class="layui-hide" id="table_title" lay-filter="table_title"></table>
+
 <script>
   layui.use(['table'], function(){
-    var $ = layui.jquery
+    var $ = layui.jquery;
     var table = layui.table
     ,form = layui.form;
 
     //方法级渲染
     var tableIns = table.render({
-        elem: '#category'
-        ,url: '/category/getcategory'
-        ,limit:10
-        ,toolbar:true
-        ,defaultToolbar: ['filter', 'print', 'exports']
-        ,cols: [ [
-            {field:'categoryID', title: '题库类别ID',  sort: true, fixed: true}
-            ,{field:'categoryName', title: '题库名称'}
-            ,{field:'categoryFid', title: '父题库ID'}
-            ,{field:'categoryTime', title: '创建时间'}
-            ,{field:'categoryRank', title: '序号'}
-            ,{field:'categoryState', title: '状态',templet: '#switchTpl', unresize: true}
-            ,{fixed: 'right', title:'操作' ,toolbar: '#barDemo'}
-          ] ]
-        ,id: 'testReload'
-        ,page: true
-        ,height: 550
+      elem: '#table_title'
+      ,url: '/title/gettitles'
+      ,limit:10
+      ,toolbar:true
+      ,defaultToolbar: ['filter', 'print', 'exports']
+      ,cols: [ [
+        {field:'titleID', title: '题目ID',  sort: true, fixed: true}
+        ,{field:'titleContent', title: '题目'}
+        ,{field:'titleDescribe', title: '提示',  sort: true}
+        ,{field:'titleState', title: '状态',templet: '#switchTpl', unresize: true}
+        ,{fixed: 'right', title:'操作' ,toolbar: '#barDemo'}
+      ] ]
+      ,id: 'testReload'
+      ,page: true
+      ,height: 550
+    });
+
+//搜索点击事件
+    $("#search").on('click', function(){
+      //执行重载
+      tableIns.reload({
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          str:$('#demoReload').val()
+        }
       });
+    });
+
+
+//添加员工点击事件
+    $("#addemp").on('click', function(){
+      layer.open({
+        title: "增加员工",
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: [window.screen.width / 2.5 + 'px', window.screen.height / 2.4 + 'px'], //宽高
+        maxmin: true, //开启最大化最小化按钮
+        content: "/url/addemp"
+      });
+    });
 
 
 
-    //监听状态操作    开关
-    form.on('switch(categoryState)', function(obj){
+    //监听状态操作
+    form.on('switch(titleState)', function(obj){
       var zt = (this.checked ? 'true' : 'false');
-      // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
-        $.ajax({
-          datatype:"json",
-          type:"post",
-          url:"/admin/state",
-          data:{
-            empid: this.value,
-            state: zt
-          },
-          success:function(result){
-            if(result!='ok'){
-              layer.msg("出现巨大的bug，请联系9527")
+      layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+      $.ajax({
+        datatype:"json",
+        type:"post",
+        url:"/admin/state",
+        data:{
+          empid: this.value,
+          state: zt
+        },
+        success:function(result){
+          if(result!='ok'){
+            layer.msg("出现巨大的bug，请联系9527")
+          }
+          else{
+            if(zt!='false'){
+              layer.msg("已启用");
             }
             else{
-              if(zt!='false'){
-                layer.msg("已启用");
-              }
-              else{
-                layer.msg("已禁用");
-              }
+              layer.msg("已禁用");
             }
-          },
-          error:function () {
-            layer.msg("出现bug了，请联系9527")
           }
-        })
+        },
+        error:function () {
+          layer.msg("出现bug了，请联系9527")
+        }
+      })
     });
 
 
     //点击操作按钮时按钮时触发
-    table.on('tool(LAY_table_emp)', function(obj){
+    table.on('tool(table_title)', function(obj){
       var data = obj.data;
       if(obj.event === 'del'){
         layer.confirm('真的删除该员工吗?', function(index){
@@ -94,20 +119,82 @@
         });
       }
       else if(obj.event === 'editpassword'){//修改密码
-
+        layer.open({
+          id:1,
+          type: 1,
+          title:'修改密码',
+          skin:'layui-layer-rim',
+          area:['450px', 'auto'],
+          content: '<div class="layui-form-item">'
+                  +'<label class="layui-form-label"> 新 密 码</label>'
+                  +' <div class="layui-input-block">'
+                  +'<input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd1">'
+                  +'</div></div>'
+                  +'<div class="layui-form-item">'
+                  +'<label class="layui-form-label">确认密码</label>'
+                  +' <div class="layui-input-block">'
+                  +'<input type="password" name="password" placeholder="请再次输入密码" autocomplete="off" class="layui-input" style="width: 200px" id="pwd2">'
+                  +'</div></div>'
+          ,
+          btn:['保存','取消'],
+          btn1: function (index,layero) {
+            if($("#pwd1").val()==""){
+              layer.msg("密码框不能为空",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+              $("#pwd1").select();
+            }
+            else if($("#pwd1").val()!=$("#pwd2").val()){
+              layer.msg("两次密码输入不一致",{icon: 2,time: 700,shade : [0.5 , '#000' , true]});
+              $("#pwd2").select();
+            }
+            else{
+              $.ajax({
+                url:'/admin/updateemp',
+                type:'post',
+                data:{
+                  empID:data.empID,
+                  empPassword:$("#pwd2").val()
+                },
+                success:function (result) {
+                  if(result=="ok"){
+                    layer.msg("修改成功",{icon: 1,time: 700});
+                    layer.close(index);
+                  }else{
+                    layer.msg("出现bug了，请联系9527")
+                  }
+                },
+                error:function () {
+                  layer.msg("出现bug了，请联系921607915")
+                }
+              });
+            }
+          },
+          btn2:function (index,layero) {
+            layer.close(index);
+          }
+        });
       }
-
+      else if(obj.event === 'editrole'){//修改角色
+        layer.open({
+          title: "角色变更",
+          type: 2,
+          skin: 'layui-layer-rim', //加上边框
+          area: [window.screen.width / 4.5 + 'px', window.screen.height / 3.4 + 'px'], //宽高
+          maxmin: true, //开启最大化最小化按钮
+          content: "/url/updaterole?empid="+data.empID,
+        });
+      }
     });
+
   });
 </script>
 <!--d.empid 是动态的值 {{ d.empState == 0 ? 'checked' : '' }} 状态等于0就选中反之就不选中 -->
 <script type="text/html" id="switchTpl">
-  <input type="checkbox" name="categoryState" value="{{d.categoryID}}" lay-skin="switch" lay-text="正常|停用" lay-filter="categoryState" {{ d.categoryState == 0 ? 'checked' : '' }}>
+  <input type="checkbox" name="titleState" value="{{d.titleID}}" lay-skin="switch" lay-text="正常|停用" lay-filter="titleState" {{ d.titleState == 0 ? 'checked' : '' }}>
 </script>
 
 <script type="text/html" id="barDemo">
-  <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="editpassword">修改密码</a>-->
-  <!--<a class="layui-btn layui-btn-xs" lay-event="editrole">角色变更</a>-->
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="editpassword">修改密码</a>
+  <a class="layui-btn layui-btn-xs" lay-event="editrole">角色变更</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">&nbsp;&nbsp;删&nbsp;&nbsp;&nbsp;除&nbsp;&nbsp;</a>
 
 </script>

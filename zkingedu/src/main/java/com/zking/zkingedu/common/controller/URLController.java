@@ -106,4 +106,6 @@ public class URLController {
     public String page12(){
         return "admin/jdy/admin-title";
     }
+
+
 }
