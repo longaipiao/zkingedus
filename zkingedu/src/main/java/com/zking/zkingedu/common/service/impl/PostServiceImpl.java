@@ -22,8 +22,28 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Map<String, Object>> queryAllPostByType(String type) {
+        return postDao.queryAllPostByType(type);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPagePost(Integer page, Integer size) {
+        return postDao.queryPagePost(page, size);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPagePostByType(Integer page, Integer size, String type) {
+        return postDao.queryPagePostByType(page, size, type);
+    }
+
+    @Override
     public List<Map<String, Object>> queryPostByid(Post post) {
         return postDao.queryPostByid(post);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPostByUserId(Integer uid) {
+        return postDao.queryPostByUserId(uid);
     }
 
     @Override

@@ -202,11 +202,9 @@ public class TestController {
      * layui测试页面
      * @return
      */
-    @RequestMapping(value = "bbsIndex")
-    public String test1(HttpServletRequest request){
-        request.setAttribute("Bbss",postService.queryAllPost());
-        return "user/bbsIndex";
-    }
+
+
+
 
     @RequestMapping(value = "show")
     public String test3(){

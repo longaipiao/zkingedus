@@ -8,8 +8,10 @@ import com.zking.zkingedu.common.service.TcommentService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.spring5.context.SpringContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,54 @@ public class BbsController {
     @Autowired
     private TcommentService tcommentService;
 
+
+    @RequestMapping(value = "/bbsIndex")
+    public String test1(HttpServletRequest request){
+        //request.setAttribute("Bbss",postService.queryAllPost());
+        return "user/bbsIndex";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pagePost")
+    public String pagePost(Integer page,String type){
+        List<Map<String, Object>> list;
+        Integer start = (page-1)*5;
+        int cpage=0;
+        if(type!=null&&type.length()!=0){
+            list = postService.queryPagePostByType(start, 5,type);
+            System.out.println("长度："+list.size());
+            Integer count = postService.queryAllPostByType(type).size();
+            cpage = count/5;
+            if(count%5!=0){
+                cpage+=1;
+            }
+        }else{
+            Integer count = postService.queryAllPost().size();
+            cpage = count/5;
+            if(count%5!=0){
+                cpage+=1;
+            }
+           list = postService.queryPagePost(start, 5);
+        }
+
+        //计算总页数
+
+        Map<String,Object> map = new HashMap<>();
+        System.out.println("长度："+list.size());
+        map.put("data",list);
+        map.put("apage",cpage);
+        map.put("types",sortService.queryAllSort());
+        if(type!=null&&type.length()!=0){
+            map.put("type",type);
+        }
+
+        Gson gson = new Gson();
+        String str = gson.toJson(map);
+        return str;
+    }
+
+
+
     /**
      * 根据id查找帖子并查看该帖子下的所有评论和回复
      * @param post_id
@@ -36,7 +86,7 @@ public class BbsController {
         post.setPostID(post_id);
         List<Map<String, Object>> list = postService.queryPostByid(post);//帖子
         List<Map<String, Object>> list1 = tcommentService.queryTcomment(post_id);//所有评论
-        System.out.println();
+
         List<Map<String, Object>> tcomments = new ArrayList<>();//帖子评论集合
         List<Map<String, Object>> tcommentsUser = new ArrayList<>();//评论回复集合
         //筛选评论的回复
@@ -48,6 +98,7 @@ public class BbsController {
                 tcommentsUser.add(map);
             }
         }
+
         //将评论的回复放入帖子评论的下面
         for (Map<String, Object> tcomment : tcomments) {
             //定义评论下的回复集合
@@ -59,6 +110,7 @@ public class BbsController {
                 //如果评论的回复等于此评论的ID
                 if(tcomment_id==tcomment_fid){
                     map.put("HuserName","karabo");
+                    //一级回复
                     userTcomment.add(map);
                     int tcomment_id2 = Integer.parseInt(map.get("tcomment_id").toString());
                     //再遍历一次查看回复中的回复
@@ -66,6 +118,7 @@ public class BbsController {
                         int tcomment_fid2 = Integer.parseInt(stringObjectMap.get("tcomment_fid").toString());
                         if(tcomment_id2==tcomment_fid2){
                             stringObjectMap.put("HuserName",map.get("user_name"));
+                            //二级回复
                             userTcomment.add(stringObjectMap);
                         }
                     }
@@ -93,11 +146,18 @@ public class BbsController {
         Integer postNum=tcommentService.queryCountPost(post_id);
         map.put("giveNum",giveNum);
         map.put("postNum",postNum);
+        map.put("countNum",tcomments.size());
         request.setAttribute("cORg",map);
         request.setAttribute("post",list.get(0));
         request.setAttribute("tcomments",tcomments);
         return "user/show2";
     }
+
+
+
+
+
+
 
     /**
      * 查看所有帖子
@@ -157,6 +217,7 @@ public class BbsController {
                 resultMsg = "delCError";
             }
         }
+        System.out.println(resultMsg);
         return resultMsg;
     }
 

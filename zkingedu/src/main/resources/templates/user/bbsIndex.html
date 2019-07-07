@@ -80,7 +80,7 @@
 </head>
 
 
-<body>
+<body onload="loadPost()">
 	
         
         
@@ -161,30 +161,17 @@
     <div class="content"  >
         
         <ul class="nav nav-tabs question-types" role="tablist" id="zl" >
-
-                <li role="presentation" class="active" >
-                    <a href="javascript:;" aria-controls="all" role="tab" toggle="tab" onclick="hh('')">全部</a>
-                </li>
+            <li role="presentation" class="active" >
+                <a href="javascript:;" aria-controls="all" role="tab" toggle="tab" onclick="hh('')">全部</a>
+            </li>
 
         </ul>
         <div class="tab-content" >
             <div role="tabpanel" class="tab-pane active" >
 
 
-<ul class="row question-items" >
-    <ul class="flow-default" style="margin-top: 15px;height: 90px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);" id="Linddd" th:each="bbs:${Bbss}">
-        <li style="height: 80px;">
-            <!--用户头像-->
-            <img th:src="${bbs.user_img}" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>
-            <!--用户名-->
-            <span style="margin-left: 10px" th:text="${bbs.user_name}"></span>
-            <!--帖子标题-->
-            <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick="checkBbs(this.id)" th:id="${bbs.post_id}" style="cursor:pointer" th:text="${bbs.post_name}"></span></h3></div>
-                评论数：<span>123</span>
-            </div>
-            <button style="margin-left: 80%;margin-top: -60px" disabled="disabled" class="layui-btn layui-btn-warm"><span th:text="${bbs.sort_name}">java板块</span></button>
-        </li>
-    </ul>
+<ul class="row question-items" id="Linccc">
+
 </ul>
 
 
@@ -688,7 +675,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center copyright">
+    <div class="text-center copyright" >
         <span>Copyright @2013-2016 实验楼在线教育</span>
         <span class="ver-line"> | </span>
         <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
@@ -716,6 +703,77 @@
     </div>
 </div>
 
+<script>
+    var type;
+    function loadPost(type1){
+        type=type1;
+        $('#Linccc').html(' ');
+    layui.use('flow',function () {
+        var $ = layui.jquery;
+        var flow = layui.flow;
+        flow.load({
+            elem:'#Linccc',
+            isAuto:false,
+            done:function(page,next){
+                var lis = [];
+                $.ajax({
+                   url:'pagePost',
+                   type:'post',
+                   data:{
+                       type:type,
+                       page:page
+                   },
+                   success:function (res) {
+                       var res1 = JSON.parse(res);
+                       layui.each(res1.data,function (index,item) {
+                           lis.push('<ul class="flow-default" style="margin-top: 15px;height: 90px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);" id="Linddd" >\n' +
+                               '        <li style="height: 80px;">\n' +
+                               '            <!--用户头像-->\n' +
+                               '            <img src="'+item.user_img+'" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>\n' +
+                               '            <!--用户名-->\n' +
+                               '            <span style="margin-left: 10px" text="'+item.user_name+'"></span>\n' +
+                               '            <!--帖子标题-->\n' +
+                               '            <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick="checkBbs('+item.post_id1+')"  style="cursor:pointer">'+item.post_name+'</span></h3></div>' +
+                               '                评论数：<span>123</span>\n' +
+                               '            </div>\n' +
+                               '            <button style="margin-left: 80%;margin-top: -60px" disabled="disabled" class="layui-btn layui-btn-warm"><span>'+item.sort_name+'</span></button>\n' +
+                               '        </li>\n' +
+                               '    </ul>');
+                       });
+                       next(lis.join(''),page<res1.apage);
+
+                       var texts = "";
+                       if(res1.type!=null&&res1.type.length!=0){
+                           texts = '<li role="presentation"  >\n' +
+                               '                <a href="javascript:;" aria-controls="all" role="tab" toggle="tab" onclick="loadPost()">全部</a>\n' +
+                               '            </li>';
+                       }else{
+                           texts = '<li role="presentation" class="active" >\n' +
+                               '                <a href="javascript:;" aria-controls="all" role="tab" toggle="tab" onclick="loadPost()">全部</a>\n' +
+                               '            </li>';
+                       }
+                       layui.each(res1.types,function (index,item) {
+                           if(item.sortName==res1.type){
+                               texts+='<li role="presentation" class="active">\n' +
+                                   '                <a href="javascript:void(0);" aria-controls="all" role="tab" toggle="tab" onclick=\'loadPost("'+item.sortName+'")\' >'+item.sortName+'</a>\n' +
+                                   '            </li>';
+                           }else{
+                               texts+='<li role="presentation" >\n' +
+                                   '                <a href="javascript:void(0);" aria-controls="all" role="tab" toggle="tab" onclick=\'loadPost("'+item.sortName+'")\' >'+item.sortName+'</a>\n' +
+                                   '            </li>';
+                           }
+                       });
+                       $('#zl').html(texts);
+                   },error:function () {
+                        console.log('流加载Error');
+                   }
+                });
+            }
+        });
+    });
+
+    }
+</script>
             
         
 	

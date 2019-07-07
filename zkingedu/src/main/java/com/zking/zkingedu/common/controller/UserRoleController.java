@@ -1,6 +1,8 @@
 package com.zking.zkingedu.common.controller;
 
+import com.google.gson.Gson;
 import com.zking.zkingedu.common.model.User;
+import com.zking.zkingedu.common.service.PostService;
 import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IpAddress;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
@@ -24,12 +28,14 @@ import java.util.Random;
 public class UserRoleController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private PostService postService;
 
-    @RequestMapping(value = "/user123")
 
-    public String test(){
-        System.out.println("来了user/user123");
-        return "user/user123";
+    //跳转个人中心
+    @RequestMapping("/userinfo")
+    String userInfo(HttpServletRequest request){
+        return "user/userinfo";
     }
 
     /**
@@ -130,4 +136,11 @@ public class UserRoleController {
         return n+"";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getPostCollection")
+    public String getPostCollection(HttpServletRequest request){
+        List<Map<String, Object>> list = postService.queryPostByUserId(41);
+        Gson gson = new Gson();
+        return gson.toJson(list);
+    }
 }

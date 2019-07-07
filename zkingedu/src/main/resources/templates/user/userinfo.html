@@ -400,7 +400,22 @@
 					</div>
 					<div class="col-md-11 layout-body" id="get4" >
 						<div class="content" style="height: 300px;">
-							<h3>我的收藏</h3>						
+                            <h3>我的收藏</h3> <A href="javascript:void(0)" style="color: #0ace9d">课程</A> <A onclick="post_collection()" href="javascript:void(0)" style="color: #0ace9d">帖子</A>
+                            <div id="collection">
+                                <ul class="flow-default" style="margin-top: 15px;height: 70px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);"  >
+                                    <li style="height: 80px;">
+                                        <!--用户头像-->
+                                        <img src="/user/img/default.jpg" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>
+                                        <!--用户名-->
+                                        <span style="margin-left: 10px" text="野兽前辈"></span>
+                                       <!--帖子标题-->
+                                       <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick=""  style="cursor:pointer">看招！！！昏睡红茶！！！</span></h3></div>
+                                                评论数：<span>123</span>
+                                            </div>
+                                        <button style="margin-left: 80%;margin-top: -60px" disabled="disabled" class="layui-btn layui-btn-warm"><span>取消收藏</span></button>
+                                    </li>
+                                </ul>
+                            </div>
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get5" >
@@ -670,7 +685,6 @@
         a="";
         $(function () {
             $('#imgtx').click(function () {
-
             });
         });
         function imgUpload() {
@@ -746,6 +760,58 @@
         }
         function updateImage() {
             $('#formImage').submit();
+        }
+
+        //获取用户的帖子收藏
+        function post_collection(){
+            $.ajax({
+                url:'/user/getPostCollection',
+                type:'post',
+                success:function(result){
+                    var posts = eval(""+result+"");
+                    var text = "";
+                    layui.each(posts,function (index,item) {
+                        text+='<ul class="flow-default" style="margin-top: 15px;height: 70px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);"  >\n' +
+                            '                                    <li style="height: 80px;">\n' +
+                            '                                        <!--用户头像-->\n' +
+                            '                                        <img src="'+item.user_img+'" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>\n' +
+                            '                                        <!--用户名-->\n' +
+                            '                                        <span style="margin-left: 10px" text="">'+item.user_name+'</span>\n' +
+                            '                                       <!--帖子标题-->\n' +
+                            '                                       <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick=""  style="cursor:pointer">'+item.post_name+'</span></h3></div>\n' +
+                            '                                                评论数：<span>123</span>\n' +
+                            '                                            </div>\n' +
+                            '                                        <span id="'+item.post_id+'"><button onclick="collection2('+item.post_id+',2)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm">取消收藏</button></span>\n' +
+                            '                                    </li>\n' +
+                            '                                </ul>';
+                    });
+                    $('#collection').html(text);
+                },error:function(){
+                    console.log('查询收藏Error')
+                }
+            });
+        }
+
+        function collection2(post_id,type) {
+            $.ajax({
+                url:'/addConllection',
+                type:'post',
+                data:{
+                    post_id:post_id,
+                    type:type
+                },
+                success:function (result) {
+                    alert($('#'+post_id).html());
+                    if(result=='addCollection'){
+                        $('#'+post_id).html('<button onclick="collection2('+post_id+',2)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm"><span>取消收藏</span></button></span>');
+                    }else if(result=='delCollection'){
+                        $('#'+post_id).html('<button onclick="collection2('+post_id+',1)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm"><span>收藏</span></button></span>');
+                    }
+                },
+                error:function(){
+                    console.log("收藏or取消Error");
+                }
+            });
         }
     </script>
 

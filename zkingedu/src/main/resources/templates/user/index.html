@@ -150,7 +150,7 @@
                 </span>
                 <span th:if="${addr}!=delete">
                     <span th:if="${session.user}!=null">
-                        <a href="/userinfo?a=123"><img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}"></a>
+                        <a href="/user/userinfo"><img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}"></a>
                     </span>
                     <span th:if="${session.user}==null">
                         <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>

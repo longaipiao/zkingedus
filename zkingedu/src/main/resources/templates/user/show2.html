@@ -286,7 +286,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div id="pagek"></div>
 
                         <div class="answer-item">
                             <div class="answer-head">
@@ -624,6 +624,8 @@
      data-msg-user=""
      data-msg-system=""
 ></div>
+<input id="countNum" type="hidden" th:value="${cORg.countNum}">
+<input id="pagePost_id" type="hidden" th:value="${post.post_id}">
 
 <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
 <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
@@ -791,6 +793,32 @@
                         leaveConfirm: '正在上传文件'
                     }
                 });
+
+
+                /*layui.use('laypage',function () {
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem:'pagek',
+                        count:$('#countNum').val(),
+                        limit:5,
+                        limits:[5,10,15,20],
+                        jump:function (obj,first) {
+                            $.ajax({
+                                url:'/checkBbsPage',
+                                type:'post',
+                                data:{
+                                    post_id:$('#pagePost_id').val(),
+                                    page:obj.curr
+                                },
+                                success:function(){
+
+                                },error:function () {
+                                    console.log('分页Error');
+                                }
+                            });
+                        }
+                    });
+                });*/
             });
 
             //收藏

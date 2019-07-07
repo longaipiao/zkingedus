@@ -17,10 +17,34 @@ public interface PostService {
     List<Map<String,Object>> queryAllPost();
 
     /**
+     * 根据类别查询所有帖子
+     * @return
+     */
+    List<Map<String,Object>> queryAllPostByType(String type);
+    /**
+     * 查询所有帖子page
+     * @return
+     */
+    List<Map<String,Object>> queryPagePost(@Param("page") Integer page,@Param("size") Integer size);
+
+    /**
+     * 按类别查询所有帖子page
+     * @return
+     */
+    List<Map<String,Object>> queryPagePostByType(@Param("page") Integer page,@Param("size") Integer size,@Param("type") String type);
+
+
+    /**
      * 根据id查询帖子
      * @return
      */
     List<Map<String,Object>> queryPostByid(@Param("post") Post post);
+
+    /**
+     * 根据用户id查询帖子
+     * @return
+     */
+    List<Map<String,Object>> queryPostByUserId(@Param("post")Integer uid);
 
     /**
      * 发表帖子方法

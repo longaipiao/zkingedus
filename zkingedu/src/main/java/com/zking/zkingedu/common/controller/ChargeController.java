@@ -44,11 +44,7 @@ public class ChargeController {
         return "admin/likai/chargesShow";
     }
 
-    //跳转个人中心
-    @RequestMapping("/userinfo")
-    String userInfo(HttpServletRequest request){
-        return "user/userinfo";
-    }
+
 
     /**
      * 后台chargesShow.html绑定表格数据
