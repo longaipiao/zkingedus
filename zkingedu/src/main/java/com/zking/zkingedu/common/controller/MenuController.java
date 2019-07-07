@@ -21,7 +21,6 @@ public class MenuController {
     @ResponseBody
     @RequestMapping(value = "/getmenus")
     public List<Menu> getmuen(Integer empid){
-        System.err.println(empid);
         List<Menu> menus = menuService.getmenus(empid);
         return menus;
     }
@@ -29,9 +28,9 @@ public class MenuController {
     //树菜单展示
     @ResponseBody
     @RequestMapping(value = "/trees")
-    public List<Treedata> gettrees(Integer roleid){
-        List<Treedata> treedata = menuService.getdata(null);
-        List<Integer> getrole = menuService.getrole(roleid);
+    public List<Treedata> gettrees(Integer roleid){//返回树结构的list
+        List<Treedata> treedata = menuService.getdata(null);//查询出一个装有树结构的集合根据
+        List<Integer> getrole = menuService.getrole(roleid);//查询出根据员工ID 查询出所有的菜单ID  返回的只有ID
         if(treedata!=null&&treedata.size()!=0){
             for (int i = 0; i < treedata.size(); ++i){
                 List<Treedata> children = treedata.get(i).getChildren();

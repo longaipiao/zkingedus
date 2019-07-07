@@ -1,10 +1,10 @@
 package com.zking.zkingedu.common.model;
 
-import lombok.Data;
-import org.springframework.stereotype.Component;
+        import lombok.Data;
+        import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.List;
+        import java.io.Serializable;
+        import java.util.List;
 
 @Data
 @Component
