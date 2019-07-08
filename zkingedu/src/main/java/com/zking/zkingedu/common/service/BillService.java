@@ -38,4 +38,10 @@ public interface BillService {
      */
     int delBill(Integer billID);
 
+    /**
+     * 统计报表（饼图）
+     * @return
+     */
+    List<Bill> sumGroupByBillType();
+
 }

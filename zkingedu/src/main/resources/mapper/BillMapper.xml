@@ -71,4 +71,8 @@
         delete from t_bill where bill_id=#{billID}
     </delete>
 
+    <!--统计报表-->
+    <select id="sumGroupByBillType" resultType="bill">
+        select bill_type,sum(bill_integral) from t_bill GROUP BY bill_type
+    </select>
 </mapper>

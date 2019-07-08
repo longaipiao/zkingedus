@@ -4,6 +4,22 @@
 <mapper namespace="com.zking.zkingedu.common.dao.MessageDao">
 
     <!--消息接口Mapper-->
+    <!--增加一条消息-->
+    <sql id="messageAll">
+        message_id,message_uid,message_otheruid,message_pid,message_name,message_content,message_time,message_state
+    </sql>
 
+    <insert id="insertMessage">
+        INSERT  INTO
+         t_message(message_uid,message_otheruid,message_pid,message_name,message_content,message_time,message_state)
+         VALUES (#{messageUid},#{messageOtherUid},#{messagePid},#{messageName},#{messageContent},#{messageTime},#{messageState})
+    </insert>
+    
+    <!--查询个人所有消息-->
+    <select id="getMyMessages" resultType="message">
+        SELECT 
+        <include refid="messageAll"></include>
+        FROM `t_message` where message_uid=#{messageUid} ORDER BY message_state
+    </select>
 
 </mapper>

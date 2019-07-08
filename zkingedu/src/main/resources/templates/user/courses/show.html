@@ -248,7 +248,7 @@
 
                 <div class="pull-right course-infobox-price">
                     <!--优酷播放器-->
-                    <div id="youkuplayer" style="width:580px;height:326px;display: none;"></div>
+                    <div id="youkuplayer" style="width:780px;height:426px;display: none;"></div>
 
                     <script type="text/javascript" src="//player.youku.com/jsapi"></script>
                 </div>
@@ -281,7 +281,7 @@
         <div class="tab-content">
             
             <div role="tabpanel" class="tab-pane active" id="labs">
-                
+            <!--<input type="hidden" id="userName" th:value="${session.user.userName}">-->
     <!--课程章节内容-->
     <div class="lab-item " th:each="section:${sections}">
         <div class="lab-item-status">
@@ -295,8 +295,9 @@
         <div class="pull-right lab-item-ctrl">
             <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
            <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
-            <a class="btn btn-primary" onclick="videoURL()" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
-            <input type="hidden" id="videoURL" th:value="${section.video_url}">
+            <a class="btn btn-primary" th:onclick="videoURL([[${section.section_inte}]],[[${section.video_url}]])" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+            <!--<input type="hidden" id="videoURL" th:value="${section.video_url}">-->
+
         </div>
     </div>
         <script>
@@ -307,7 +308,6 @@
 
             //更改优酷播放器里视频的id
             function f(videoURL) {
-                //将播放器显示
                 $("#youkuplayer").show();
 
                 //给播放器赋视频Id
@@ -317,34 +317,35 @@
                     client_id: 'baea9c8ad51a264f',
                     vid: videoURL,
                     newPlayer: true,
-                    autoplay: false
+                    autoplay: true
                 });
             }
 
-            function videoURL() {
+            function videoURL(inte,videoURL) {
                 var courseID = $("#courseID").val();
                 var courseInit = $("#courseInit").val();
-                var videoURL = $("#videoURL").val();
-
-                console.log("课程ID:"+courseID+";课程积分:"+courseInit);
-                //如果不是免费
-                if(courseInit>0){
-                    $.ajax({
-                        url:"/user/buyOrder",
-                        data:{
-                            courseID:courseID,
-                            integral:courseInit
-                        },
-                        dataType:"text",
-                        success:function (data) {
+                $.ajax({
+                    url:"/user/buyOrder",
+                    data:{
+                        courseID:courseID,
+                        integral:courseInit,
+                        sectionInte:inte
+                    },
+                    dataType:"text",
+                    success:function (data) {
+                        if("USER_NULL"==data) {
+                            layer.msg("请登陆后在操作");
+                        }
+                        else{
                             if("ALREADY_BUY"==data){
                                 //已经购买    直接观看视频
-                                location.href = videoURL;
+                                f(videoURL);
+                            }
+                            else if(inte==0){
+                                f(videoURL);
                             }
                             else if("INTEGRAL_FEW"==data){
                                 layer.msg("您的积分不够，请充值")
-                            } else if("USER_NULL"==data){
-                                layer.msg("请登陆后在操作");
                             }
                             else if("NOW_BUY"==data){
                                 layer.confirm('是否购买本课程',function (index) {
@@ -358,17 +359,15 @@
                                         success:function (data) {
                                             layer.msg("购买成功");
                                             //观看视频
+                                            f(videoURL);
                                         }
                                     })
                                     layer.close(index);
                                 })
                             }
                         }
-                    })
-                } else{
-                    //调用播放视频的方法
-                    f(videoURL);
-                }
+                    }
+                })
             }
         </script>
 

@@ -13,6 +13,7 @@ import com.zking.zkingedu.common.service.UserService;
 import com.zking.zkingedu.common.utils.IdGeneratorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,7 +102,7 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/user/buyOrder")
-    String  bitBuyCourse(String integral, String courseID, HttpServletRequest request){
+    String  bitBuyCourse(Integer integral, Integer courseID, HttpServletRequest request,Integer sectionInte){
         log.info("============================>积分："+integral+"课程ID："+courseID+"<============================");
 
         //得到session得到用户的所有信息
@@ -110,22 +111,24 @@ public class OrderController {
         if(user==null){
             return "USER_NULL";
         }
-        //到订单表查到该用户已经够买的订单的课程号
-        Integer orderCid = orderService.getOrderCidByUserID(user.getUserID(),Integer.parseInt(courseID));
-        //如果该用户已经购买
-        if (orderCid!=null) {
-            log.info("==============================================已经购买");
-            return "ALREADY_BUY";//让用户直接观看
-        }
-        else{//如果没有购买
-            //如果用户的积分少于该课程的兑换积分
-            if(userService.getUserByid(user.getUserID()).getUserIntegrsl()<Integer.parseInt(integral)){
-                log.info("如果用户的积分少于该课程的兑换积分");
-                log.info("用户积分："+userService.getUserByid(user.getUserID()).getUserIntegrsl());
-                return "INTEGRAL_FEW";//提示用户积分不够提醒充值
+        else{
+            //到订单表查到该用户已经够买的订单的课程号
+            Integer orderCid = orderService.getOrderCidByUserID(user.getUserID(),courseID);
+            //如果该用户已经购买
+            if (orderCid!=null||sectionInte==0) {
+                log.info("==============================================已经购买");
+                return "ALREADY_BUY";//让用户直接观看
             }
-            else {
-                return "NOW_BUY";
+            else{//如果没有购买
+                //如果用户的积分少于该课程的兑换积分
+                if(userService.getUserByid(user.getUserID()).getUserIntegrsl()<integral){
+                    log.info("如果用户的积分少于该课程的兑换积分");
+                    log.info("用户积分："+userService.getUserByid(user.getUserID()).getUserIntegrsl());
+                    return "INTEGRAL_FEW";//提示用户积分不够提醒充值
+                }
+                else {
+                    return "NOW_BUY";
+                }
             }
         }
     }
