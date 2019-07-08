@@ -248,17 +248,9 @@
 
                 <div class="pull-right course-infobox-price">
                     <!--优酷播放器-->
-                    <div id="youkuplayer"style="width:580px;height:326px"></div>
+                    <div id="youkuplayer" style="width:580px;height:326px;display: none;"></div>
 
                     <script type="text/javascript" src="//player.youku.com/jsapi"></script>
-                    <script type="text/javascript">
-                        var player = new YKU.Player('youkuplayer',{
-                            styleid: '0',
-                            client_id: 'YOUR YOUKUOPENAPI CLIENT_ID',
-                            vid: '替换成优酷视频ID',
-                            newPlayer: true
-                        });
-                    </script>
                 </div>
 
         </div>
@@ -313,10 +305,27 @@
 
             })
 
+            //更改优酷播放器里视频的id
+            function f(videoURL) {
+                //将播放器显示
+                $("#youkuplayer").show();
+
+                //给播放器赋视频Id
+                var player = new YKU.Player('youkuplayer',{
+                    //播放器风格
+                    styleid: '0',
+                    client_id: 'baea9c8ad51a264f',
+                    vid: videoURL,
+                    newPlayer: true,
+                    autoplay: false
+                });
+            }
+
             function videoURL() {
                 var courseID = $("#courseID").val();
                 var courseInit = $("#courseInit").val();
                 var videoURL = $("#videoURL").val();
+
                 console.log("课程ID:"+courseID+";课程积分:"+courseInit);
                 //如果不是免费
                 if(courseInit>0){
@@ -357,7 +366,8 @@
                         }
                     })
                 } else{
-                    location.href = videoURL;
+                    //调用播放视频的方法
+                    f(videoURL);
                 }
             }
         </script>

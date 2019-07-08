@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!--引入LayUI CSS-->
@@ -16,7 +15,6 @@
         .layui-col-md10 input{
             width: 75%;
         }
-
     </style>
 </head>
 <body>
@@ -247,7 +245,6 @@
             }
             //文件上传成功返回的参数
             ,done: function(res){
-                alert(res.code);
                 //上传失败
                 if(res.code > 0){
                     return layer.msg('上传失败');
@@ -450,12 +447,11 @@
             toolbar: '#toolbarDemo', //开启工具栏
             limit: 6,
             limits: [6,12,18,24,30],  //每页条数下拉框选项
-            cols: [[ //表头
+            cols: [[
                 {field: 'systemID', align: 'left', title: '体系ID', sort: true}
                 ,{field: 'systemName', align: 'left', title: '体系名称'}
                 ,{field: 'systemFName', align: 'left', title: '父体系', sort: true}
                 ,{field: 'systemDesc', align: 'left', title: '体系简介'}
-                ,{field: 'systemState', align: 'left', title: '体系状态', sort: true}
                 ,{field: 'systemImg', align: 'left', title: '体系图片'}
                 ,{title: '操作', toolbar: '#barDemo'}
             ]]

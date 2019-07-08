@@ -65,4 +65,25 @@ public interface CourseService {
      * @return
      */
     Course getCourseByCourseID(Integer courseID);
+
+    /**
+     * 展示所有课程信息（后台）
+     * @param map
+     * @return
+     */
+    List<Map> couList(Map map);
+
+    /**
+     * 计算课程数量
+     * @param map
+     * @return
+     */
+    Integer cuncour(Map map);
+
+    /**
+     * 添加课程
+     * @param course
+     * @return
+     */
+    Integer couAdd(Course course);
 }

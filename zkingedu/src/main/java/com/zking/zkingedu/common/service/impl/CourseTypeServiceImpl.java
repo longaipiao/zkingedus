@@ -20,4 +20,14 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     public List<CourseType> courseTypes() {
         return courseTypeDao.courseTypes();
     }
+
+    /**
+     * 根据体系Id获取课程类别
+     * @param systemID
+     * @return
+     */
+    @Override
+    public List<CourseType> cTypes(Integer systemID) {
+        return courseTypeDao.cTypes(systemID);
+    }
 }

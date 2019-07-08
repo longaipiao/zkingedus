@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,4 +84,61 @@ public class CourseController {
 //        System.out.println(sections);
         return "user/courses/show.html";
     }
+
+    /**
+     * 获取所有课程（后台）
+     * @return
+     */
+    @RequestMapping("/admin/couList")
+    @ResponseBody
+    public Map<String,Object> sysList(HttpServletRequest request){
+        //查询体系的条件
+        Map<String,Object> query=new HashMap<>();
+
+        //获取页码及展示数
+        Integer limit = Integer.parseInt(request.getParameter("limit"));
+        Integer page = (Integer.parseInt(request.getParameter("page"))-1)*limit;
+        String nametype = request.getParameter("nametype");
+        String name = request.getParameter("name");
+
+        query.put("page",page);
+        query.put("limit",limit);
+        query.put("nametype",nametype);
+        query.put("name",name);
+
+        //获取所有课程及数量
+        List<Map> maps = courseService.couList(query);
+        Integer cuncour = courseService.cuncour(query);
+
+//        System.out.println("page："+page+"  limit："+limit+"  nametype："+nametype+"  name:"+name+"  count："+cuncour);
+//        System.out.println(maps);
+
+        //返回的集合
+        Map map1=new HashMap();
+        map1.put("code",0);
+        map1.put("data",maps);
+        map1.put("count",cuncour);
+
+        return map1;
+    }
+
+    /**
+     * 增加课程
+     * @param course
+     * @return
+     */
+    @RequestMapping("/admin/courseAdd")
+    @ResponseBody
+    public Integer courseAdd(Course course){
+        //获得讲师Id
+        course.setCourseEid(8);
+
+        //添加课程
+        Integer n = courseService.couAdd(course);
+        //获取前台传来的课程信息
+//        System.out.println(course);
+
+        return n;
+    }
+
 }

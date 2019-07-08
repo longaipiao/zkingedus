@@ -34,8 +34,6 @@ public class URLController {
         return "admin/login";
     }
 
-
-
 //    //跳转到登陆界面
 //    @RequestMapping("/loginpage")
 //    public String page1(HttpSession session){
@@ -107,5 +105,9 @@ public class URLController {
         return "admin/jdy/admin-title";
     }
 
-
+    //跳转到课程管理
+    @RequestMapping("/cours")
+    public String cours(){
+        return "admin/liuxuqing/admincou.html";
+    }
 }

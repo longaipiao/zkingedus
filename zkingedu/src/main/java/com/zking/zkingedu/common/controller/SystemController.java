@@ -224,4 +224,23 @@ public class SystemController {
         return n;
     }
 
+    /**
+     * 获取所有父体系及子体系
+     * @return
+     */
+    @RequestMapping("/admin/allsys")
+    @ResponseBody
+    public List<Map> allsys(HttpServletRequest request){
+        Integer systemFid = Integer.parseInt(request.getParameter("systemFid"));
+        //获取所有父体系
+        List<Map> maps = systemService.sysMap(systemFid);
+        //获取父体系下的子体系
+        for (Map map : maps) {
+            List<System> systems = systemService.systems(Integer.parseInt(map.get("system_id").toString()));
+            map.put("sysson",systems);
+        }
+
+//        java.lang.System.out.println(maps);
+        return maps;
+    }
 }

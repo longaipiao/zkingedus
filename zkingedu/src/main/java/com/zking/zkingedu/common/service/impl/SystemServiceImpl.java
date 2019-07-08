@@ -87,4 +87,13 @@ public class SystemServiceImpl implements SystemService {
     public Integer systemAdd(System system) {
         return systemDao.systemAdd(system);
     }
+
+    /**
+     * 获取所有体系Map
+     * @return
+     */
+    @Override
+    public List<Map> sysMap(Integer systemFid) {
+        return systemDao.sysMap(systemFid);
+    }
 }

@@ -58,6 +58,39 @@
             <include refid="courseAll"></include>
         from t_course where course_id=#{courseID}
     </select>
-    <!--likai end-->
+
+    <!--展示所有课程信息（后台）-->
+    <select id="couList" resultType="Map">
+        select a.course_id,a.course_name,a.course_desc,a.course_img,a.course_state,a.course_free,a.course_num,a.course_time,a.course_inte,b.t_id,b.t_name,c.system_id,c.system_name,c.system_desc,d.*,e.system_id as 'system_fid',e.system_name as 'system_fname',e.system_desc as 'system_fdesc',e.system_img
+        from t_course a,course_type b,t_system c,t_emp d,t_system e
+        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id
+        <if test="nametype=='courseName'">
+            and a.course_name like '%${name}%'
+        </if>
+        <if test="nametype=='empName'">
+            and d.emp_name like '%${name}%'
+        </if>
+        <if test="page!=null">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <!--计算课程数量-->
+    <select id="cuncour" resultType="Integer">
+        select count(*) from t_course a,course_type b,t_system c,t_emp d,t_system e
+        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id
+        <if test="nametype=='courseName'">
+            and a.course_name like '%${name}%'
+        </if>
+        <if test="nametype=='empName'">
+            and d.emp_name like '%${name}%'
+        </if>
+    </select>
+
+    <!--添加课程-->
+    <insert id="couAdd" parameterType="Course">
+        insert into t_course(course_sid,course_eid,course_name,course_desc,course_img,course_free,course_inte,course_time,course_type)
+        values(#{courseSid},#{courseEid},#{courseName},#{courseDesc},#{courseImg},#{courseFree},#{courseInte},SYSDATE(),#{courseType})
+    </insert>
 
 </mapper>
