@@ -35,10 +35,7 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     @Override
-    public List<Bill> myBills(Integer billID) {
-
-        return billDao.myBills(billID);
-    }
+    public List<Bill> myBills(Integer billID) { return billDao.myBills(billID);}
 
     /**
      * 后台的账单记录统计   billShow.html
@@ -61,4 +58,12 @@ public class BillServiceImpl implements BillService {
     public int delBill(Integer billID) {
         return billDao.delBill(billID);
     }
+
+    /**
+     * 统计报表（饼图）
+     *
+     * @return
+     */
+    @Override
+    public List<Bill> sumGroupByBillType() {return billDao.sumGroupByBillType(); }
 }

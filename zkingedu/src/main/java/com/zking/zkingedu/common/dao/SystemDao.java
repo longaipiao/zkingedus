@@ -60,4 +60,10 @@ public interface SystemDao {
      * @return
      */
     Integer systemAdd(System system);
+
+    /**
+     * 获取所有体系Map
+     * @return
+     */
+    List<Map> sysMap(Integer systemFid);
 }

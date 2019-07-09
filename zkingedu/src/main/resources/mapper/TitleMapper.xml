@@ -5,7 +5,11 @@
 
     <!--题目接口Mapper-->
 <select id="gettitles" resultMap="titlemap">
-    select * from t_title a,t_answer b where a.title_id = b.answer_tid ORDER BY a.title_id
+    select * from t_title a,t_answer b where a.title_id = b.answer_tid
+    <if test="titleCid!=null">
+        and a.title_cid = #{titleCid}
+    </if>
+    ORDER BY a.title_id,b.answer_abcd
 </select>
 
     <resultMap id="titlemap" type="title">

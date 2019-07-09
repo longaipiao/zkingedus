@@ -3,29 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.RoleDao">
 
-    <!--角色接口Mapper-->
+    <!--查询所有的角色-->
     <select id="getrole" resultType="role">
         select * from t_role
     </select>
-    <delete id="deleterolebyid">
-        DELETE from t_menu_role where role_id = #{roleid}
+
+<!--删除角色-->
+    <delete id="delrolebyid">
+        DELETE from t_role where role_id = #{roleid}
     </delete>
-<!--删除角色菜单-->
+
+
+<!--根据角色删除菜单-->
     <delete id="delmenurolebyid">
         DELETE from t_menu_role where role_id = #{roleid} and menu_id in(${str})
     </delete>
-<!--添加角色菜单-->
+
+<!--根据角色添加菜单-->
     <insert id="addmenurolebyid">
         INSERT into t_menu_role(role_id,menu_id) VALUES ${str}
     </insert>
+<!--修改角色名称-->
     <update id="updaterolenamebyid">
         update t_role set role_name = #{rolename} where role_id = ${roleid}
     </update>
-
+<!--添加角色-->
     <insert id="addrole" parameterType="Role"  useGeneratedKeys="true" keyProperty="roleID" keyColumn="role_id">
         INSERT into t_role(role_name) VALUES(#{Role.roleName});
     </insert>
 
+<!--是否存在-->
     <select id="existsrolename" resultType="_int">
         select count(*) from t_role where role_name = #{rolename}
     </select>

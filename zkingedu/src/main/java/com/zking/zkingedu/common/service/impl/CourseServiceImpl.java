@@ -111,4 +111,44 @@ public class CourseServiceImpl implements CourseService {
     public Course getCourseByCourseID(Integer courseID) {
         return courseDao.getCourseByCourseID(courseID);
     }
+
+    /**
+     * 展示课程信息（后台）
+     * @param map
+     * @return
+     */
+    @Override
+    public List<Map> couList(Map map) {
+        return courseDao.couList(map);
+    }
+
+    /**
+     * 计算课程数量
+     * @param map
+     * @return
+     */
+    @Override
+    public Integer cuncour(Map map) {
+        return courseDao.cuncour(map);
+    }
+
+    /**
+     * 添加课程
+     * @param course
+     * @return
+     */
+    @Override
+    public Integer couAdd(Course course) {
+        return courseDao.couAdd(course);
+    }
+
+    /**
+     * 修改课程
+     * @param course
+     * @return
+     */
+    @Override
+    public Integer couUpd(Course course) {
+        return courseDao.couUpd(course);
+    }
 }

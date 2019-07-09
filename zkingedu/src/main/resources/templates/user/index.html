@@ -28,7 +28,10 @@
     <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
     <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
     <link rel="stylesheet" href="/user/layui/css/layui.css">
+
 	<style>
+
+
 		@font-face {
 			font-family: "lantingxihei";
 			src: url("fonts/FZLTCXHJW.TTF");
@@ -136,6 +139,11 @@
                     <a href="vip/index.html">会员</a>
 
                 </li>
+
+                <!--<li class=" new-nav logo-1111" th:if="${session.user}!=null">-->
+                    <!--<a href="javascript:;" onclick="x_admin_show('亲~考试了呢~','/url/getcategorys','550','420')">考核</a>-->
+
+                <!--</li>-->
 
             </ul>
 
@@ -651,6 +659,30 @@
     <script src="/user/loginCheck.js"></script>
     <script src="/user/static/ravenjs/3.7.0/raven.min.js"></script>
     <script>
+        function x_admin_show(title,url,w,h){
+            if (title == null || title == '') {
+                title=false;
+            };
+            if (url == null || url == '') {
+                url="404.html";
+            };
+            if (w == null || w == '') {
+                w=($(window).width()*0.9);
+            };
+            if (h == null || h == '') {
+                h=($(window).height() - 50);
+            };
+            layer.open({
+                type: 2,
+                area: [w+'px', h +'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade:0.4,
+                title: title,
+                content: url
+            });
+        }
         $.ajax({
             url:'/getGg',
             type:'post',

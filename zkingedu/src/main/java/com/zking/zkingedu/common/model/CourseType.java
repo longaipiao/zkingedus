@@ -16,4 +16,6 @@ public class CourseType implements Serializable{
     private Integer Tid;
     //课程类别名字
     private String tName;
+    //课程类别对应的体系
+    private Integer tSid;
 }

@@ -13,4 +13,11 @@ public interface CourseTypeService {
      * @return
      */
     List<CourseType> courseTypes();
+
+    /**
+     * 根据体系Id获取课程类别
+     * @param systemID
+     * @return
+     */
+    List<CourseType> cTypes(Integer systemID);
 }

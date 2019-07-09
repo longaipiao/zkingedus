@@ -3,10 +3,13 @@ package com.zking.zkingedu.common.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zking.zkingedu.common.model.Charge;
+import com.zking.zkingedu.common.model.Message;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.ChargeService;
+import com.zking.zkingedu.common.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,9 @@ public class ChargeController {
 
     @Resource
     private User user;
+
+    @Resource
+    private MessageService messageService;
 
 
     //后台充值记录
@@ -135,4 +141,30 @@ public class ChargeController {
 
         return chargeMap;
     }
+
+
+    /**
+     *
+     * @param page 当前页
+     * @param limit 每页多少条数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/user/MyMessages")
+    Map<String,Object> getMyMessages(@Param("page") Integer page,  @Param("limit") Integer limit,HttpServletRequest request){
+        Map<String,Object> messageMaps = new HashMap<>();
+        log.info("page"+page+"__limit:"+limit);
+        User user = (User) request.getSession().getAttribute("user");
+        Page pageLine = PageHelper.startPage(1,3);
+
+        List<Message> myMessages = messageService.getMyMessages(36);
+
+        messageMaps.put("count",pageLine.getTotal());
+        messageMaps.put("code","");
+        messageMaps.put("msg","");
+        messageMaps.put("data",myMessages);
+
+        return messageMaps;
+    }
+
 }

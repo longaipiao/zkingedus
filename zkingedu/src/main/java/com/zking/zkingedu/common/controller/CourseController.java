@@ -2,14 +2,17 @@ package com.zking.zkingedu.common.controller;
 
 import com.zking.zkingedu.common.model.Course;
 import com.zking.zkingedu.common.model.CourseType;
+import com.zking.zkingedu.common.model.Section;
 import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.CourseTypeService;
+import com.zking.zkingedu.common.service.SectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,8 @@ public class CourseController {
     private CourseService courseService;
     @Resource
     private CourseTypeService courseTypeService;
+    @Resource
+    private SectionService sectionService;
 
     @RequestMapping(value = "courses2",method = RequestMethod.POST)
     @ResponseBody
@@ -76,11 +81,89 @@ public class CourseController {
         //获取该讲师发布课程数
         Integer announcedc = courseService.announcedc(Integer.parseInt(course.get("emp_id").toString()));
         request.setAttribute("announcedc",announcedc);
-        //根据课程Id获取章节、视频
-        List<Map> sections = courseService.sections(courseID);
+        //根据课程Id获取章节
+        List<Section> sections = sectionService.sections(courseID);
         request.setAttribute("sections",sections);
 //        System.out.println(course);
 //        System.out.println(sections);
         return "user/courses/show.html";
     }
+
+    /**
+     * 获取所有课程（后台）
+     * @return
+     */
+    @RequestMapping("/admin/couList")
+    @ResponseBody
+    public Map<String,Object> sysList(HttpServletRequest request){
+        //查询体系的条件
+        Map<String,Object> query=new HashMap<>();
+
+        //获取页码及展示数
+        Integer limit = Integer.parseInt(request.getParameter("limit"));
+        Integer page = (Integer.parseInt(request.getParameter("page"))-1)*limit;
+        String nametype = request.getParameter("nametype");
+        String name = request.getParameter("name");
+
+        query.put("page",page);
+        query.put("limit",limit);
+        query.put("nametype",nametype);
+        query.put("name",name);
+
+        //获取所有课程及数量
+        List<Map> maps = courseService.couList(query);
+        Integer cuncour = courseService.cuncour(query);
+
+//        System.out.println("page："+page+"  limit："+limit+"  nametype："+nametype+"  name:"+name+"  count："+cuncour);
+//        System.out.println(maps);
+
+        //返回的集合
+        Map map1=new HashMap();
+        map1.put("code",0);
+        map1.put("data",maps);
+        map1.put("count",cuncour);
+
+        return map1;
+    }
+
+    /**
+     * 增加课程
+     * @param course
+     * @return
+     */
+    @RequestMapping("/admin/courseAdd")
+    @ResponseBody
+    public Integer courseAdd(Course course){
+        //获得讲师Id
+        course.setCourseEid(8);
+
+        //判断课程是否免费，若免费将课程积分设置为0
+        if (course.getCourseFree()==0){
+            course.setCourseInte(0);
+        }
+
+        //添加课程
+        Integer n = courseService.couAdd(course);
+        //获取前台传来的课程信息
+//        System.out.println(course);
+
+        return n;
+    }
+
+    @RequestMapping("/admin/courseUpd")
+    @ResponseBody
+    public Integer courseUpd(Course course){
+        //判断课程是否免费，若免费将课程积分设置为0
+        if (course.getCourseFree()==0){
+            course.setCourseInte(0);
+        }
+
+        //修改课程
+        Integer n = courseService.couUpd(course);
+
+        //获取前台传来的课程信息
+        System.out.println(course);
+        return n;
+    }
+
 }

@@ -18,6 +18,10 @@ public class Message implements Serializable {
     private Integer messageID;
     //用户id
     private Integer messageUid;
+    //另一个用户ID
+    private Integer messageOtherUid;
+    //帖子ID
+    private Integer messagePid;
     //消息标题
     private String messageName;
     //消息内容

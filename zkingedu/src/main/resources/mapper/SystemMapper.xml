@@ -60,4 +60,9 @@
         insert into t_system(system_name,system_fid,system_desc,system_img) values(#{systemName},#{systemFid},#{systemDesc},#{systemImg})
     </insert>
 
+    <!--获取所有体系Map-->
+    <select id="sysMap" resultType="Map">
+        select * from t_system where system_fid=#{systemFid}
+    </select>
+
 </mapper>

@@ -13,6 +13,13 @@ public interface CategoryDao {
      * 查询所有的题库类别
      * @return
      */
+    List<Category> getCategoryall();
+
+
+    /**
+     * 查询题库类别非停用
+     * @return
+     */
     List<Category> getCategory();
 
     /**
@@ -38,4 +45,18 @@ public interface CategoryDao {
      * @return
      */
     int delcategory(@Param("categoryID") Integer categoryID);
+
+    /**
+     * 按ID查询题库类别
+     * @param categoryID
+     * @return
+     */
+    Category getcat(@Param("categoryID") Integer categoryID);
+
+    /**
+     * 根据父题库ID查询子题库字段
+     * @param categoryFID
+     * @return
+     */
+    List<Category> gettikuzitype(@Param("categoryFID") Integer categoryFID);
 }

@@ -26,4 +26,6 @@ public class Section implements Serializable {
     private Integer sectionSeq;
     //单个视频积分
     private Integer sectionInte;
+    //视频播放地址(ID)
+    private String videoUrl;
 }

@@ -418,7 +418,13 @@
 					</div>
 					<div class="col-md-11 layout-body" id="get5" >
 						<div class="content" style="height: 300px;">
-							<h3>消息中心</h3>						
+							<h3>消息中心</h3>
+                            <!--数据位置-->
+                            <div id="message"></div>
+
+                        </div>
+                        <!--分页位置-->
+                        <div id="page5" align="center"></div>
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get6" >
@@ -437,7 +443,7 @@
 							<form style="margin-left: 100px;" id="formid" action="/pay">
 								<div class="form-group">
 									<label for="money" style="font-size: 16px;">充值金额</label>
-									<input type="text" style="width: 200px;" name="totalAmount" onkeyup="value=value.replace(/[^\d]/g, '')" min="10" max="9999" maxlength="4" required ="required" class="form-control" id="money" placeholder="10元起充,最大不超过9999">
+									<input type="text" style="width: 200px;" name="totalAmount" onkeyup="value=value.replace(/[^\d]/g, '')"  required ="required" class="form-control" id="money" placeholder="10元起充,最大不超过9999">
 								</div>
 								<div class="form-group">
 									<label for="integral" style="font-size: 16px;">充值积分</label>
@@ -611,8 +617,11 @@
                 *           我的课程   userinfo.html
                 * */
                 //方法二则直接使分用layui-v2.0.2里面的页功能，没有用到core.js里面的方法
-                layui.use('laypage', function(){
+                layui.use(['layer','laypage','flow'], function(){
+                    var layer = layui.layer;
                     var laypage = layui.laypage;
+                    var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+                    var flow = layui.flow;
                     var config = {page:1,pageSize:3};
                     var url = "/user/Mycourses";
                     $.getJSON(url,config,function(res){
@@ -673,6 +682,59 @@
                     });
                     $("#courseRow").html(html);
                 }
+
+                /**
+                 * 消息中心的模块
+                 */
+                $("#xiaoxi").click(function () {
+                    layer.msg("asdasd");
+                    flow.load({
+                        elem: '#message' //流加载容器
+                        , done: function (page, next) { //执行下一页的回调
+                            //模拟数据插入
+                            $.post("/user/MyMessages", {page: page, limit: 2}, function (res) {
+                                alert(res);
+                                var lis = [];
+                                layui.each(res.data, function (i, o) {
+                                    var content = '<div class="answer-item" >';
+                                    content += '<div class="answer-head">';
+                                    content += '<div class="user-avatar ">';
+                                    content += '<a class="avatar" href="/user/userinfo/index" target="_blank">';
+                                    content += '<img th:src="${session.user.userImg}">';
+                                    content += '</a>';
+                                    content += '</div>';
+                                    content += '</div>';
+                                    content += '<div class="answer-detail">';
+                                    content += '<span class="comment-reply">';
+                                    content += '<div class="user-username ">';
+                                    content += '<a class="username" href="javascript:void(0);" style="margin-left: 20px;" target="_blank">'+o.messageName+'</a>';
+                                    content += '</div>';
+                                    content += '</span>';
+                                    content += '<div class="answer-content markdown-body">';
+                                    content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='ydzt(\""+o.messageID+"\")' style='color: #000000'>"+o.messageContent+"</a>";
+                                    content += '</div>';
+                                    content += '<div>';
+                                    content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="create-time">时间：<span>'+o.messageTime+'</span></span>';
+                                    if(o.messageState==0){
+                                        content += '<span style="margin-left: 600px; color: red">未读消息</span>';
+                                    }else{
+                                        content += '<span style="margin-left: 600px; color: #9E792E">已读消息</span>';
+                                    }
+
+                                    content += '<hr/>';
+                                    content += '</div>';
+                                    content += '</div>';
+                                    lis.push(content);
+                                });
+                                //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                                //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                                next(lis.join(''), page < res.count); //假设总页数为 10
+                            });
+                        }
+                    });
+
+                });
+
             })
         </script>
 

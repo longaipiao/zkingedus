@@ -23,14 +23,18 @@ public class CategoryController {
     @RequestMapping("/getcategory")
     @ResponseBody
     public List getcategory(){
-        return categoryService.getCategory();
+        return categoryService.getCategoryall();
     }
+
+
 //查询所有父题库类别
     @RequestMapping("/getfcategory")
     @ResponseBody
     public List getfcategory(){
         return categoryService.getFCategory();
     }
+
+
     //添加题库类别
     @RequestMapping("/addcategory")
     @ResponseBody
@@ -73,15 +77,4 @@ public class CategoryController {
         categoryService.delcategory(Integer.parseInt(categoryID));
         return "ok";
     }
-
-
-
-
-
-
-
-
-
-
-
 }

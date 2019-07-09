@@ -146,4 +146,18 @@ public class BillController {
     void delBillI(@Param("billID") Integer billID){
         billService.delBill(billID);
     }
+
+
+    /**
+     * 饼图
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/admin/billTypeSum")
+    Map<String,Object> billTypeSunm(){
+        List<Bill> bills = billService.sumGroupByBillType();
+        Map<String,Object> maps = new HashMap<>();
+
+        return maps;
+    }
 }

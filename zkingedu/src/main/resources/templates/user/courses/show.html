@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
     <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
 	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="../user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="../app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
     <link rel="stylesheet" href="/user/layui/css/layui.css">
 
     <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
@@ -248,17 +248,9 @@
 
                 <div class="pull-right course-infobox-price">
                     <!--优酷播放器-->
-                    <div id="youkuplayer"style="width:580px;height:326px"></div>
+                    <div id="youkuplayer" style="width:780px;height:426px;display: none;"></div>
 
                     <script type="text/javascript" src="//player.youku.com/jsapi"></script>
-                    <script type="text/javascript">
-                        var player = new YKU.Player('youkuplayer',{
-                            styleid: '0',
-                            client_id: 'YOUR YOUKUOPENAPI CLIENT_ID',
-                            vid: '替换成优酷视频ID',
-                            newPlayer: true
-                        });
-                    </script>
                 </div>
 
         </div>
@@ -289,53 +281,74 @@
         <div class="tab-content">
             
             <div role="tabpanel" class="tab-pane active" id="labs">
-                
+            <!--<input type="hidden" id="userName" th:value="${session.user.userName}">-->
     <!--课程章节内容-->
-    <div class="lab-item " th:each="section:${sections}">
-        <div class="lab-item-status">
-            <!--章节前的图片-->
-            <img src="/user/img/lab-not-ok.png">
-        </div>
-        <!--章节顺序号-->
-        <div class="lab-item-index" th:text="'第'+${section.section_seq}+'节'"></div>
-        <!--课程名-->
-        <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.section_name}" th:text="${section.section_name}"></div>
-        <div class="pull-right lab-item-ctrl">
-            <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
-           <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
-            <a class="btn btn-primary" onclick="videoURL()" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
-            <input type="hidden" id="videoURL" th:value="${section.video_url}">
+    <div style="height:403px; overflow:scroll;overflow-x:hidden;">
+        <div class="lab-item" th:each="section:${sections}">
+            <div class="lab-item-status">
+                <!--章节前的图片-->
+                <img src="/user/img/lab-not-ok.png">
+            </div>
+            <!--章节顺序号-->
+            <div class="lab-item-index" th:text="'第'+${section.sectionSeq}+'节'"></div>
+            <!--课程名-->
+            <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.sectionName}" th:text="${section.sectionName}"></div>
+            <div class="pull-right lab-item-ctrl">
+                <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
+                <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
+                <a class="btn btn-primary" th:onclick="videoURL([[${section.sectionInte}]],[[${section.videoUrl}]])" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+                <!--<input type="hidden" id="videoURL" th:value="${section.video_url}">-->
+
+            </div>
         </div>
     </div>
+
         <script>
             layui.use('layer', function(){
                 var layer = layui.layer;
 
             })
 
-            function videoURL() {
+            //更改优酷播放器里视频的id
+            function f(videoURL) {
+                $("#youkuplayer").show();
+
+                //给播放器赋视频Id
+                var player = new YKU.Player('youkuplayer',{
+                    //播放器风格
+                    styleid: '0',
+                    client_id: 'baea9c8ad51a264f',
+                    vid: videoURL,
+                    newPlayer: true,
+                    autoplay: true
+                });
+            }
+
+            function videoURL(inte,videoURL) {
                 var courseID = $("#courseID").val();
                 var courseInit = $("#courseInit").val();
-                var videoURL = $("#videoURL").val();
-                console.log("课程ID:"+courseID+";课程积分:"+courseInit);
-                //如果不是免费
-                if(courseInit>0){
-                    $.ajax({
-                        url:"/user/buyOrder",
-                        data:{
-                            courseID:courseID,
-                            integral:courseInit
-                        },
-                        dataType:"text",
-                        success:function (data) {
+                $.ajax({
+                    url:"/user/buyOrder",
+                    data:{
+                        courseID:courseID,
+                        integral:courseInit,
+                        sectionInte:inte
+                    },
+                    dataType:"text",
+                    success:function (data) {
+                        if("USER_NULL"==data) {
+                            layer.msg("请登陆后在操作");
+                        }
+                        else{
                             if("ALREADY_BUY"==data){
                                 //已经购买    直接观看视频
-                                location.href = videoURL;
+                                f(videoURL);
+                            }
+                            else if(inte==0){
+                                f(videoURL);
                             }
                             else if("INTEGRAL_FEW"==data){
                                 layer.msg("您的积分不够，请充值")
-                            } else if("USER_NULL"==data){
-                                layer.msg("请登陆后在操作");
                             }
                             else if("NOW_BUY"==data){
                                 layer.confirm('是否购买本课程',function (index) {
@@ -349,16 +362,15 @@
                                         success:function (data) {
                                             layer.msg("购买成功");
                                             //观看视频
+                                            f(videoURL);
                                         }
                                     })
                                     layer.close(index);
                                 })
                             }
                         }
-                    })
-                } else{
-                    location.href = videoURL;
-                }
+                    }
+                })
             }
         </script>
 
