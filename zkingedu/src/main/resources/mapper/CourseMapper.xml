@@ -93,4 +93,9 @@
         values(#{courseSid},#{courseEid},#{courseName},#{courseDesc},#{courseImg},#{courseFree},#{courseInte},SYSDATE(),#{courseType})
     </insert>
 
+    <!--修改课程-->
+    <insert id="couUpd" parameterType="Course">
+        UPDATE t_course SET course_sid=#{courseSid},course_name=#{courseName},course_desc=#{courseDesc},course_img=#{courseImg},course_free=#{courseFree},course_inte=#{courseInte},course_type=#{courseType}
+        WHERE course_id=#{courseID}
+    </insert>
 </mapper>

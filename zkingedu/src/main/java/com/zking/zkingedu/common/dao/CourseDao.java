@@ -89,4 +89,10 @@ public interface CourseDao {
      */
     Integer couAdd(Course course);
 
+    /**
+     * 修改课程
+     * @param course
+     * @return
+     */
+    Integer couUpd(Course course);
 }

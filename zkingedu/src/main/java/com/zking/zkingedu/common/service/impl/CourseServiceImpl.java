@@ -141,4 +141,14 @@ public class CourseServiceImpl implements CourseService {
     public Integer couAdd(Course course) {
         return courseDao.couAdd(course);
     }
+
+    /**
+     * 修改课程
+     * @param course
+     * @return
+     */
+    @Override
+    public Integer couUpd(Course course) {
+        return courseDao.couUpd(course);
+    }
 }

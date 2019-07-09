@@ -133,11 +133,32 @@ public class CourseController {
         //获得讲师Id
         course.setCourseEid(8);
 
+        //判断课程是否免费，若免费将课程积分设置为0
+        if (course.getCourseFree()==0){
+            course.setCourseInte(0);
+        }
+
         //添加课程
         Integer n = courseService.couAdd(course);
         //获取前台传来的课程信息
 //        System.out.println(course);
 
+        return n;
+    }
+
+    @RequestMapping("/admin/courseUpd")
+    @ResponseBody
+    public Integer courseUpd(Course course){
+        //判断课程是否免费，若免费将课程积分设置为0
+        if (course.getCourseFree()==0){
+            course.setCourseInte(0);
+        }
+
+        //修改课程
+        Integer n = courseService.couUpd(course);
+
+        //获取前台传来的课程信息
+        System.out.println(course);
         return n;
     }
 

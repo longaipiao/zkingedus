@@ -37,6 +37,11 @@
 </div>
 <!--数据表格-->
 <table class="layui-hide" id="couList" lay-filter="test"></table>
+<!--行工具栏-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑课程</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">查看课程</a>
+</script>
 
 <script type="text/javascript" th:inline="none">
     layui.use(['layer', 'table', 'element','form','upload'], function () {
@@ -91,6 +96,31 @@
                 });
                 //返回拼接字符串
                 return con;
+            },
+            //根据体系Id获取课程类别
+            ctypeList:function(systemID){
+                var con='';
+                $.ajax({
+                    url: '/admin/cTypes',
+                    async: false,
+                    data: {
+                        systemID: systemID
+                    },
+                    success: function(res){
+                        //拼接类别下拉框
+                        con+='<option value="">请选择一个类别</option>';
+                        $(res).each(function(i,ct){
+                            con+='<option class="'+ct.tsid+'" value="'+ct.tid+'">'+ct.tname+'</option>';
+                        });
+                        /*$('#adcourseType').html(con);
+                        //重新渲染下拉框
+                        form.render('select');*/
+                    },
+                    error: function(){
+                        alert("课程类别接口回调失败");
+                    }
+                });
+                return con;
             }
         };
 
@@ -126,7 +156,7 @@
         //监听增加课程表单单选框
         form.on("radio(courseFree)", function (data) {
             var courseFree = data.value;
-            if (courseFree>0) {
+            if (courseFree!=0) {
                 //收费让积分文本框显示
                 $('#tigger').show();
             } else{
@@ -134,30 +164,35 @@
                 $('#tigger').hide();
             }
         });
+        //监听修改课程表单单选框
+        form.on("radio(upcourseFree)", function (data) {
+            var courseFree = data.value;
+            if (courseFree!=0) {
+                //收费让积分文本框显示
+                $('#uptigger').show();
+            } else{
+                //免费则不显示
+                $('#uptigger').hide();
+            }
+        });
 
         //监听增加表单下拉框点击（二级联动）
         form.on('select(courseSid)',function (data) {
-            var systemID=data.value;
             //获得选中的体系Id
-            $.ajax({
-                url: '/admin/cTypes',
-                data: {
-                    systemID: systemID
-                },
-                success: function(res){
-                    //拼接类别下拉框
-                    var con='<option value="">请选择一个类别</option>';
-                    $(res).each(function(i,ct){
-                        con+='<option value="'+ct.tid+'">'+ct.tname+'</option>';
-                    });
-                    $('#adcourseType').html(con);
-                    //重新渲染下拉框
-                    form.render('select');
-                },
-                error: function(){
-                    alert("课程类别接口回调失败");
-                }
-            });
+            var systemID=data.value;
+            var ctypeList = active.ctypeList(systemID);
+            $('#adcourseType').html(ctypeList);
+            //重新渲染下拉框
+            form.render('select');
+        });
+        //监听修改表单下拉框点击（二级联动）
+        form.on('select(upcourseSid)',function (data) {
+            //获得选中的体系Id
+            var systemID=data.value;
+            var ctypeList = active.ctypeList(systemID);
+            $('#upcourseType').html(ctypeList);
+            //重新渲染下拉框
+            form.render('select');
         });
 
         //监听搜索按钮
@@ -189,6 +224,8 @@
                 ,{field: 'course_inte', align: 'left', title: '课程积分', sort: true}
                 ,{field: 'course_desc', align: 'left', title: '课程简介'}
                 ,{field: 'course_img', hide:true, align: 'left', title: '课程图片'}
+                ,{field: 'system_id', hide:true, align: 'left', title: '课程子体系Id'}
+                ,{field: 't_id', hide:true, align: 'left', title: '课程类别Id'}
                 ,{field: 'course_num', hide:true, align: 'left', title: '学习人数'}
                 ,{field: 'course_state', hide:true, align: 'left', title: '课程状态'}
                 ,{title: '操作', toolbar: '#barDemo'}
@@ -219,7 +256,34 @@
                     layui.alert("接口回调失败");
                 }
             }) ;
-
+            return false;
+        });
+        //监听修改课程提交
+        form.on('submit(couUpd)', function(data){
+            alert(JSON.stringify(data.field));
+            $.ajax({
+                url:'/admin/courseUpd',
+                data:data.field,
+                success:function(res){
+                    alert(res);
+                    if(res!=0){
+                        //获取当前页码数
+                        var curr=$(".layui-laypage-em").next().html();
+                        //重载刷新数据
+                        active.reload(nametype,name,curr);
+                        alert("修改成功");
+                        //关闭弹出层
+                        layer.closeAll();
+                        //清空添加form表单的数据
+                        document.getElementById("couUpd").reset();
+                    }else{
+                        layer.msg("修改失败");
+                    }
+                },
+                error:function (data) {
+                    layui.alert("接口回调失败");
+                }
+            }) ;
             return false;
         });
 
@@ -254,9 +318,176 @@
                 });
             }
         });
+        //修改课程图片上传
+        var uploadInst1 = upload.render({
+            elem: '#upcourseImg' //图片上传点击事件
+            ,url: '/admin/adcourseImg'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    //图片预览（base64）
+                    $('#upcourseImg').attr('src', result);
+                });
+            }
+            //文件上传成功返回的参数
+            ,done: function(res){
+                alert(res.code);
+                //上传失败
+                if(res.code != 0){
+                    return layer.msg('上传失败');
+                }else{//上传成功
+                    //将返回的图片路径放进隐藏域
+                    $('#simg1').val(res.data.src);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst1.upload();
+                });
+            }
+        });
+
+        //监听行工具栏(查看课程、修改课程)
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得点击行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值，判断进行的操作
+            if(layEvent=='detail'){//查看操作
+
+            }else if(layEvent=='edit'){ //修改操作
+                //给弹出层赋值
+                $("#upcourseID").val(data.course_id);
+                $("#upcourseName").val(data.course_name);
+                $("#upcourseInte").val(data.course_inte);
+                $("#upcourseDesc").val(data.course_desc);
+                //课程图片赋值
+                $("#upcourseImg").attr("src",data.course_img);
+                //图片隐藏域赋值
+                $('#simg1').val(data.course_img);
+                //课程体系下拉框
+                $('#upcourseSid').append(active.sysList());
+                //体系下拉框选中
+                $("#upcourseSid").find("option[value='"+data.system_id+"']").prop("selected",true);
+                //课程分类下拉框
+                var ctypeList = active.ctypeList(data.system_id);
+                $('#upcourseType').html(ctypeList);
+                //课程分类下拉框选中
+                $("#upcourseType").find("option[class='"+data.system_id+"']").prop("selected",true);
+                //课程收费单选框选中
+                $("input[lay-filter=upcourseFree][value="+data.course_free+"]").prop("checked",true);
+
+                alert(data.course_free);
+
+                form.render("radio");
+
+                //判断课程是否收费，如不收费则不显示积分
+                if (data.course_free!=0) {
+                    //收费让积分文本框显示
+                    $('#uptigger').show();
+                } else{
+                    //免费则不显示
+                    $('#uptigger').hide();
+                }
+
+                //打开弹出层
+                var a=layer.open({
+                    type: 1
+                    ,title: "课程修改" //弹出层标题
+                    ,area: ['80%', '90%'] //弹出层大小
+                    ,content: $("#courseUpd") //弹出层内容
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+
+                //渲染form表单
+                form.render();
+            }
+        });
     });
 </script>
-<!--增加体系弹出层-->
+<!--修改课程弹出层-->
+<div style="display: none;" id="courseUpd">
+    <form class="layui-form" id="couUpd" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="courseID" id="upcourseID" readonly autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="courseName" id="upcourseName" required  lay-verify="required" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程体系</label>
+            <div class="layui-input-block">
+                <select name="courseSid" lay-filter="upcourseSid" id="upcourseSid">
+                    <option value="">请选择一个体系</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程类别</label>
+            <div class="layui-input-block">
+                <select name="courseType" id="upcourseType">
+                    <option value="">请选择一个类别</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否免费</label>
+            <div class="layui-input-block">
+                <input type="radio" lay-filter="upcourseFree" name="courseFree" value="0" title="全部免费">
+                <input type="radio" lay-filter="upcourseFree" name="courseFree" value="5" title="免费5章">
+                <input type="radio" lay-filter="upcourseFree" name="courseFree" value="10" title="免费10章">
+            </div>
+        </div>
+
+        <div id="uptigger" class="layui-form-item">
+            <label class="layui-form-label">课程积分</label>
+            <div class="layui-input-inline" style="width: 115px;">
+                <input type="text" name="courseInte" id="upcourseInte" placeholder="请输入课程积分" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">课程简介</label>
+            <div class="layui-input-block">
+                <textarea name="courseDesc" id="upcourseDesc" placeholder="请输入课程内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程图片</label>
+            <div class="layui-input-block">
+                <img style="width: 50%;height: 25%;" id="upcourseImg" />
+                <!--图片上传失败重试按钮-->
+                <p id="demoText1"></p>
+            </div>
+        </div>
+        <!--隐藏域（放图片路径）-->
+        <input type="hidden" id="simg1" name="courseImg" />
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="couUpd">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--增加课程弹出层-->
 <div style="display: none;" id="courseAdd">
     <form class="layui-form" id="couAdd" action="">
         <div class="layui-form-item">
