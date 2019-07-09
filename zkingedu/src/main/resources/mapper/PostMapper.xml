@@ -43,6 +43,21 @@
             WHERE a.collection_zpid = b.post_id and b.post_uid = d.user_id and a.collection_uid=#{uid}
     </select>
 
+    <select id="queryAllPostByTypeTo" resultType="map">
+      <if test="type==1">
+          select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+          b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+          d.sort_name
+          from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id AND a.post_name LIKE '%${value}%';
+      </if>
+        <if test="type==2">
+            select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+            b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+            d.sort_name
+            from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id AND d.sort_name LIKE '%${value}%';
+        </if>
+    </select>
+
 
     <insert id="addPost" parameterType="post">
         insert into t_post(post_uid,post_name,post_content,post_time,post_num,post_state,sort_id)
@@ -63,4 +78,17 @@
          FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND d.sort_name=#{type} LIMIT #{page},#{size}
     </select>
 
+    <update id="banPost">
+        <if test="type==1">
+            UPDATE t_post SET post_state=1  WHERE post_id=#{post_id};
+        </if>
+
+        <if test="type==0">
+            UPDATE t_post SET post_state=0  WHERE post_id=#{post_id};
+        </if>
+    </update>
+
+    <update id="pageView">
+        UPDATE t_post SET post_num=post_num+1 WHERE post_id=#{post_id};
+    </update>
 </mapper>

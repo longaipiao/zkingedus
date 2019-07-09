@@ -18,4 +18,6 @@ public class Sort implements Serializable {
     private Integer sortID;
     //类别名
     private String sortName;
+    //启用状态
+    private Integer sortState;
 }

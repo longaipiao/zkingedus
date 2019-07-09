@@ -144,10 +144,13 @@
                <!-- <span th:text="${addr}"></span>
                 <span th:if="${addr}!=delete">111111111111111111111111111111111</span>
                 用户：<span th:text="${session.user1}"></span>-->
+
+                <!--头部替换-->
                 <span th:if="${addr}==delete">
                     <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
                     <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
                 </span>
+
                 <span th:if="${addr}!=delete">
                     <span th:if="${session.user}!=null">
                         <a href="/user/userinfo"><img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}"></a>
@@ -157,6 +160,7 @@
                         <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
                     </span>
                 </span>
+                <!--头部替换-->
             </div>
 
 
@@ -558,7 +562,7 @@
                             </div>
                             <div class="form-group remember-login">
                                 <input name="remember" type="checkbox" value="y"> 下次自动登录
-                                <a class="pull-right" href="javascript:void(0)" onclick="pass()">忘记密码？</a>
+                                <a class="pull-right" href="user/zhPwd" >忘记密码？</a>
                             </div>
                             <div class="form-group">
                                 <input class="btn btn-primary" name="submit" type="button" value="进入实验楼" onclick="loginChek()">
@@ -629,7 +633,7 @@
         data-msg-user=""
         data-msg-system=""
     ></div>-->
-
+    <script src="/user/layui/layui.js"></script>
     <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
     <script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
     <script src="/user/static/ace/1.2.5/ace.js"></script>
@@ -830,7 +834,7 @@
 
     </div>
 </div>
-<script src="/user/layui/layui.js"></script>
+
 
 </body>
 </html>

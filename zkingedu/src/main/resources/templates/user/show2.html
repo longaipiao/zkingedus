@@ -136,8 +136,20 @@
 
 
             <div class="navbar-right btns">
-                <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
-                <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
+               <span th:if="${addr}==delete">
+                    <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
+                    <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
+                </span>
+
+                <span th:if="${addr}!=delete">
+                    <span th:if="${session.user}!=null">
+                        <a href="/user/userinfo"><img class="layui-nav-img" style="width: 45px;height: 45px;" th:src="${session.user.userImg}"></a>
+                    </span>
+                    <span th:if="${session.user}==null">
+                        <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
+                        <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
+                    </span>
+                </span>
             </div>
 
 
@@ -173,7 +185,7 @@
                     <div class="question-headline">
                         <input type="hidden" value="${post.post_id}" id="bpost_ID"/>
                         <span class="question-title" th:text="${post.post_name}"> 好心人可以告诉我怎么截屏吗。。。</span>
-                        <span class="question-figure">3 回复</span><span class="question-figure" >浏览数：<span th:text="${post.post_num}"></span></span>
+                        <span class="question-figure">回复：<span th:text="${cORg.tcommentCountNum}"></span></span><span class="question-figure" >浏览数：<span th:text="${post.post_num}"></span></span>
                     </div>
                     <div class="question-author">
 
@@ -205,14 +217,24 @@
 
 
                         <span id="ction">
-                            <a th:if="${cORg.collection}!=yes" th:onclick="collection([[${post.post_id}]],[[1]]);" href="#" data-toggle="modal" data-sign="signin" class="btn btn-primary collectBtn">收藏</a>
-                            <a th:if="${cORg.collection}==yes" th:onclick="collection([[${post.post_id}]],[[2]]);" href="#" data-toggle="modal" data-sign="signin" class="btn btn-primary collectBtn">取消收藏</a>
+                            <span th:if="${session.user}==null">
+                                <a onclick="loginT()" href="#" data-toggle="modal" data-sign="signin" class="btn btn-primary collectBtn">收藏</a>
+                            </span>
+                            <span th:if="${session.user}!=null">
+                                <a th:if="${cORg.collection}!=yes" th:onclick="collection([[${post.post_id}]],[[1]]);" href="#" data-toggle="modal" data-sign="signin" class="btn btn-primary collectBtn">收藏</a>
+                                <a th:if="${cORg.collection}==yes" th:onclick="collection([[${post.post_id}]],[[2]]);" href="#" data-toggle="modal" data-sign="signin" class="btn btn-primary collectBtn">取消收藏</a>
+                            </span>
                         </span>
 
                         <span id="give">
                             <input type="hidden" id="giveNum" th:value="${cORg.giveNum}"/>
-                            <span th:if="${cORg.give}!=yes"><img title="点赞" src="/user/img/give1.jpg" th:onclick="gives([[${post.post_id}]],[[1]],[[${cORg.giveNum}]]);"/><span th:text="${cORg.giveNum}"></span></span>
-                            <span th:if="${cORg.give}==yes"><img title="取消点赞" src="/user/img/give2.jpg" th:onclick="gives([[${post.post_id}]],[[2]],[[${cORg.giveNum}]]);"/><span th:text="${cORg.giveNum}"></span></span>
+                            <span th:if="${session.user}==null">
+                                <span><img title="点赞" src="/user/img/give1.jpg" onclick="loginT()"/><span th:text="${cORg.giveNum}"></span></span>
+                            </span>
+                            <span th:if="${session.user}!=null">
+                                 <span th:if="${cORg.give}!=yes"><img title="点赞" src="/user/img/give1.jpg" th:onclick="gives([[${post.post_id}]],[[1]],[[${cORg.giveNum}]]);"/><span th:text="${cORg.giveNum}"></span></span>
+                                <span th:if="${cORg.give}==yes"><img title="取消点赞" src="/user/img/give2.jpg" th:onclick="gives([[${post.post_id}]],[[2]],[[${cORg.giveNum}]]);"/><span th:text="${cORg.giveNum}"></span></span>
+                            </span>
                         </span>
 
                     </div>
@@ -322,76 +344,64 @@
 
             </div>
         <div class="col-md-3 layout-side">
-
-            <a class="btn side-btn" href="#sign-modal" data-toggle="modal" data-sign="signin">我要发帖</a>
+            <!--左边替换-->
+            <a th:if="${session.user}!=null" class="btn side-btn" href="/post" data-toggle="modal" data-sign="signin">我要发帖</a>
+            <a th:if="${session.user}==null" class="btn side-btn" href="javascript:void(0)" onclick="loginT()" data-toggle="modal" data-sign="signin">我要发帖</a>
 
             <div class="panel panel-default panel-userinfo">
-                <div class="panel-body body-userinfo">
-                    <div class="media userinfo-header">
-                        <div class="media-left">
-                            <div class="user-avatar">
-
-                                <a class="avatar" href="#sign-modal" data-toggle="modal" data-sign="signin">
-                                    <img class="circle" src="/user/img/logo-grey.png">
-                                </a>
-
-                            </div>
-                        </div>
-                        <div class="media-body">
-
-                            <span class="media-heading username">欢迎来到实验楼</span>
-                            <p class="vip-remain">做实验，学编程</p>
-
-                        </div>
-                    </div>
-
-                    <div class="row userinfo-data">
-
-                        <hr>
-                        <div class="btn-group-lr">
-                            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
-                            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>
-                        </div>
-
-                    </div>
-
-                    <div class="userinfo-footer row">
-                        <div class="col-md-6 col-xs-6 pos-left">
-
-                            <a href="#sign-modal" data-toggle="modal" data-sign="signin"><span class="glyphicon glyphicon-bookmark"></span> 加入私有课</a>
-
-                        </div>
-                        <div class="col-md-6 col-xs-6 pos-right">
-                            <a href="/contribute" target="_blank"><span class="glyphicon glyphicon-send"></span> 我要投稿</a>
-                        </div>
-
-                        <div id="join-private-course" class="modal fade words-ctrl" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">加入私有课</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div style="margin:15px 0;">输入教师提供的私有课程码可以加入教师的私有课程。</div>
-                                        <form id="private-course-form" method="POST" action="/courses/join">
-                                            <div class="form-group">
-                                                <label for="code">邀请码</label>
-                                                <input class="form-control" id="code" name="code" type="text" value="">
-                                                <input name="_csrf_token" type=hidden value="1483789088##bbf83c51243ab12daa94911c8865a65bdc66c4d8">
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                        <button type="button" class="btn btn-primary" onclick="document.getElementById('private-course-form').submit();">确定</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <span th:if="${session.user}!=null">
+        <div class="panel-body body-userinfo">
+        <div class="media userinfo-header">
+            <div class="media-left">
+                <div class="user-avatar">
+                     <a class="avatar" href="user/userinfo" data-toggle="modal" data-sign="signin">
+                         <img class="circle" th:src="${session.user.userImg}">
+                     </a>
                 </div>
+             </div>
+            <div class="media-body">
+                 <span class="media-heading username">欢迎来到实验楼</span>
+                 <p class="vip-remain">做实验，学编程</p>
             </div>
+        </div>
+        <div class="row userinfo-data">
+            <hr>
+            <div class="btn-group-lr">
+                <span style="margin-left: -20px">用户：<span th:text="${session.user.userName}"></span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>积分余额：<span th:text="${session.user.userIntegrsl}">114514</span></span>
+                <!--<a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>-->
+            </div>
+        </div>
+    </div>
+    </span>
+                <span th:if="${session.user}==null">
+        <div class="panel-body body-userinfo">
+        <div class="media userinfo-header">
+            <div class="media-left">
+                <div class="user-avatar">
+                     <a class="avatar" href="user/userinfo" data-toggle="modal" data-sign="signin">
+                         <img class="circle" src="/user/img/default.jpg">
+                     </a>
+                </div>
+             </div>
+            <div class="media-body">
+                 <span class="media-heading username">欢迎来到实验楼</span>
+                 <p class="vip-remain">做实验，学编程</p>
+            </div>
+        </div>
+        <div class="row userinfo-data">
+            <hr>
+            <div class="btn-group-lr">
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>
+            </div>
+        </div>
+    </div>
+    </span>
+
+            </div>
+            <!--左边结束-->
 
 
             <div class="sidebox">
@@ -505,10 +515,10 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                        <a href="#signin-form" aria-controls="signin-form2" role="tab" data-toggle="tab">登录</a>
                     </li>
                     <li role="presentation">
-                        <a href="#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                        <a href="#signup-form" aria-controls="signup-form1" role="tab" data-toggle="tab">注册</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -519,7 +529,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-envelope" style="margin:0;"></i>
                                     </div>
-                                    <input type="email" name="login" class="form-control" placeholder="请输入邮箱">
+                                    <input name="login" class="form-control" placeholder="请输入手机号" id="loginPhone">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -527,7 +537,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-lock" style="margin:0;"></i>
                                     </div>
-                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码" id="loginUpwd">
                                 </div>
                             </div>
                             <div class="form-inline verify-code-item" style="display:none;">
@@ -536,36 +546,34 @@
                                         <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
                                     </div>
                                 </div>
-                                <img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">
+
                             </div>
                             <div class="form-group remember-login">
                                 <input name="remember" type="checkbox" value="y"> 下次自动登录
-                                <a class="pull-right" href="../reset_password/index.html">忘记密码？</a>
+                                <a class="pull-right" href="javascript:void(0)" onclick="pass()">忘记密码？</a>
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" name="submit" type="submit" value="进入实验楼">
+                                <input class="btn btn-primary" name="submit" type="button" value="进入实验楼" onclick="loginChek()">
                             </div>
                             <div class="form-group widget-signin">
                                 <span>快速登录</span>
-                                <a href="/auth/qq?next="><i class="fa fa-qq"></i></a>
-                                <a href="/auth/weibo?next="><i class="fa fa-weibo"></i></a>
-                                <a href="/auth/weixin?next="><i class="fa fa-weixin"></i></a>
-                                <a href="/auth/github?next="><i class="fa fa-github"></i></a>
-                                <a href="/auth/renren?next="><i class="fa fa-renren"></i></a>
+                                <a href="/qqCheck"><i class="fa fa-qq"></i></a>
                             </div>
                             <div class="form-group error-msg">
                                 <div class="alert alert-danger" role="alert"></div>
                             </div>
                         </form>
                     </div>
+
+                    <!--注册-->
                     <div role="tabpanel" class="tab-pane" id="signup-form">
-                        <form action="/register" method="post">
+                        <form action="#" method="post" id="zc_form">
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-envelope" style="margin:0;"></i>
                                     </div>
-                                    <input type="email" name="email" class="form-control" placeholder="请输入邮箱">
+                                    <input type="email" name="email" class="form-control" placeholder="请输入手机号" id="phone">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -573,36 +581,27 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-lock" style="margin:0;"></i>
                                     </div>
-                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码" id="upwd">
                                 </div>
                             </div>
                             <div class="form-inline">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码" id="code">
                                     </div>
                                 </div>
-                                <img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">
+                                <button id="sendPhone">获取验证码</button>
+                                <!--<img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">-->
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" name="submit" type="submit" value="注册">
-                            </div>
-                            <div class="form-group agree-privacy">
-                                注册表示您已经同意我们的<a href="../privacy/index.html" target="_blank">隐私条款</a>
-                            </div>
-                            <div class="form-group widget-signup">
-                                <span>快速注册</span>
-                                <a href="/auth/qq?next="><i class="fa fa-qq"></i></a>
-                                <a href="/auth/weibo?next="><i class="fa fa-weibo"></i></a>
-                                <a href="/auth/weixin?next="><i class="fa fa-weixin"></i></a>
-                                <a href="/auth/github?next="><i class="fa fa-github"></i></a>
-                                <a href="/auth/renren?next="><i class="fa fa-renren"></i></a>
+                                <input class="btn btn-primary" name="submit" onclick="zc()" type="button" value="注册">
                             </div>
                             <div class="form-group error-msg">
                                 <div class="alert alert-danger" role="alert"></div>
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -866,12 +865,25 @@
                     }
                 });
             }
+
+            function loginT() {
+                layer.msg('请登录后再操作',{time:1600});
+            }
         </script>
     </div>
 </div>
 
 
 
-
+<script src="/user/zc.js"></script>
+<script src="/user/loginCheck.js"></script>
+<script>
+    function loginT() {
+        layui.use('layer',function () {
+            var layer = layui.layer;
+            layer.msg('请登录后再操作',{time:1600});
+        });
+    }
+</script>
 </body>
 </html>

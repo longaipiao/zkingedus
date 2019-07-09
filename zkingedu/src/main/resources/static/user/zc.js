@@ -7,16 +7,16 @@ $(function(){
             code+=Math.floor(Math.random()*10);
         }
         alert(code);
-        /*$.ajax({
+        $.ajax({
                  type: 'post',
                 url: 'http://route.showapi.com/28-1',
                 dataType: 'json',
                 data: {
-                    "showapi_appid": '90784', //这里需要改成自己的appid
-                    "showapi_sign": '36bb53e6712946d5b8bfd554e602cd17',  //这里需要改成自己的应用的密钥secret
+                    "showapi_appid": '99583', //这里需要改成自己的appid
+                    "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
                     "mobile":$('#phone').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
-                    "tNum":"T170317004265",
+                    "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
+                    "tNum":"T150606060602",
                     "big_msg":""
 
                 },
@@ -27,7 +27,7 @@ $(function(){
                     console.log(result) //console变量在ie低版本下不能用
                     //alert(result.showapi_res_code)
                 }
-        });*/
+        });
         timeStart();
     });
 });
@@ -46,38 +46,43 @@ function timeStart(){
 
 /*注册*/
 function zc() {
-    if(checkPhone()==false){//查询重复用户
-        return false;
-    }else if(!(/^1[3456789]\d{9}$/.test($('#phone').val()))){
-        alert("手机号码有误，请重填");
-        $('#phone').val('');
-        return false;
-    }else if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/.test($('#upwd').val()))){
-        alert("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符");
-        $('#upwd').val('');
-        return false;
-    }else if(code!=$('#code').val()){
-        alert("验证码错误");
-        $('#code').val('');
-        return false;
-    }
-    $.ajax({
-        url:'user/zc',
-        type:'post',
-        async:false,
-        data:{
-            userPhone:$("#phone").val(),
-            userPassword:$("#upwd").val()
-        },
-        success:function (data) {
-            if(data=='注册成功'){
-                alert("注册完成");
-                location.href='/'
-            }
-        },
-        error:function () {
-            console.log("注册错误")
+    layui.use('layer',function () {
+        var layer = layui.layer;
+        if(checkPhone()==false){//查询重复用户
+            return false;
+        }else if(!(/^1[3456789]\d{9}$/.test($('#phone').val()))){
+            layer.msg("手机号码有误，请重填",{time:1200});
+            $('#phone').val('');
+            return false;
+        }else if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/.test($('#upwd').val()))){
+            layer.msg("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符",{time:1200});
+            $('#upwd').val('');
+            return false;
+        }else if(code!=$('#code').val()){
+            layer.msg("验证码错误",{time:1200});
+            $('#code').val('');
+            return false;
         }
+        $.ajax({
+            url:'user/zc',
+            type:'post',
+            async:false,
+            data:{
+                userPhone:$("#phone").val(),
+                userPassword:$("#upwd").val()
+            },
+            success:function (data) {
+                if(data=='注册成功'){
+                    layer.msg("注册完成",{time:1600});
+                    location.href='/'
+                }else{
+                    layer.msg("注册失败",{time:1600});
+                }
+            },
+            error:function () {
+                console.log("注册错误")
+            }
+        });
     });
 }
 /*查询重复用户*/
@@ -91,7 +96,7 @@ function checkPhone() {
         },
         success:function (data) {
             if(data=='1'){
-                alert("账号已存在");
+                layer.msg("账号已存在",{time:1200});
                 f=false;
             }else{
 

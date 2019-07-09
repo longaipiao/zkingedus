@@ -37,7 +37,7 @@ public class UserNotController {
     public String zc(User user){
         user.setUserName(getRandomJianHan(3));
         user.setUserRegTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-        user.setUserImg("default.jpg");
+        user.setUserImg("/user/img/default.jpg");
         user.setUserIntegrsl(0);
         user.setUserState(0);
         user.setUserIP("127.0.0.1");
@@ -71,6 +71,9 @@ public class UserNotController {
 
         User user1 = userService.userLogin(user);
         if(user1!=null){
+            if(user1.getUserState()==1){
+                return "3";
+            }
             request.getSession().setAttribute("user",user1);
             int n = userService.updateAddressAndTime(IpAddress.getIpAddr(request),new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()),user1.getUserID());
             if(n>0){

@@ -165,9 +165,9 @@
 						<div class="pull-left userinfo-banner-avatar">
 							<div class="user-avatar ">
 								<a class="avatar" href="#" target="_blank">
-									<img src="https://dn-simplecloud.shiyanlou.com/gravatarc51ce410c124a10e0db5e4b97fc2af39.png?v=1439957390221&amp;imageView2/1/w/200/h/200">
+									<img th:src="${session.user.userImg}">
 								</a>
-								<a class="member-icon" href="/user//user/vip/index.html" target="_blank">
+								<a class="member-icon" href="#" target="_blank">
 									<img src=" /user/img/vip-icon.png">
 								</a>
 							</div>
@@ -175,18 +175,16 @@
 				
 						<div class="pull-left userinfo-banner-details">
 							<div class="userinfo-banner-meta">
-								<div class="user-username ">
-									<a class="username" href="#" target="_blank">石头山</a>
-									<span class="user-level">L195</span>
+								<div class="userinfo-banner-status ">
+                                    用户名：<span th:text="${session.user.userName}"></span>
 								</div>
 							</div>
 							<div class="userinfo-banner-status">
-									<span>学生</span>
-									<a href="/edu/1" target="_blank">北京大学</a>
+
 							</div>
 							<div class="userinfo-banner-status">
 									<span>积分:</span>
-									<strong>123</strong>
+									<strong><span th:text="${session.user.userIntegrsl}"></span></strong>
 							</div>
 						</div>
 					</div>

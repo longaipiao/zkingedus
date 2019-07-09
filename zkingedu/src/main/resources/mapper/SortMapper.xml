@@ -5,7 +5,27 @@
 
     <!--论坛类别接口Mapper-->
     <select id="queryAllSort" resultType="sort">
-        select sort_id,sort_name from t_sort
+        select sort_id,sort_name,sort_state from t_sort
     </select>
 
+    <insert id="addSort" parameterType="sort">
+        INSERT INTO t_sort(sort_name) VALUES(#{sort.sortName})
+    </insert>
+
+    <update id="updateSort" parameterType="sort">
+        UPDATE t_sort SET sort_name=#{sort.sortName} WHERE sort_id = #{sort.sortID}
+    </update>
+
+    <select id="querySortByName" resultType="String">
+        SELECT sort_name FROM t_sort WHERE sort_name=#{sortName}
+    </select>
+
+    <update id="sortBan">
+        <if test="type==0">
+            UPDATE t_sort SET sort_state=0 WHERE sort_id=#{sortID};
+        </if>
+        <if test="type==1">
+            UPDATE t_sort SET sort_state=1 WHERE sort_id=#{sortID};
+        </if>
+    </update>
 </mapper>

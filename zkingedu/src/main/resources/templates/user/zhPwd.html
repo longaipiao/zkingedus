@@ -172,7 +172,7 @@
             <p style="height: 20px"></p>
         </div>
         <div style="margin-left: 50%;"><input id="zhcode" type="text" class="layui-form-label" style="width: 200px;text-align: left" placeholder="请输入验证码"><p style="height: 20px"></p>
-            <button onclick="getzhCode()" id="getZhCode" type="button" class="layui-btn layui-btn-normal layui-btn-radius" style="margin-top: -15px;margin-left: 30px">获取验证码</button>
+            <button onclick="getzhCode(1)" id="getZhCode" type="button" class="layui-btn layui-btn-normal layui-btn-radius" style="margin-top: -15px;margin-left: 30px">获取验证码</button>
         </div>
         <div style="margin-left: 50%;margin-top: 30px">
             <button onclick="successOk(1)" class="layui-btn layui-btn-normal layui-btn-radius" style="width: 128px">确认</button><A href="#" onclick='switchEmail(2)' style="color: #0ace9d;margin-left: 70px">更换邮箱找回>>>>></A>
@@ -305,21 +305,25 @@
     function switchEmail(type) {
             var shtml = "";
             if(type==1){
+
+
+
                 shtml +="<div style=\"margin-top: 100px;margin-left: 50%\">";
-                shtml +="<label style=\"width: 180px;text-align: left;margin-left: -15px\" class=\"layui-form-label\">请输入手机号码(账号)：</label>";
-                shtml +="<input type=\"text\" id='phonez' style=\"width: 400px\" name=\"username\" lay-verify=\"required\" placeholder=\"请输入手机号码\"  class=\"layui-input\" onblur='checkPhoneAndEmail1()>";
+                shtml +="<label style=\"width: 190px;text-align: left;margin-left: -15px\" class=\"layui-form-label\">请输入手机号码(账号)：</label>";
+                shtml +="<input type=\"text\" id='phonez' style=\"width: 400px\" name=\"username\" lay-verify=\"required\" placeholder=\"请输入手机号码\"  class=\"layui-input\" onblur='checkPhoneAndEmail1()'>";
                 shtml +="<p style=\"height: 20px\"></p></div>";
                 shtml +="<div style=\"margin-left: 50%;\"><input id='zhcode' type=\"text\" class=\"layui-form-label\" style=\"width: 200px;text-align: left\" placeholder=\"请输入验证码\"><p style=\"height: 20px\"></p>";
-                shtml +="<button type='button' id='getZhCode' onclick='getzhCode()' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"margin-top: -15px;margin-left: 30px\">获取验证码</button></div>";
+                shtml +="<button type='button' id='getZhCode' onclick='getzhCode(1)' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"margin-top: -15px;margin-left: 30px\">获取验证码</button></div>";
                 shtml +="<div style=\"margin-left: 50%;margin-top: 30px\">"
                 shtml +="<button onclick='successOk(1)' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"width: 128px\">确认</button><A href=\"#\" onclick='switchEmail(2)' style=\"color: #0ace9d;margin-left: 70px\">更换邮箱找回>>>>></A></div>";
+
             }else{
                 shtml +="<div style=\"margin-top: 100px;margin-left: 50%\">";
                 shtml +="<label style=\"width: 190px;text-align: left;margin-left: -15px\" class=\"layui-form-label\">请输入绑定的邮箱地址：</label>";
                 shtml +="<input type=\"email\" id='emailz' style=\"width: 400px\" name=\"username\" lay-verify=\"required\" placeholder=\"请输入邮箱地址\"  class=\"layui-input\" onblur='checkPhoneAndEmail2()'>";
                 shtml +="<p style=\"height: 20px\"></p></div>";
                 shtml +="<div style=\"margin-left: 50%;\"><input id='zhcode' type=\"text\" class=\"layui-form-label\" style=\"width: 200px;text-align: left\" placeholder=\"请输入验证码\"><p style=\"height: 20px\"></p>";
-                shtml +="<button type='button' id='getZhCode' onclick='getzhCode()' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"margin-top: -15px;margin-left: 30px\">获取验证码</button></div>";
+                shtml +="<button type='button' id='getZhCode' onclick='getzhCode(2)' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"margin-top: -15px;margin-left: 30px\">获取验证码</button></div>";
                 shtml +="<div style=\"margin-left: 50%;margin-top: 30px\">"
                 shtml +="<button onclick='successOk(2)' class=\"layui-btn layui-btn-normal layui-btn-radius\" style=\"width: 128px\">确认</button><A href=\"#\" onclick='switchEmail(1)' style=\"color: #0ace9d;margin-left: 70px\">更换手机找回>>>>></A></div>";
             }
@@ -380,22 +384,23 @@
      */
     var zhcode = "come";//验证码
     var zhtime = 60;//倒计时
-    function getzhCode() {//获得验证码
+    function getzhCode(type) {//获得验证码
         zhcode = "";
         for(var i=0;i<6;i++){
             zhcode+=Math.floor(Math.random()*10);
         }
         alert(zhcode);
-        /*$.ajax({
-                 type: 'post',
+        if(type==1){
+            $.ajax({
+                type: 'post',
                 url: 'http://route.showapi.com/28-1',
                 dataType: 'json',
                 data: {
-                    "showapi_appid": '90784', //这里需要改成自己的appid
-                    "showapi_sign": '36bb53e6712946d5b8bfd554e602cd17',  //这里需要改成自己的应用的密钥secret
+                    "showapi_appid": '99583', //这里需要改成自己的appid
+                    "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
                     "mobile":$('#phone').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
-                    "tNum":"T170317004265",
+                    "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
+                    "tNum":"T150606060602",
                     "big_msg":""
 
                 },
@@ -406,7 +411,27 @@
                     console.log(result) //console变量在ie低版本下不能用
                     //alert(result.showapi_res_code)
                 }
-        });*/
+            });
+        }else{
+            $.ajax({
+                type: 'post',
+                url: 'user/sendMail',
+                dataType: 'json',
+                data: {
+                    Email:$('#email').val(),
+                    code:code
+                },
+                error: function() {
+                    console.log('邮件验证码发送失败');
+                },
+                success: function(result) {
+                    if(result==1){
+                        console.log('邮件发送成功');
+                    }
+                }
+            });
+        }
+
         timeStartzhCode();
     }
     function timeStartzhCode(){//倒计时

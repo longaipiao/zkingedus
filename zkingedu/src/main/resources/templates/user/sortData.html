@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>yhjm</title>
+    <link rel="stylesheet" href="/user/layui/css/layui.css">
+</head>
+<body onload="showSort()">
+
+<!--<script type="text/html" id="topG">
+    <div class="layui-input-inline">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <select id="type">
+                    <option value="1">标题名</option>
+                    <option value="2">板块</option>
+                </select>
+            </div>
+            <input type="text" id="value" class="layui-form-label" value="" lay-event="fan"  placeholder="请输入搜索内容" style="margin-top: 3px;width: 200px;height:32px;text-align: left"/>
+            <button class="layui-btn layui-btn-sm" lay-event="fan"  style="margin-top: 3px;" onclick="check()">搜索</button>
+        </div>
+    </div>
+</script>-->
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <a class="layui-btn layui-btn-xs" lay-event="out">启用</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ban">停用</a>
+    </div>
+</script>
+
+<table id="sortTable" lay-filter="sort"></table>
+<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/layui/layui.js"></script>
+    <script th:inline="none">
+        function showSort() {
+            layui.use('table',function(){
+                var table = layui.table;
+                table.render({
+                    title:'论坛板块表',
+                    elem: '#sortTable',
+                    url:'/getSorts',
+                    toolbar:'<div class="layui-input-inline">\n' +
+                        '        <div class="layui-form-item">\n' +
+                        '            <input type="text" id="value" class="layui-form-label" value="" lay-event="fan"  placeholder="请输入板块名" style="margin-top: 3px;width: 200px;height:32px;text-align: left"/>\n' +
+                        '            <button class="layui-btn layui-btn-sm" lay-event="fan"  style="margin-top: 3px;"  onclick="addSort()">添加该板块</button>&nbsp;&nbsp;&nbsp;\n' +
+                        '        </div>\n' +
+                        '    </div>',
+                    cols: [[
+                        {field:'sortID',  title: 'ID', sort: true},
+                        {field:'sortName',  title: '板块名',edit: 'text'},
+                        {field:'sortState',  title: '启用状态'},
+                        {field:'right',title:'操作',toolbar:'#toolbarDemo'}
+                    ]]
+                });
+
+                layui.use('table', function(){
+                    var table = layui.table;
+                    //行工具栏事件
+                    table.on('tool(sort)', function(obj){
+                        layui.use('layer',function () {
+                            var layer = layui.layer;
+                            if(obj.event=='out'){
+                                if(obj.data.sortState=='停用中'){
+                                    layer.confirm('确认启用该板块吗？',function (index) {
+                                        $.ajax({
+                                            url:'/sortBan',
+                                            type:'post',
+                                            async:false,
+                                            data:{
+                                                sortID:obj.data.sortID,
+                                                type:0
+                                            },
+                                            success:function (data) {
+                                                if(data==1){
+                                                    layer.msg('操作完成',{time:1200});
+                                                    showSort();
+                                                }else{
+                                                    layer.msg('操作失败',{time:1200});
+                                                }
+                                            },
+                                            error:function () {
+                                                console.log("启用错误");
+                                            }
+                                        });
+                                        layer.close(index);
+                                    });
+
+                                }else{
+                                    layer.msg('该板块已启用', {
+                                        time: 1200
+                                    });
+                                }
+                            }else{
+                                if(obj.data.sortState=='启用中'){
+                                    layer.confirm('停用后该板块和其下的帖子将都不可见，确认吗？',function (index) {
+                                        $.ajax({
+                                            url:'/sortBan',
+                                            type:'post',
+                                            async:false,
+                                            data:{
+                                                sortID:obj.data.sortID,
+                                                type:1
+                                            },
+                                            success:function (data) {
+                                                if(data==1){
+                                                    layer.msg('操作完成',{time:1200});
+                                                    showSort();
+                                                }else{
+                                                    layer.msg('操作失败',{time:1200});
+                                                }
+                                            },
+                                            error:function () {
+                                                console.log("停用错误");
+                                            }
+                                        });
+                                        layer.close(index);
+                                    });
+
+                                }else{
+                                    layer.msg('该板块已被停用', {
+                                        time: 1200
+                                    });
+                                }
+                            }
+                        });
+
+                    });
+                });
+
+                table.on('edit(sort)', function(obj){
+                    var value = obj.value //得到修改后的值
+                        ,data = obj.data //得到所在行所有键值
+                        ,field = obj.field; //得到字段
+                    layer.confirm('确认将该板块名修改为'+obj.value+'?',function(index){
+                        $.ajax({
+                            url:'updateSort',
+                            type:'post',
+                            data:{
+                                sortID:data.sortID,
+                                sortName:data.sortName
+                            },
+                            success:function(data){
+                                if(data=='1'){
+                                    layer.msg('修改成功',{time:1600});
+                                    showSort();
+                                }else if(data=='2'){
+                                    layer.msg('修改错误，已存在该板块',{time:1600});
+                                    showSort();
+                                }else{
+                                    layer.msg('修改成功',{time:1600});
+                                }
+                            },
+                            error:function(){
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                   /*var value = obj.value //得到修改后的值
+                        ,data = obj.data //得到所在行所有键值
+                        ,field = obj.field; //得到字段
+                    layer.msg('[ID: '+ data.sortName +'] ' + field + ' 字段更改为：'+ value);*/
+                });
+            });
+        }
+
+        /**
+         * 添加板块
+         */
+        function addSort() {
+            if($('#value').val().length!=0){
+                $.ajax({
+                    url:'/addSort',
+                    type:'post',
+                    data:{
+                        sortName:$('#value').val()
+                    },
+                    success:function(data){
+                        if(data=='1'){
+                            layer.msg('添加成功',{time:1600});
+                            showSort();
+                        }else if(data=='2'){
+                            layer.msg('添加错误，已存在该板块',{time:1600});
+                        }else{
+                            layer.msg('添加失败',{time:1600});
+                        }
+                    },
+                    error:function(){
+                        console.log('添加板块错误')
+                    }
+                });
+            }else{
+                layer.msg('板块名不能为空',{time:1600});
+            }
+        }
+        function sortBan(type,sortId) {
+
+        }
+    </script>
+</body>
+</html>

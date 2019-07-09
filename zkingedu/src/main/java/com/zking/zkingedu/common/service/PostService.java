@@ -21,6 +21,13 @@ public interface PostService {
      * @return
      */
     List<Map<String,Object>> queryAllPostByType(String type);
+
+    /**
+     * 根据类别查询所有帖子
+     * @return
+     */
+    List<Map<String,Object>> queryAllPostByTypeTo(@Param("type") String type,@Param("value") String value);
+
     /**
      * 查询所有帖子page
      * @return
@@ -52,4 +59,18 @@ public interface PostService {
      * @return
      */
     int addPost(@Param("post") Post post);
+
+    /**
+     * 封禁OR解封帖子
+     * @param post_id
+     * @return
+     */
+    int banPost(@Param("post_id") Integer post_id,@Param("type") Integer type);
+
+    /**
+     * 增加访问量
+     * @param post_id
+     * @return
+     */
+    int pageView(Integer post_id);
 }

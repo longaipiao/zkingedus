@@ -7,27 +7,27 @@ $(function(){
             code+=Math.floor(Math.random()*10);
         }
         alert(code);
-        /*$.ajax({
-                 type: 'post',
-                url: 'http://route.showapi.com/28-1',
-                dataType: 'json',
-                data: {
-                    "showapi_appid": '90784', //这里需要改成自己的appid
-                    "showapi_sign": '36bb53e6712946d5b8bfd554e602cd17',  //这里需要改成自己的应用的密钥secret
-                    "mobile":$('#phone').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
-                    "tNum":"T170317004265",
-                    "big_msg":""
+        $.ajax({
+            type: 'post',
+            url: 'http://route.showapi.com/28-1',
+            dataType: 'json',
+            data: {
+                "showapi_appid": '99583', //这里需要改成自己的appid
+                "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
+                "mobile":$('#phone').val(),
+                "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
+                "tNum":"T150606060602",
+                "big_msg":""
 
-                },
-                error: function(XmlHttpRequest, textStatus, errorThrown) {
-                    alert("操作失败!");
-                },
-                success: function(result) {
-                    console.log(result) //console变量在ie低版本下不能用
-                    //alert(result.showapi_res_code)
-                }
-        });*/
+            },
+            error: function(XmlHttpRequest, textStatus, errorThrown) {
+                alert("操作失败!");
+            },
+            success: function(result) {
+                console.log(result) //console变量在ie低版本下不能用
+                //alert(result.showapi_res_code)
+            }
+        });
         timeStart();
     });
 });

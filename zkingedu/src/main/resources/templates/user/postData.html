@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>yhjm</title>
+    <link rel="stylesheet" href="/user/layui/css/layui.css">
+</head>
+<body onload="userData()">
+
+
+<!--<script type="text/html" id="topG">
+    <div class="layui-input-inline">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <select id="type">
+                    <option value="1">标题名</option>
+                    <option value="2">板块</option>
+                </select>
+            </div>
+            <input type="text" id="value" class="layui-form-label" value="" lay-event="fan"  placeholder="请输入搜索内容" style="margin-top: 3px;width: 200px;height:32px;text-align: left"/>
+            <button class="layui-btn layui-btn-sm" lay-event="fan"  style="margin-top: 3px;" onclick="check()">搜索</button>
+        </div>
+    </div>
+</script>-->
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <a class="layui-btn layui-btn-xs" lay-event="out">解封</a>
+        <a class="layui-btn layui-btn-xs" lay-event="checkContent">查看帖子内容</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ban">封禁</a>
+    </div>
+</script>
+
+    <table id="userTable" lay-filter="test"></table>
+<script src="/user/static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/user/layui/layui.js"></script>
+    <script th:inline="none">
+        function userData(type,value) {
+            var date;
+            if(value==null&&type==null){
+                value='';
+                $.ajax({
+                    url:'/getAllPostH',
+                    type:'post',
+                    async:false,
+                    success:function (data) {
+                        date = eval(""+data+"");
+                    },error:function () {
+                    }
+                });
+            }else{
+                $.ajax({
+                    url:'/getAllPostHcheck',
+                    type:'post',
+                    async:false,
+                    data:{
+                      value:value,
+                      type:type
+                    },
+                    success:function (data) {
+                        date = eval(""+data+"");
+                    },error:function () {
+                    }
+                });
+            }
+
+
+
+            layui.use('table', function(){
+                var table = layui.table;
+                var select = " <select id=\"type\">\n" +
+                    "                    <option value=\"1\">标题名</option>\n" +
+                    "                    <option value=\"2\">板块</option>\n" +
+                    "                </select>";
+                if(type!=null&&type.length!=0){
+                    if(type=='1'){
+                        select ='<select id="type">\n' +
+                            '                    <option selected="selected" value="1">标题名</option>\n' +
+                            '                    <option value="2">板块</option>\n' +
+                            '                </select>';
+                    }else {
+                        select ='<select id="type">\n' +
+                            '                    <option  value="1">标题名</option>\n' +
+                            '                    <option selected="selected" value="2">板块</option>\n' +
+                            '                </select>';
+                    }
+
+                }
+                table.render({
+                    title:'用户表',
+                    elem: '#userTable',
+                    data:date,
+                    page: {limit:2,limits:[2,4,6,8,10]},
+                    toolbar:'<div class="layui-input-inline">\n' +
+                        '        <div class="layui-form-item">\n' +
+                        '            <div class="layui-input-inline">\n' +
+                                     select+
+                        '            </div>\n' +
+                        '            <input type="text" id="value" class="layui-form-label" value="'+value+'" lay-event="fan"  placeholder="请输入搜索内容" style="margin-top: 3px;width: 200px;height:32px;text-align: left"/>\n' +
+                        '            <button class="layui-btn layui-btn-sm" lay-event="fan"  style="margin-top: 3px;" onclick="check()">搜索</button>&nbsp;&nbsp;&nbsp;<button class="layui-btn layui-btn-sm" lay-event="fan"  style="margin-top: 3px;" onclick="showSort()">管理论坛板块</button>\n' +
+                        '        </div>\n' +
+                        '    </div>',
+                    cols: [[
+                        {type:'radio'}
+                        ,{field:'post_id',  title: 'ID', sort: true}
+                        ,{field:'user_name',  title: '发帖用户'}
+                        ,{field:'sort_name',  title: '所属板块', sort: true}
+                        ,{field:'post_name',  title: '帖子标题'}
+                        ,{field:'post_content', title: '帖子内容', minWidth: 100}
+                        ,{field:'post_time',  title: '发布时间', sort: true}
+                        ,{field:'post_num',  title: '点击量'}
+                        ,{field:'post_state',  title: '帖子状态',width:180}
+                        ,{field:'right',title:'操作',toolbar:'#toolbarDemo'}
+                    ]]
+                });
+
+                table.on('row(test)', function(obj){
+                    console.log(obj.tr) //得到当前行元素对象
+                    console.log(obj.data) //得到当前行数据
+                    //obj.del(); //删除当前行
+                    //obj.update(fields) //修改当前行数据
+                });
+
+
+            });
+
+        }
+
+
+        layui.use('table', function(){
+            var table = layui.table;
+            //行工具栏事件
+            table.on('tool(test)', function(obj){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    if(obj.event=='out'){
+                        if(obj.data.post_state=='封禁'){
+                            layer.confirm('确认解封该帖子吗？',function (index) {
+                                $.ajax({
+                                    url:'/banPost',
+                                    type:'post',
+                                    async:false,
+                                    data:{
+                                        post_id:obj.data.post_id,
+                                        type:0
+                                    },
+                                    success:function (data) {
+                                        if(data==1){
+                                            layer.msg('操作完成',{time:1200});
+                                            userData();
+                                        }else{
+                                            layer.msg('操作失败',{time:1200});
+                                            userData();
+                                        }
+                                    },
+                                    error:function () {
+                                        console.log("解封错误");
+                                        userData();
+                                    }
+                                });
+
+                                layer.close(index);
+                            });
+
+                        }else{
+                            layer.msg('该帖子未被封禁', {
+                                time: 1200
+                            });
+                        }
+                    }else if(obj.event=='checkContent'){
+                        layer.open({
+                            type: 1,
+                            title :'帖子内容',
+                            content:obj.data.post_content,
+                            area :['890px', '500px'],
+                        });
+                    }else{
+                        if(obj.data.post_state=='正常'){
+                            layer.confirm('确认封禁该帖子吗？',function (index) {
+                                $.ajax({
+                                    url:'/banPost',
+                                    type:'post',
+                                    async:false,
+                                    data:{
+                                        post_id:obj.data.post_id,
+                                        type:1
+                                    },
+                                    success:function (data) {
+                                        if(data==1){
+                                            layer.msg('操作完成',{time:1200});
+                                            userData();
+                                        }else{
+                                            layer.msg('操作失败',{time:1200});
+                                            userData();
+                                        }
+                                    },
+                                    error:function () {
+                                        console.log("封禁错误");
+                                        userData();
+                                    }
+                                });
+                                layer.close(index);
+                            });
+
+                        }else{
+                            layer.msg('该帖子已被封禁', {
+                                time: 1200
+                            });
+                        }
+                    }
+                });
+
+            });
+        });
+
+        function check() {
+            userData($('#type').val(),$('#value').val());
+        }
+
+        function showSort() {
+            layui.use('layer',function(){
+               var layer = layui.layer;
+               layer.open({
+                   title:'板块管理',
+                   type:1
+
+               });
+            });
+        }
+
+    </script>
+
+</body>
+</html>
