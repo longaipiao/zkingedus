@@ -572,19 +572,20 @@
         success:function(systems){
             //判断体系是否为空
             if (systems.data.length>0){
+                var content='';
                 //遍历体系
                 for(var i=0;i<systems.data.length;i++){
-                    var content='<div class="clearfix text-center path-title-box">' +
+                    content+='<div class="clearfix text-center path-title-box">' +
                         '<span class="line hidden-xs"></span>' +
                         '<span>'+systems.data[i].systemName+'</span>' +
                         '<span class="line hidden-xs"></span>' +
-                        '</div>'
+                        '</div>'+
+                        '<div class="row">';
                     //遍历体系下的课程
                     for(var j=0;j<systems.courses.length;j++){
                         //判读课程里的体系Id是否相等
                         if(systems.courses[j].courseSid==systems.data[i].systemID){
-                            content+='<div class="row">' +
-                                '<div class="col-md-4 col-sm-6  course">' +
+                            content+='<div class="col-md-4 col-sm-6  course">' +
                                 '<a class="course-box" href="/courseshow/'+systems.courses[j].courseID+'">' +
                                 ' <div class="sign-box">' +
                                 '<i class="fa fa-star-o course-follow pull-right"' +
@@ -604,12 +605,12 @@
                                 '</span>' +
                                 '</div>' +
                                 '</a>' +
-                                '</div>' +
-                                '</div>'
+                                '</div>';
                         }
                     }
-                    $("#systems").append(content);
+                    content+='</div>';
                 }
+                $("#systems").html(content);
             }
         },
         error:function(){

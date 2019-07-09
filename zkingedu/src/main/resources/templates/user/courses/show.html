@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="/user/app/css/libs/katex/0.6.0/katex.min.css">
     <link rel="stylesheet" href="/user/app/css/libs/videojs/5.11.7/video-js.min.css">
 	<link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="../user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="../app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
+    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
     <link rel="stylesheet" href="/user/layui/css/layui.css">
 
     <script src="/user/app/dest/lib/lib.js?=2016121272249"></script>
@@ -283,23 +283,26 @@
             <div role="tabpanel" class="tab-pane active" id="labs">
             <!--<input type="hidden" id="userName" th:value="${session.user.userName}">-->
     <!--课程章节内容-->
-    <div class="lab-item " th:each="section:${sections}">
-        <div class="lab-item-status">
-            <!--章节前的图片-->
-            <img src="/user/img/lab-not-ok.png">
-        </div>
-        <!--章节顺序号-->
-        <div class="lab-item-index" th:text="'第'+${section.section_seq}+'节'"></div>
-        <!--课程名-->
-        <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.section_name}" th:text="${section.section_name}"></div>
-        <div class="pull-right lab-item-ctrl">
-            <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
-           <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
-            <a class="btn btn-primary" th:onclick="videoURL([[${section.section_inte}]],[[${section.video_url}]])" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
-            <!--<input type="hidden" id="videoURL" th:value="${section.video_url}">-->
+    <div style="height:403px; overflow:scroll;overflow-x:hidden;">
+        <div class="lab-item" th:each="section:${sections}">
+            <div class="lab-item-status">
+                <!--章节前的图片-->
+                <img src="/user/img/lab-not-ok.png">
+            </div>
+            <!--章节顺序号-->
+            <div class="lab-item-index" th:text="'第'+${section.sectionSeq}+'节'"></div>
+            <!--课程名-->
+            <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${section.sectionName}" th:text="${section.sectionName}"></div>
+            <div class="pull-right lab-item-ctrl">
+                <!--<a class="btn btn-default" href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/1">查看文档</a>-->
+                <!-- <a class="btn btn-primary" id="videoURL" th:href="${section.video_url}" data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>-->
+                <a class="btn btn-primary" th:onclick="videoURL([[${section.sectionInte}]],[[${section.videoUrl}]])" href="javascript:void(0)"  data-toggle="modal" data-sign="signin" data-next="/courses/1">开始学习</a>
+                <!--<input type="hidden" id="videoURL" th:value="${section.video_url}">-->
 
+            </div>
         </div>
     </div>
+
         <script>
             layui.use('layer', function(){
                 var layer = layui.layer;

@@ -2,8 +2,10 @@ package com.zking.zkingedu.common.controller;
 
 import com.zking.zkingedu.common.model.Course;
 import com.zking.zkingedu.common.model.CourseType;
+import com.zking.zkingedu.common.model.Section;
 import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.CourseTypeService;
+import com.zking.zkingedu.common.service.SectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class CourseController {
     private CourseService courseService;
     @Resource
     private CourseTypeService courseTypeService;
+    @Resource
+    private SectionService sectionService;
 
     @RequestMapping(value = "courses2",method = RequestMethod.POST)
     @ResponseBody
@@ -77,8 +81,8 @@ public class CourseController {
         //获取该讲师发布课程数
         Integer announcedc = courseService.announcedc(Integer.parseInt(course.get("emp_id").toString()));
         request.setAttribute("announcedc",announcedc);
-        //根据课程Id获取章节、视频
-        List<Map> sections = courseService.sections(courseID);
+        //根据课程Id获取章节
+        List<Section> sections = sectionService.sections(courseID);
         request.setAttribute("sections",sections);
 //        System.out.println(course);
 //        System.out.println(sections);
