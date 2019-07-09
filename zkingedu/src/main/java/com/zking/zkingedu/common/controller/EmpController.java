@@ -4,8 +4,10 @@ package com.zking.zkingedu.common.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zking.zkingedu.common.model.Category;
 import com.zking.zkingedu.common.model.Emp;
 import com.zking.zkingedu.common.model.Role;
+import com.zking.zkingedu.common.service.CategoryService;
 import com.zking.zkingedu.common.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -14,15 +16,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -198,4 +198,55 @@ public class EmpController {
         }
         return empService.getrole(id);
     }
+
+
+
+
+
+    @Autowired
+    private CategoryService categoryService;
+    /**
+     * 后台的题库跳转路径
+     */
+    @RequestMapping(value = "/title")
+    public String title(Model m){
+        List<Map<String ,Object>> map=new ArrayList<>();
+        List<Category> all = categoryService.getCategoryall();
+        Map<String,Object> maps=null;
+        for (Category category : all) {
+            //打印父类别
+            maps= new LinkedHashMap<>();
+            //把数据加到maps集合里面
+            maps.put("categoryID",category.getCategoryID());
+            maps.put("categoryName",category.getCategoryName());
+            maps.put("categoryFid",category.getCategoryFid());
+            maps.put("categoryTime",category.getCategoryTime());
+            maps.put("categoryEid",category.getCategoryEid());
+            maps.put("categoryRank",category.getCategoryRank());
+            maps.put("categoryState",category.getCategoryState());
+            //打印子级
+            List<Category> allfid = categoryService.gettikuzitype(category.getCategoryID());
+            List<Map<String ,Object>> treelist=new ArrayList<>();
+            Map<String,Object> Treemap=null;
+            for (Category category1 : allfid) {
+                Treemap=new LinkedHashMap<>();
+                Treemap.put("categoryID",category1.getCategoryID());
+                Treemap.put("categoryName",category1.getCategoryName());
+                Treemap.put("categoryFid",category1.getCategoryFid());
+                Treemap.put("categoryTime",category1.getCategoryTime());
+                Treemap.put("categoryEid",category1.getCategoryEid());
+                Treemap.put("categoryRank",category1.getCategoryRank());
+                Treemap.put("categoryState",category1.getCategoryState());
+                treelist.add(Treemap);
+            }
+            maps.put("treelist",treelist);
+            map.add(maps);
+            m.addAttribute("ps",map);
+            System.out.println(map);
+        }
+        return "/admin/jdy/admin-title";
+    }
+
+
+
 }

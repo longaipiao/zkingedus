@@ -2,11 +2,14 @@ package com.zking.zkingedu.common.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zking.zkingedu.common.model.Answer;
+import com.zking.zkingedu.common.model.Category;
 import com.zking.zkingedu.common.model.Title;
+import com.zking.zkingedu.common.service.CategoryService;
 import com.zking.zkingedu.common.service.TitleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,28 +25,24 @@ import java.util.Map;
 public class TitleController {
     @Autowired
     private TitleService titleService;
+    @Autowired
+    private CategoryService categoryService;
 
-//    /**
-//     * 按条件获取50题
-//     * @param title
-//     * @return
-//     */
-    @RequestMapping("/gettitles")
-    @ResponseBody
-    public List gettitles(Title title){
 
-        return titleService.gettitles(title);
-    }
     /**
      * 按条件获取50题
      * @param title
      * @return
      */
-    @RequestMapping("/text")
-    public String page13(Title title, HttpSession session){
-        List<Title> gettitles = titleService.gettitles(title);
-        session.setAttribute("titles",gettitles);
-        return "admin/html/grid";
+    @RequestMapping("/gettitles")
+    public String page13(Title title, Model model,HttpSession session){
+        List<Title> gettitles = titleService.gettitles(title);//获取所有的题目加答案
+        Category getcat = categoryService.getcat(title.getTitleCid());//按照ID获取类别表的对象
+        model.addAttribute("getCategoryName",getcat.getCategoryName());//展示渲染
+        model.addAttribute("titles",gettitles);//数据渲染
+        session.setAttribute("titles",gettitles);//阅卷需要
+        model.addAttribute("size",gettitles.size());//判空
+        return "admin/jdy/grid";
     }
 
     /**
@@ -63,7 +62,7 @@ public class TitleController {
         for(int i=0;i<titles.size();++i){
             if(maps.get(titles.get(i).getTitleID()+"")!=null){//答案的json中存在
                 for (Answer answer : titles.get(i).getAnswers()) {//遍历该题目的答案
-                    if(answer.getAnswerState()==0){//从4个答案中找出真确的答案
+                    if(answer.getAnswerState()==1){//从4个答案中找出真确的答案
                         if(maps.get(titles.get(i).getTitleID()+"").equals(answer.getAnswerAbcd())){//答案的json的值等于正确答案的话
                             score+=2;//分数加2
                         }
@@ -83,4 +82,7 @@ public class TitleController {
         map.put("weizuo",count);
         return map;
     }
+
+
+
 }

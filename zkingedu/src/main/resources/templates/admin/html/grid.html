@@ -17,24 +17,24 @@
 
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
-<body class="">
+<body >
 
 
 <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 <!--[if lt IE 9]>
   <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
   <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->          
-          
+<![endif]-->
+
 <div class="layui-container">
 
   <blockquote class="layui-elem-quote">Zking 小课堂 答题区(随机50题,一小题两分,满分100分)</blockquote>
   <blockquote class="layui-elem-quote layui-quote-nm">
-    该题目类型为:<span></span>
+    该题目类型为:<span th:text="${getCategoryName}" style="font-size:16px;font-weight:bold;"></span>
   </blockquote>
 
   <form class="layui-form" action="" lay-filter="example" id="forma">
-    <div id="timu" th:each="item:${session.titles}">
+    <div id="timu" th:each="item:${titles}">
      <fieldset class="layui-elem-field" style="margin-top: 30px;" >
       <legend id="1"><span th:text="${item.titleContent}"></span></legend>
         <div class="layui-field-box" th:each="zitme:${item.answers}" style="position: relative;">
@@ -49,6 +49,7 @@
         <button class="layui-btn" lay-submit lay-filter="*">提交答卷</button>
       </div>
     </div>
+
   </form>
 </div>
 
@@ -65,13 +66,13 @@
     </div>
 
     <div class="layui-col-md4">
-    <div class="layui-card">
-      <div class="layui-card-header">错题/div>
-      <div class="layui-card-body" id="cuoti">
+      <div class="layui-card">
+        <div class="layui-card-header">错题</div>
+        <div class="layui-card-body" id="cuoti">
 
+        </div>
       </div>
     </div>
-  </div>
 
     <div class="layui-col-md4">
       <div class="layui-card">
@@ -81,6 +82,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -116,7 +118,7 @@
     form.on('submit(*)', function(data){
       $("input").attr("disabled",true);
       $(".layui-btn").hide();
-      $("#cuoti").html(JSON.stringify(data.field));
+      // $("#cuoti").html(JSON.stringify(data.field));
       var str = JSON.stringify(data.field)
       $.ajax({
         type:"post",

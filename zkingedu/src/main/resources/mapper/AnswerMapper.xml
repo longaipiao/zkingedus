@@ -3,6 +3,100 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.AnswerDao">
 
-    <!--答案接口Mapper-->
+    <!--&lt;!&ndash;答案接口Mapper&ndash;&gt;-->
+
+    <sql id="Answersql">
+        answer_id,answer_tid,answer_abcd,answer_content,answer_state
+    </sql>
+    <!--根据题目id查询所有的答案-->
+    <select id="getAnswerAll" resultType="answer">
+        select <include refid="Answersql"/> from t_answer where answer_tid=#{tid} ORDER BY answer_abcd
+    </select>
+
+    <!--批量增加答案-->
+    <insert id="addAnswer" >
+        insert into t_answer(answer_tid,answer_abcd,answer_content,answer_state)
+        values
+        <foreach collection="ls" item="item" separator=",">
+            (#{item.answerTid},#{item.answerAbcd},#{item.answerContent},#{item.answerState})
+        </foreach>
+    </insert>
+
+    <!--删除答案-->
+    <delete id="deletedaan">
+        delete from t_answer where answer_tid=#{tid}
+    </delete>
+
+    <!--修改答案a-->
+    <update id="uppdatedaana">
+        update t_answer  set
+            answer_abcd=#{answerAbcd},answer_content=#{answerContent},answer_state=#{answerState}
+            where answer_tid=#{answerTid} and answer_abcd=#{answerAbcd}
+    </update>
+    <!--修改答案B-->
+    <update id="uppdatedaanb">
+        update t_answer  set
+            answer_abcd=#{answerAbcd},answer_content=#{answerContent},answer_state=#{answerState}
+            where answer_tid=#{answerTid} and answer_abcd=#{answerAbcd}
+    </update>
+    <!--修改答案c-->
+    <update id="uppdatedaanc">
+        update t_answer  set
+            answer_abcd=#{answerAbcd},answer_content=#{answerContent},answer_state=#{answerState}
+            where answer_tid=#{answerTid} and answer_abcd=#{answerAbcd}
+    </update>
+    <!--修改答案d-->
+    <update id="uppdatedaand">
+        update t_answer  set
+            answer_abcd=#{answerAbcd},answer_content=#{answerContent},answer_state=#{answerState}
+            where answer_tid=#{answerTid} and answer_abcd=#{answerAbcd}
+    </update>
+
+
+
+    <!--题目接口Mapper-->
+    <sql id="titlesql">
+        title_id,title_cid,title_content,title_describe,title_time,title_state
+    </sql>
+
+    <!--查询所有的题目条件-->
+    <select id="getAll" resultType="title">
+        select * from t_title where 1=1
+        <if test="titleCid !=null and titleCid!=''">
+            and title_cid=${titleCid}
+        </if>
+    </select>
+
+    <!--查询所有的题目-->
+    <select id="getAlls" resultType="title">
+        select * from t_title where title_id=#{tid}
+    </select>
+
+    <!--增加题目-->
+    <insert id="addTitle"  useGeneratedKeys="true" keyProperty="titleID">
+        insert into t_title(title_cid,title_content,title_describe,title_time,title_state)
+        values (#{titleCid},#{titleContent},#{titleDescribe},#{titleTime},#{titleState})
+    </insert>
+
+    <!--修改题目开启状态-->
+    <update id="updatekq">
+        update t_title set title_state=0 where title_id=#{tid}
+    </update>
+
+    <!--修改题目关闭状态-->
+    <update id="updategb">
+        update t_title set title_state=1 where title_id=#{tid}
+    </update>
+
+    <!--删除题目-->
+    <delete id="deletetim">
+        delete from t_title where title_id=#{tid}
+    </delete>
+
+    <!--修改题目-->
+    <update id="updatetim">
+        update t_title set title_content=#{titleContent},title_describe=#{titleDescribe}
+        where title_id=#{titleID}
+    </update>
 
 </mapper>

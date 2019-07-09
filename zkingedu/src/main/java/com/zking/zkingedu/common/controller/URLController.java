@@ -1,18 +1,26 @@
 package com.zking.zkingedu.common.controller;
 
 
+import com.zking.zkingedu.common.model.Category;
 import com.zking.zkingedu.common.model.Emp;
+import com.zking.zkingedu.common.service.AnswerService;
+import com.zking.zkingedu.common.service.CategoryService;
 import com.zking.zkingedu.common.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -20,6 +28,10 @@ import javax.servlet.http.HttpSession;
 public class URLController {
     @Autowired
     private EmpService empService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private AnswerService answerService;
 
     /**
      *注销
@@ -33,6 +45,8 @@ public class URLController {
         request.getSession().removeAttribute("emp");
         return "admin/login";
     }
+
+
 
 //    //跳转到登陆界面
 //    @RequestMapping("/loginpage")
@@ -99,10 +113,14 @@ public class URLController {
         return "admin/jdy/admin-category";
     }
 
-    //跳转到管理题库
-    @RequestMapping("/title")
-    public String page12(){
-        return "admin/jdy/admin-title";
+
+
+    //展示题库类别数据(选择考试内容)*跳转到下拉框页面的
+    @RequestMapping("/getcategorys")
+    public String getcategorys(HttpSession session){
+        List<Category> category = categoryService.getCategory();
+        session.setAttribute("category",category);
+        return "admin/jdy/fzselect";
     }
 
     //跳转到课程管理
@@ -110,4 +128,40 @@ public class URLController {
     public String cours(){
         return "admin/liuxuqing/admincou.html";
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------------前台-------------------------------------
+    //去题库页面
+    @RequestMapping("/tiku")
+    public String pagetiku(Model model,Integer categoryFID){
+        List<Category> category = categoryService.getCategory();//获取所有的题库类别
+        List<Category> gettikuzitype = categoryService.gettikuzitype(categoryFID);
+        model.addAttribute("gettikuzitype",gettikuzitype);//子
+        model.addAttribute("category",category);//父
+        return "user/courses/tiku";
+    }
+
 }
