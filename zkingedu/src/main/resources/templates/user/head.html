@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL-->
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -67,6 +68,7 @@
 
 </head>
 <body>
+
 <!--头部行-->
 <nav class="navbar navbar-default navbar-fixed-top header">
     <div class="container">
@@ -90,37 +92,30 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="" href="courses/index.html" >全部课程</a></li>
-                        <li><a class="" href="courses/index.html?status=preview" >即将上线</a></li>
+                        <li><a class="" href="/url/tiku">课程考核</a></li>
                         <li><a class="" href="developer/index.html">开发者</a></li>
                     </ul>
                 </li>
                 <li class="">
-                    <a href="paths/index.html">路径</a>
+                    <a href="#">路径</a>
                 </li>
                 <li class="">
-                    <a href="questions/index.html">讨论区</a>
+                    <a href="#">讨论区</a>
                 </li>
                 <li class=" bootcamp new-nav logo-1111">
-                    <a href="bootcamp/index.html">训练营</a>
+                    <a href="#">训练营</a>
 
                 </li>
                 <li class=" new-nav logo-1111">
-                    <a href="vip/index.html">会员</a>
+                    <a href="#">会员</a>
 
                 </li>
 
-                <!--<li class=" new-nav logo-1111" th:if="${session.user}!=null">-->
-                <!--<a href="javascript:;" onclick="x_admin_show('亲~考试了呢~','/url/getcategorys','550','420')">考核</a>-->
-
-                <!--</li>-->
 
             </ul>
 
 
             <div class="navbar-right btns">
-                <!-- <span th:text="${addr}"></span>
-                 <span th:if="${addr}!=delete">111111111111111111111111111111111</span>
-                 用户：<span th:text="${session.user1}"></span>-->
 
                 <!--头部替换-->
                 <span th:if="${addr}==delete">
@@ -149,6 +144,8 @@
         </div>
     </div>
 </nav>
+
+
 <!--弹出层-->
 <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -243,7 +240,6 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>

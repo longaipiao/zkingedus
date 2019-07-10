@@ -3,7 +3,57 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.ToolDao">
 
+    <!--使全局的映射器启用或禁用缓存  开启二级缓存-->
+    <cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>
+
     <!--开发者工具接口Mapper-->
+    <!--查询所有-->
+    <select id="getAlls" resultType="Tool">
+        select * FROM t_tool
+    </select>
 
+    <!--查询所有，带分页和模糊查-->
+    <select id="getAlls1" resultType="Tool" parameterType="Tool">
+        select * from t_tool
+        <where>
+            <if test="toolName != null">
+                tool_name like #{toolName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 
+    <!--统计查询借款表的数据 + 条件（根据资源名）-->
+    <select id="getToolCount" parameterType="Map">
+        select count(*) from t_tool where tool_name like #{toolName}
+    </select>
+
+    <!--删除开发者工具-->
+    <delete id="deleteTool" parameterType="Tool">
+        delete from t_tool where tool_id = #{toolID}
+    </delete>
+
+    <!--编辑开发者工具-->
+    <update id="updateTool">
+        update
+         t_tool
+         set
+            tool_name=#{toolName},
+            tool_describe=#{toolDescribe},
+            tool_url=#{toolURL},
+            tool_img=#{toolImg},
+            tool_time=#{toolTime}
+           where
+          tool_id=#{toolID}
+    </update>
+
+    <!--增加开发者工具-->
+    <insert id="addTool" parameterType="Tool">
+        insert into t_tool(tool_name,tool_describe,tool_url,tool_img,tool_time)
+         values (#{toolName},#{toolDescribe},#{toolURL},#{toolImg},#{toolTime})
+    </insert>
+
+    <!--根据id查询-->
+    <select id="getToolByID" resultType="Tool">
+        select * from t_tool where tool_id=#{toolID}
+    </select>
 </mapper>

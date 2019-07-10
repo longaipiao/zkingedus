@@ -155,9 +155,9 @@ public class ChargeController {
         Map<String,Object> messageMaps = new HashMap<>();
         log.info("page"+page+"__limit:"+limit);
         User user = (User) request.getSession().getAttribute("user");
-        Page pageLine = PageHelper.startPage(1,3);
+        Page pageLine = PageHelper.startPage(page,limit);
 
-        List<Message> myMessages = messageService.getMyMessages(36);
+        List<Message> myMessages = messageService.getMyMessages(user.getUserID());
 
         messageMaps.put("count",pageLine.getPages());//数据库的总行数getPages()
         messageMaps.put("code","");
