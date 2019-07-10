@@ -275,7 +275,7 @@
                                     <div style="margin-left: 3%" ><span name="Tcontent" th:utext="${tcos.tcomment_content}"></span></div>
                                 </div>
                                 <div>
-                                    <span class="create-time" th:text="${tcos.tcomment_time}">21小时前</span>&nbsp;&nbsp;<A href="javascript:void(0)" th:onclick="tcomment([[${tcos.tcomment_id}]],[[${tcos.user_name}]]);" style="color: #0ace9d">回复</A>&nbsp;&nbsp;<span th:id="${tcos.tcomment_id}+'9'" ><A href="javascript:void(0)"  th:onclick="showH([[${tcos.tcomment_id}]],[[${tcos.tcomment_id}+'9']]);" style="color: #0ace9d">查看回复(<span>20</span>)</A></span>
+                                    <span class="create-time" th:text="${tcos.tcomment_time}">21小时前</span>&nbsp;&nbsp;<A href="javascript:void(0)" th:onclick="tcomment([[${tcos.tcomment_id}]],[[${tcos.user_name}]]);" style="color: #0ace9d">回复</A>&nbsp;&nbsp;<span th:id="${tcos.tcomment_id}+'9'" ><A href="javascript:void(0)"  th:onclick="showH([[${tcos.tcomment_id}]],[[${tcos.tcomment_id}+'9']],[[${tcos.count}]]);" style="color: #0ace9d">查看回复(<span th:text="${tcos.count}">20</span>)</A></span>
                                 </div>
                                 <!--遍历评论中的回复-->
                                 <div th:id="${tcos.tcomment_id}" style="display: none">
@@ -298,7 +298,7 @@
                                         </div>
                                     </span>
                                         <div class="answer-content markdown-body">
-                                            <div style="margin-left: 3%" ><span th:if="${users.HuserName}!=karabo">@<span th:text="${users.HuserName}"></span></span><span name="Tcontent" th:utext="${users.tcomment_content}"></span></div>
+                                            <div style="margin-left: 3%" ><span th:if="${users.HuserName}!=karabo" style="color: #0ace9d;margin-left: 20px">@<span th:text="${users.HuserName}"></span></span><span name="Tcontent" th:utext="${users.tcomment_content}"></span></div>
                                         </div>
                                         <div>
                                             <span class="create-time" th:text="${users.tcomment_time}">21小时前</span>&nbsp;&nbsp;<A th:id="${users.tcomment_id}" href="javascript:void(0)" th:onclick="tcomment([[${users.tcomment_id}]],[[${users.user_name}]]);" style="color: #0ace9d">回复</A>

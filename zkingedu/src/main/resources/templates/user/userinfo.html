@@ -102,7 +102,7 @@
 	}
 </style>
 	</head>
-	<body>
+	<body onload="page()">
 		<nav class="navbar navbar-default navbar-fixed-top header">
 			<div class="container">
 				<div class="navbar-header">
@@ -209,7 +209,7 @@
 						<div class="text-center">
 							<a href="#get1" class="list-group-item" id="zhongxin" >个人中心</a>
 							<a href="#get2" class="list-group-item" id="kecheng">我的课程</a>
-							<a href="#get3" class="list-group-item" id="huida">我的回答</a>
+							<a href="#get3" class="list-group-item" id="huida">我的帖子</a>
 							<a href="#get4" class="list-group-item" id="shoucang">我的收藏</a>
 							<a href="#get5" class="list-group-item" id="xiaoxi">消息中心</a>
 						</div>
@@ -392,8 +392,24 @@
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get3" >
-						<div class="content" style="height: 300px;">
-							<h3>我的回答</h3>						
+						<div class="content" style="height: 600px;">
+							<h3>我的帖子</h3>
+                            <div id="pageTest" th:fragment="pageTest">
+                                <ul th:each="item:${upost}" class="flow-default" style="margin-top: 15px;height: 90px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);" id="Linddd" >
+                                    <li style="height: 80px;">
+                                           <img th:src="${item.user_img}" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>
+
+                                            <span style="margin-left: 10px" th:text="${item.user_name}"></span>
+
+                                            <div style="margin-left: 10%;margin-top: -50px"><div><h3><span th:onclick="checkBbs([[${item.post_id1}]])" style="cursor:pointer" th:text="${item.post_name}"></span></h3></div>
+                                                    评论数：<span th:text="${item.commentCount}"></span><span style="margin-left: 60px">发帖时间：<span th:text="${item.post_time}"></span></span><A href="javascript:void(0)" th:onclick="deletePost([[${item.post_id1}]])" style="margin-left: 10%;color: #0ace9d" >删除</span></A>
+                                            </div>
+                                            <button style="margin-left: 80%;margin-top: -40px" disabled="disabled" class="layui-btn layui-btn-warm"><span th:text="${item.sort_name}"></span></button>
+                                    </li>
+                                </ul>
+                                <input type="hidden" id="countPage" th:value="${countPage}"/>
+                            </div>
+                            <div id="page"></div>
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get4" >
@@ -414,6 +430,7 @@
                                     </li>
                                 </ul>
                             </div>
+                            <div id="collectionPage"></div>
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get5" >
@@ -610,6 +627,86 @@
 
 		<script src="/user/app/dest/user/index.js?=2016121272249"></script>
         <script src="/user/layui/layui.js"></script>
+        <!--用户发帖管理分页-->
+        <script>
+            function page(){
+                layui.use('laypage',function () {
+                    var laypage = layui.laypage;
+                    var page = laypage.render({
+                        elem: 'page'
+                        ,count:$('#countPage').val()
+                        ,limit:5
+                        ,limits:[5,10,15,20,25]
+                        ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                        ,jump: function(obj){
+                           /* console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            console.log(obj.limit); //得到每页显示的条数
+                            console.log(obj);*/
+                            $.ajax({
+                                url:'/user/pageMyPost',
+                                type:'post',
+                                data:{
+                                    page:obj.curr,
+                                    size:obj.limit
+                                },
+                                success:function(data){
+                                    $('#pageTest').html(data);
+                                },
+                                error:function(){
+                                    console.log('lay分页错误Error')
+                                }
+                            });
+
+                        }
+                    });
+                });
+            }
+                function checkBbs(post_id) {
+                    location.href='/checkBbs?post_id='+post_id;
+                }
+
+                function deletePost(post_id) {
+                    layui.use('layer',function(){
+                        layer.confirm('确认删除该帖子吗？',function () {
+                            $.ajax({
+                                url:'/banPost',
+                                type:'post',
+                                data:{
+                                    post_id:post_id,
+                                    type:1
+                                },
+                                success:function (data) {
+                                    if(data=='1'){
+                                        layer.msg('删除成功',{time:1600});
+                                        $.ajax({
+                                            url:'/user/pageMyPost',
+                                            type:'post',
+                                            data:{
+                                                page:1,
+                                                size:5
+                                            },
+                                            success:function(data){
+                                                $('#pageTest').html(data);
+                                                page();
+                                            },
+                                            error:function(){
+                                                console.log('lay分页错误Error')
+                                            }
+                                        });
+                                    }else{
+                                        layer.msg('删除失败',{time:1600});
+                                    }
+                                },
+                                error:function(){
+                                    console.log('用户删贴Error')
+                                }
+                            });
+                        })
+                    });
+                }
+        </script>
+
+
         <!--likai   js-->
         <script>
             $(function () {
@@ -822,34 +919,65 @@
             $('#formImage').submit();
         }
 
+        $(function () {
+            post_collection();
+        });
         //获取用户的帖子收藏
         function post_collection(){
-            $.ajax({
-                url:'/user/getPostCollection',
-                type:'post',
-                success:function(result){
-                    var posts = eval(""+result+"");
-                    var text = "";
-                    layui.each(posts,function (index,item) {
-                        text+='<ul class="flow-default" style="margin-top: 15px;height: 70px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);"  >\n' +
-                            '                                    <li style="height: 80px;">\n' +
-                            '                                        <!--用户头像-->\n' +
-                            '                                        <img src="'+item.user_img+'" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>\n' +
-                            '                                        <!--用户名-->\n' +
-                            '                                        <span style="margin-left: 10px" text="">'+item.user_name+'</span>\n' +
-                            '                                       <!--帖子标题-->\n' +
-                            '                                       <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick=""  style="cursor:pointer">'+item.post_name+'</span></h3></div>\n' +
-                            '                                                评论数：<span>123</span>\n' +
-                            '                                            </div>\n' +
-                            '                                        <span id="'+item.post_id+'"><button onclick="collection2('+item.post_id+',2)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm">取消收藏</button></span>\n' +
-                            '                                    </li>\n' +
-                            '                                </ul>';
-                    });
-                    $('#collection').html(text);
-                },error:function(){
-                    console.log('查询收藏Error')
-                }
+            layui.use('laypage',function () {
+                var laypage = layui.laypage;
+                $.ajax({
+                    url:'/user/getPostCollectionCount',
+                    type:'post',
+                    success:function(result){
+                        var posts = eval(""+result+"");
+                        laypage.render({
+                             elem: 'collectionPage'
+                            ,count:posts.length
+                            ,limit:1
+                            ,limits:[5,10,15,20,25]
+                            ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                            ,jump: function(obj){
+                                $.ajax({
+                                    url:'/user/getPostCollection',
+                                    type:'post',
+                                    data:{
+                                        page:obj.curr,
+                                        size:obj.limit
+                                    },
+                                    success:function(data){
+                                        var list = eval(""+data+"");
+                                        var text = "";
+                                        layui.each(list,function (index,item) {
+                                            text+='<ul class="flow-default" style="margin-top: 15px;height: 70px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);"  >\n' +
+                                                '                                    <li style="height: 80px;">\n' +
+                                                '                                        <!--用户头像-->\n' +
+                                                '                                        <img src="'+item.user_img+'" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>\n' +
+                                                '                                        <!--用户名-->\n' +
+                                                '                                        <span style="margin-left: 10px" text="">'+item.user_name+'</span>\n' +
+                                                '                                       <!--帖子标题-->\n' +
+                                                '                                       <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick=""  style="cursor:pointer">'+item.post_name+'</span></h3></div>\n' +
+                                                '                                                评论数：<span>123</span>\n' +
+                                                '                                            </div>\n' +
+                                                '                                        <span id="'+item.post_id+'"><button onclick="collection2('+item.post_id+',2)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm">取消收藏</button></span>\n' +
+                                                '                                    </li>\n' +
+                                                '                                </ul>';
+                                        });
+                                        $('#collection').html(text);
+                                    },
+                                    error:function(){
+                                        console.log('lay分页错误Error')
+                                    }
+                                });
+
+                            }
+                        });
+                    },error:function(){
+                        console.log('查询收藏Error')
+                    }
+                });
             });
+
         }
 
         function collection2(post_id,type) {
@@ -861,7 +989,7 @@
                     type:type
                 },
                 success:function (result) {
-                    alert($('#'+post_id).html());
+                    post_collection();
                     if(result=='addCollection'){
                         $('#'+post_id).html('<button onclick="collection2('+post_id+',2)" style="margin-left: 80%;margin-top: -60px"  class="layui-btn layui-btn-warm"><span>取消收藏</span></button></span>');
                     }else if(result=='delCollection'){
@@ -870,6 +998,19 @@
                 },
                 error:function(){
                     console.log("收藏or取消Error");
+                }
+            });
+        }
+
+        function t() {
+            $.ajax({
+                url:'/user/testabc',
+                type:'post',
+                success:function(data){
+                    $('#pageTest').html(data);
+                },
+                error:function(){
+                    console.log('错误Error')
                 }
             });
         }

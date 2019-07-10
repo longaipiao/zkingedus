@@ -114,11 +114,14 @@ public class BbsController {
             //定义评论下的回复集合
             List<Map<String, Object>> userTcomment = new ArrayList<>();
             int tcomment_id = Integer.parseInt(tcomment.get("tcomment_id").toString());
+            //定义回复计数
+            int count = 0;
             for (Map<String, Object> map : tcommentsUser) {
                 int tcomment_fid = Integer.parseInt(map.get("tcomment_fid").toString());
 
                 //如果评论的回复等于此评论的ID
                 if(tcomment_id==tcomment_fid){
+                    count++;
                     map.put("HuserName","karabo");
                     //一级回复
                     userTcomment.add(map);
@@ -136,6 +139,8 @@ public class BbsController {
             }
             //将回复的集合添加的评论的属性中
             tcomment.put("userTcomments",userTcomment);
+            tcomment.put("count",count);
+
         }
 
         //查询该用户是否收藏了该帖子
@@ -159,6 +164,7 @@ public class BbsController {
         map.put("postNum",postNum);
         map.put("countNum",tcomments.size());
         map.put("tcommentCountNum",list1.size());
+
         request.setAttribute("cORg",map);
         request.setAttribute("post",list.get(0));
         request.setAttribute("tcomments",tcomments);

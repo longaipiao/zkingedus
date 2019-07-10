@@ -52,6 +52,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Map<String, Object>> queryPostByUserIdPage(Integer uid, Integer size, Integer page) {
+        return postDao.queryPostByUserIdPage(uid, size, page);
+    }
+
+    @Override
     public int addPost(Post post) {
         return postDao.addPost(post);
     }
@@ -64,5 +69,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public int pageView(Integer post_id) {
         return postDao.pageView(post_id);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPostByUid(Integer uid) {
+        return postDao.queryPostByUid(uid);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPostByUidPage(Integer uid, Integer size, Integer start) {
+        return postDao.queryPostByUidPage(uid, size, start);
     }
 }

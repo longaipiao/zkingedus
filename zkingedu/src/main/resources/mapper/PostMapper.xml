@@ -43,6 +43,16 @@
             WHERE a.collection_zpid = b.post_id and b.post_uid = d.user_id and a.collection_uid=#{uid}
     </select>
 
+    <select id="queryPostByUserIdPage" resultType="map">
+            SELECT
+            a.collection_id,a.collection_zpid,a.collection_uid,a.collection_state,a.collection_time,
+            b.post_id,b.post_uid,b.post_name,b.post_content,b.post_time,b.post_num,b.post_state,b.sort_id,
+            d.user_id,d.user_img,d.user_email,d.user_phone,d.user_name,d.user_password,d.user_integrsl,d.user_state,d.user_IP,d.user_lastTime,d.user_regTime,d.user_openid
+            FROM t_collection a,t_post b, t_user d
+            WHERE a.collection_zpid = b.post_id and b.post_uid = d.user_id and a.collection_uid=#{uid} LIMIT #{page},#{size};
+    </select>
+
+
     <select id="queryAllPostByTypeTo" resultType="map">
       <if test="type==1">
           select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
@@ -91,4 +101,18 @@
     <update id="pageView">
         UPDATE t_post SET post_num=post_num+1 WHERE post_id=#{post_id};
     </update>
+
+    <select id="queryPostByUid" resultType="map">
+        SELECT a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+        b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+        d.sort_name
+         FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND a.post_state=0 AND a.post_uid=#{uid};
+    </select>
+
+    <select id="queryPostByUidPage" resultType="map">
+         SELECT a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
+        b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
+        d.sort_name
+         FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND a.post_state=0 AND  a.post_uid=#{uid} LIMIT #{start},#{size};
+    </select>
 </mapper>

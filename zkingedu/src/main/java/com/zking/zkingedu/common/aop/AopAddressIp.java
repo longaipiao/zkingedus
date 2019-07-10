@@ -29,7 +29,7 @@ public class AopAddressIp {
     private HttpServletRequest request;
     @Autowired
     private HttpSession session;
-    @Resource
+    @Autowired
     private HttpServletResponse response;
     /**
      * 定义切入点
@@ -64,6 +64,7 @@ public class AopAddressIp {
         if(f==false){
             try {
                 response.sendRedirect("/jump");
+                System.out.println(response);
                 return false;
             } catch (IOException e) {
                 System.out.println("重定向Io异常");

@@ -19,13 +19,13 @@ function f1orf2() {
  * 是否显示评论
  */
 
-function showH(aid,bid){
+function showH(aid,bid,count){
     $('#'+aid).show();
-    $('#'+bid).html('<A href="javascript:void(0)" th:id="${tcos.post_id}" onclick="hideH('+aid+','+bid+');" style="color: #0ace9d">收起回复(<span>20</span>)</A>');
+    $('#'+bid).html('<A href="javascript:void(0)" th:id="${tcos.post_id}" onclick="hideH('+aid+','+bid+','+count+');" style="color: #0ace9d">收起回复(<span>'+count+'</span>)</A>');
 }
-function hideH(aid,bid){
+function hideH(aid,bid,count){
     $('#'+aid).hide();
-    $('#'+bid).html('<A href="javascript:void(0)" th:id="${tcos.post_id}" onclick="showH('+aid+','+bid+');" style="color: #0ace9d">查看回复(<span>20</span>)</A>');
+    $('#'+bid).html('<A href="javascript:void(0)" th:id="${tcos.post_id}" onclick="showH('+aid+','+bid+','+count+');" style="color: #0ace9d">查看回复(<span>'+count+'</span>)</A>');
 }
 
 

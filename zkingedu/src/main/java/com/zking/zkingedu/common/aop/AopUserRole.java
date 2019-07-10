@@ -24,7 +24,7 @@ public class AopUserRole {
     private UserService userService;
     @Autowired
     private HttpServletRequest request;
-    @Resource
+    @Autowired
     private HttpServletResponse response;
     @Autowired
     private HttpSession session;
@@ -38,8 +38,24 @@ public class AopUserRole {
     @Before("test()")
     public boolean roleAop(){
         System.out.println("权限切面检测");
-        boolean f = true;
-        if(session.getAttribute("user")==null){//检测用户是否登陆，未登录直接返回首页
+        User u;
+        if(session.getAttribute("user")!=null){
+            u = (User)session.getAttribute("user");
+        }else{
+            try {
+                System.out.println("重定向了");
+                response.sendRedirect("/jump");
+                System.out.println(response);
+                return false;
+            } catch (IOException e) {
+                System.out.println("重定向Io异常");
+                e.printStackTrace();
+            } catch (Exception e){
+                System.out.println("userRole重定向exception");
+                e.printStackTrace();
+            }
+        }
+        /*if(session.getAttribute("user")==null){//检测用户是否登陆，未登录直接返回首页
            f=false;
         }else{//检测用户ip地址是否对应，不对应直接回首页
             //获取该用户的id
@@ -50,11 +66,11 @@ public class AopUserRole {
                 f=false;
             }
         }
-
+        System.out.println(f);
         if(f==false){
             try {
-            response.sendRedirect("/jump");
-            return false;
+                response.sendRedirect("/jump");
+                return false;
             } catch (IOException e) {
                 System.out.println("重定向Io异常");
                 e.printStackTrace();
@@ -62,7 +78,7 @@ public class AopUserRole {
                 System.out.println("userRole重定向exception");
                 e.printStackTrace();
             }
-        }
+        }*/
 
         return true;
     }

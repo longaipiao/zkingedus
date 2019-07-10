@@ -18,6 +18,20 @@ public interface PostDao {
     List<Map<String,Object>> queryAllPost();
 
     /**
+     * 根据用户id查询该用户所发过的帖子
+     * @param uid
+     * @return
+     */
+    List<Map<String,Object>> queryPostByUid(Integer uid);
+
+    /**
+     * 根据用户id查询该用户所发过的帖子(分页)
+     * @param uid
+     * @return
+     */
+    List<Map<String,Object>> queryPostByUidPage(@Param("uid")Integer uid,@Param("size") Integer size,@Param("start") Integer start);
+
+    /**
      * 根据类别查询所有帖子
      * @return
      */
@@ -53,6 +67,12 @@ public interface PostDao {
     List<Map<String,Object>> queryPostByUserId(@Param("uid")Integer uid);
 
     /**
+     * 根据用户id查询收藏的帖子Page
+     * @return
+     */
+    List<Map<String,Object>> queryPostByUserIdPage(@Param("uid")Integer uid,@Param("size") Integer size,@Param("page") Integer page);
+
+    /**
      * 发表帖子方法
      * @param post
      * @return
@@ -72,5 +92,6 @@ public interface PostDao {
      * @return
      */
     int pageView(Integer post_id);
+
 
 }

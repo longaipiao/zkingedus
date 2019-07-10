@@ -29,9 +29,7 @@ public class test {
 
     @Test
     public void test1(){
-        //log.error("来了error");
         log.info("来了info");
-        //log.debug("来了debug");
     }
 
 
