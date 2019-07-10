@@ -1,10 +1,18 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>上传demo</title>
+    <title>章节添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script type="text/javascript" src="/user/layui/layui.js"></script>
+    <link rel="stylesheet" href="/user/layui/css/layui.css" media="all"/>
+    <!--优酷上传-->
     <link rel="stylesheet" href="https://cloud.youku.com/assets/css/bootstrap.css">
+    <script type="text/javascript" src="https://cloud.youku.com/assets/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="https://cloud.youku.com/assets/js/browser-md5-file.min.js"></script>
+    <script type="text/javascript" src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.1.0.min.js"></script>
     <style>
         /* demo只写了基本样式，可以根据自己网站风格定重写样式 */
         #upload_form {
@@ -51,54 +59,118 @@
     </style>
 </head>
 <body>
-<div class="upload-wrap" id="youku-upload">
-    <div class="well form-horizontal" name="video-upload" id="upload_form">
-        <div class="control-group" id="contoral-group1">
-            <p id="ossfileInfor"></p>
-            <div class="progress" id="oss-progress">
-                <div class="progress-bar" style="width: 0%"></div>
+<form class="layui-form" action="">
+    <div class="layui-form-item layui-hide" >
+        <div class="layui-inline">
+            <label class="layui-form-label" >课程id</label>
+            <div class="layui-input-block">
+                <input type="text" name="sectionCid" th:value="${courseId}" lay-verify="required" lay-reqtext="课程Id获取有误" autocomplete="off" class="layui-input">
             </div>
-            <input type="file" id="selectfiles">选择文件</a>
-            <div id="uploadControl" class="controls">
-            </div>
-        </div>
-        <div class="control-group">
-            <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
-        </div>
-        <div class="well" style="margin-left:0;">
-            <h4>说明</h4>
-            <ul>
-                <li>最大支持上传<strong>4 GB</strong> 视频文件</li>
-                <li>允许上传的视频格式为：wmv,avi,dat,asf,rm,rmvb,ram,mpg,mpeg,3gp,mov,mp4,m4v,dvix,dv,dat,</br>mkv,flv,vob,ram,qt,divx,cpk,fli,flc,mod。不符合格式的视频将会被丢弃，请确保视频格式的正确性，避免上传失败</li>
-            </ul>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label" for="input01">标题</label>
-            <div class="controls">
-                <input type="text" class="input-xlarge" id="input01" name="title" style="padding-left: 6px;">
-            </div>
-        </div>
-
-
-        <div class="control-group">
-            <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
-        </div>
-        <div class="control-group">
-            <p id="console"></p>
         </div>
     </div>
-    <div class="row">
-        <div class="span5" id="upload-status-wraper"></div>
-    </div>
-    <div id="complete"></div>
-    <div id="login" style="width:100%;height:100%;position:fixed;z-index:999;left:0px;top:0px;overflow:hidden;display:none;"></div>
-</div>
 
-<script type="text/javascript" src="https://cloud.youku.com/assets/js/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="https://cloud.youku.com/assets/js/browser-md5-file.min.js"></script>
-<script type="text/javascript" src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.1.0.min.js"></script>
-<!--<script src="https://cloud.youku.com/assets/newUpload/cloud-upload.js"></script>-->
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px;">章节积分:</label>
+            <div class="layui-input-block">
+                <input type="text" name="sectionInte" lay-verify="required" lay-reqtext="章节购买积分必须填写" placeholder="请输入章节购买积分" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-hide" >
+        <div class="layui-inline">
+            <label class="layui-form-label">视频id</label>
+            <div class="layui-input-block">
+                <input type="text" name="videoUrl" id="videoUrl" value="aaaa" lay-verify="required" lay-reqtext="视频不能为空，请先上传视频" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <!--优酷文件上传页面-->
+    <div class="upload-wrap" id="youku-upload">
+        <div class="well form-horizontal" name="video-upload" id="upload_form">
+            <div class="control-group" id="contoral-group1">
+                <p id="ossfileInfor"></p>
+                <div class="progress" id="oss-progress">
+                    <div class="progress-bar" style="width: 0%"></div>
+                </div>
+                <input type="file" id="selectfiles">选择文件</a>
+                <div id="uploadControl" class="controls">
+                </div>
+            </div>
+            <div class="well" style="margin-left:0;">
+                <h4>说明</h4>
+                <ul>
+                    <li>最大支持上传<strong>4 GB</strong> 视频文件</li>
+                    <li>允许上传的视频格式为：wmv,avi,dat,asf,rm,rmvb,ram,mpg,mpeg,3gp,mov,mp4,m4v,dvix,dv,dat,</br>mkv,flv,vob,ram,qt,divx,cpk,fli,flc,mod。不符合格式的视频将会被丢弃，请确保视频格式的正确性，避免上传失败</li>
+                </ul>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input01">章节标题</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input01" name="title" style="padding-left: 6px;">
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
+            </div>
+            <div class="control-group">
+                <p id="console"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span5" id="upload-status-wraper"></div>
+        </div>
+        <div id="complete"></div>
+        <div id="login" style="width:100%;height:100%;position:fixed;z-index:999;left:0px;top:0px;overflow:hidden;display:none;"></div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript">
+    var layer;
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+        //监听提交
+        form.on('submit(demo2)', function(data){
+            //弹出loading
+            var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:10000,shade:0.8});
+            //弹出层提示
+            // alert(JSON.stringify(data));
+            $.ajax({
+                type: "post",
+                url: "/admin/secAdd",
+                data:data.field,
+                dataType:"json",
+                success:function(n){
+                    if(n!=1){
+                        alert("添加失败");
+                    }else{
+                        layer.closeAll("iframe");
+                        alert("添加成功");
+                        //刷新父页面
+                        parent.location.reload();
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
 <script>
     //client_id填写上传的应用
     client_id = 'baea9c8ad51a264f';
@@ -106,16 +178,14 @@
     access_token = '77fca5e4db50c6e8ac4ec47e7f0d40c4';
     //上传成功后的回调
     function cloudUploadSuccess(res) {
-        alert('...上传成功了！' + JSON.stringify(res));
-        //....your code....
-        //uploadAgain();
+        //将视频Id赋值给videoUrl文本框
+        $('#videoUrl').val(res.video_id);
     }
     //调用
     window.onload = function(){
         cloud_outside_upload(client_id,access_token,cloudUploadSuccess);
     }
 </script>
-
 
 <script type="text/javascript">
     function cloud_outside_upload(client_id,access_token,cloudUploadSuccess,uploadAgain){
@@ -378,10 +448,7 @@
                 console.log('error:' + JSON.stringify(err));
             })
         }
-
     }
 
 </script>
-</body>
-
 </html>

@@ -162,7 +162,7 @@ public class CourseController {
         Integer n = courseService.couUpd(course);
 
         //获取前台传来的课程信息
-        System.out.println(course);
+//        System.out.println(course);
         return n;
     }
 

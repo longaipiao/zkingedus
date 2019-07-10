@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="/user/layui/css/layui.css" media="all">
     <!--引入LayUI js-->
     <script src="/user/layui/layui.js" charset="utf-8"></script>
-
-    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-    <link rel="stylesheet" href="/user/app/css/dest/styles.css?=2016121272249">
-
     <style>
         /*设置表格分页工具居中*/
         .layui-table-page{
@@ -40,12 +35,12 @@
     <!--搜索表单提交-->
     <button class="layui-btn" id="searchBtn" data-type="reload">搜索</button>
 </div>
-<!--数据表格-->
+<!--课程数据表格-->
 <table class="layui-hide" id="couList" lay-filter="test"></table>
 <!--行工具栏-->
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑课程</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">上传视频</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加章节</a>
 </script>
 
 <script type="text/javascript" th:inline="none">
@@ -117,9 +112,6 @@
                         $(res).each(function(i,ct){
                             con+='<option class="'+ct.tsid+'" value="'+ct.tid+'">'+ct.tname+'</option>';
                         });
-                        /*$('#adcourseType').html(con);
-                        //重新渲染下拉框
-                        form.render('select');*/
                     },
                     error: function(){
                         alert("课程类别接口回调失败");
@@ -244,7 +236,7 @@
                 url:'/admin/courseAdd',
                 data:data.field,
                 success:function(res){
-                    alert(res);
+                    // alert(res);
                     if(res!=0){
                         //获取当前页码数
                         var curr=$(".layui-laypage-em").next().html();
@@ -305,7 +297,7 @@
             }
             //文件上传成功返回的参数
             ,done: function(res){
-                alert(res.code);
+                // alert(res.code);
                 //上传失败
                 if(res.code != 0){
                     return layer.msg('上传失败');
@@ -336,7 +328,7 @@
             }
             //文件上传成功返回的参数
             ,done: function(res){
-                alert(res.code);
+                // alert(res.code);
                 //上传失败
                 if(res.code != 0){
                     return layer.msg('上传失败');
@@ -359,7 +351,18 @@
         table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得点击行数据
                 ,layEvent = obj.event; //获得 lay-event 对应的值，判断进行的操作
-            if(layEvent=='detail'){//查看操作
+            if(layEvent=='detail'){//章节管理
+                //打开弹出层
+                var a=layer.open({
+                    type: 2
+                    ,title: "章节上传" //弹出层标题
+                    ,area: ['50%', '90%'] //弹出层大小
+                    ,content: '/url/secAdd?courseId='+data.course_id //弹出层内容
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
 
             }else if(layEvent=='edit'){ //修改操作
                 //给弹出层赋值
@@ -382,8 +385,6 @@
                 $("#upcourseType").find("option[class='"+data.system_id+"']").prop("selected",true);
                 //课程收费单选框选中
                 $("input[lay-filter=upcourseFree][value="+data.course_free+"]").prop("checked",true);
-
-                alert(data.course_free);
 
                 form.render("radio");
 
@@ -414,7 +415,6 @@
         });
     });
 </script>
-
 <!--修改课程弹出层-->
 <div style="display: none;" id="courseUpd">
     <form class="layui-form" id="couUpd" action="">

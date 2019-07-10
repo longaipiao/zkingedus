@@ -37,7 +37,7 @@ public class CourseTypeController {
         //获取课程类别
         List<CourseType> courseTypes = courseTypeService.cTypes(systemID);
 
-        java.lang.System.out.println(courseTypes);
+//        java.lang.System.out.println(courseTypes);
         return courseTypes;
     }
 
@@ -49,7 +49,7 @@ public class CourseTypeController {
     @RequestMapping(value="/admin/adcourseImg")
     @ResponseBody
     public String uploadSource(@RequestParam("file") MultipartFile file) {
-        java.lang.System.out.println("增加课程图片的方法");
+//        java.lang.System.out.println("增加课程图片的方法");
         //存放图片路径
         String pathString = null;
         //获取当前时间
@@ -68,7 +68,7 @@ public class CourseTypeController {
             }
             file.transferTo(files);
 
-            java.lang.System.out.println("pathString:"+pathString+"  courseImg："+courseImg);
+//            java.lang.System.out.println("pathString:"+pathString+"  courseImg："+courseImg);
 
             //图片上传成功返回图片路径
             return "{\"code\": 0,\"data\": {\"src\": \""+courseImg+"\"}}";

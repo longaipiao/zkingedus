@@ -129,6 +129,21 @@ public class URLController {
         return "admin/liuxuqing/admincou.html";
     }
 
+    /**
+     * 跳转到章节添加页面
+     * @param request
+     * @return
+     */
+    @RequestMapping("/secAdd")
+    public String secAdd(HttpServletRequest request){
+        //接收传来的课程Id
+        Integer courseId = Integer.parseInt(request.getParameter("courseId"));
+        request.setAttribute("courseId",courseId);
+
+        return "/admin/liuxuqing/sectionAdd.html";
+    }
+
+
 
 
 
