@@ -4,7 +4,17 @@
 <mapper namespace="com.zking.zkingedu.common.dao.SectionDao">
     <!--根据课程Id获取课程章节-->
     <select id="sections" resultType="Section">
-        SELECT * FROM t_section WHERE section_cid=#{courseID}
+        SELECT * FROM t_section WHERE section_cid=#{courseID} ORDER BY section_seq ASC
     </select>
 
+    <!--根据课程Id获取章节最大顺序号-->
+    <select id="maxSeq" resultType="Integer">
+        SELECT MAX(section_seq) FROM t_section WHERE section_cid=#{courseID}
+    </select>
+
+    <!--添加章节-->
+    <insert id="secAdd" parameterType="Map">
+        INSERT INTO t_section(section_cid,section_name,section_time,section_seq,section_inte,video_url)
+        VALUES(#{sectionCid},#{sectionName},SYSDATE(),#{sectionSeq},#{sectionInte},#{videoUrl})
+    </insert>
 </mapper>

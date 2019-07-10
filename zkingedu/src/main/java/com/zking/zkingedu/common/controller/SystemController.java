@@ -44,7 +44,7 @@ public class SystemController {
         //获取所有体系
         List<System> systems = systemService.systems(systemID);
 
-        java.lang.System.out.println("获得的systemID："+systemID+"  体系："+systems);
+//        java.lang.System.out.println("获得的systemID："+systemID+"  体系："+systems);
 
         //获取体系下的课程
         List<Course> courses = courseService.courses(systemID);
@@ -84,7 +84,7 @@ public class SystemController {
      */
     @RequestMapping("/admin/systems")
     public String adsystems(){
-        java.lang.System.out.println("进后台体系界面");
+//        java.lang.System.out.println("进后台体系界面");
         return "admin/liuxuqing/sysmanagement.html";
     }
 
@@ -104,7 +104,7 @@ public class SystemController {
         String sysName = request.getParameter("sysName");
         String fid = request.getParameter("fid");
 
-        java.lang.System.out.println("page："+page+"  limit："+limit+"  sysName："+sysName+"  fid："+fid);
+//        java.lang.System.out.println("page："+page+"  limit："+limit+"  sysName："+sysName+"  fid："+fid);
 
         query.put("page",page);
         query.put("limit",limit);
@@ -114,7 +114,7 @@ public class SystemController {
         //获取所有体系
         List<System> sysList = systemService.sysList(query);
 
-        java.lang.System.out.println(sysList);
+//        java.lang.System.out.println(sysList);
 
         //返回给前台的List
         List<Map> systems=new ArrayList<>();
@@ -138,7 +138,7 @@ public class SystemController {
             map.put("systemImg",system.getSystemImg());
             systems.add(map);
         }
-        java.lang.System.out.println(systems);
+//        java.lang.System.out.println(systems);
 
         //获取体系数量
         Integer syscount = systemService.syscount(query);
@@ -161,7 +161,7 @@ public class SystemController {
     @RequestMapping(value="/admin/upSysimg")
     @ResponseBody
     public String uploadSource(@RequestParam("file") MultipartFile file , HttpServletRequest request) {
-        java.lang.System.out.println("修改体系图片的方法");
+//        java.lang.System.out.println("修改体系图片的方法");
         //存放图片路径
         String pathString = null;
         //获取当前时间
@@ -180,7 +180,7 @@ public class SystemController {
             }
             file.transferTo(files);
 
-            java.lang.System.out.println("pathString:"+pathString+"  systemImg："+systemImg);
+//            java.lang.System.out.println("pathString:"+pathString+"  systemImg："+systemImg);
 
             //图片上传成功返回图片路径
             return "{\"code\": 0,\"data\": {\"src\": \""+systemImg+"\"}}";
@@ -199,7 +199,7 @@ public class SystemController {
     @RequestMapping(value = "/admin/systemUpd")
     @ResponseBody
     public Integer systemUpd(System system){
-        java.lang.System.out.println(system);
+//        java.lang.System.out.println(system);
 
         //根据体系Id修改体系
         Integer n = systemService.upSys(system);
@@ -215,12 +215,12 @@ public class SystemController {
     @RequestMapping(value = "/admin/systemAdd")
     @ResponseBody
     public Integer systemAdd(System system){
-        java.lang.System.out.println(system);
+//        java.lang.System.out.println(system);
 
         //添加体系
         Integer n = systemService.systemAdd(system);
 
-        java.lang.System.out.println(n);
+//        java.lang.System.out.println(n);
         return n;
     }
 
