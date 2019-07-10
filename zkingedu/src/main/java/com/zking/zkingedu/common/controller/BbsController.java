@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.zking.zkingedu.common.dao.SortDao;
 import com.zking.zkingedu.common.model.Post;
 import com.zking.zkingedu.common.model.Sort;
+import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.PostService;
 import com.zking.zkingedu.common.service.SortService;
 import com.zking.zkingedu.common.service.TcommentService;
@@ -195,8 +196,9 @@ public class BbsController {
      */
     @ResponseBody
     @RequestMapping(value = "/addBbs")
-    public String addPost(Post post){
-        post.setPostUid(41);
+    public String addPost(Post post,HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        post.setPostUid(user.getUserID());
         post.setPostTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         post.setPostNum(0);
         return postService.addPost(post)>0?"1":"0";
