@@ -206,9 +206,9 @@ public class TestController {
 
 
 
-    @RequestMapping(value = "show")
+    @RequestMapping(value = "head")
     public String test3(){
-        return "user/show";
+        return "user/head";
     }
     @RequestMapping(value = "show2")
     public String test4(){
