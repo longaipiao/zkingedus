@@ -159,7 +159,7 @@ public class ChargeController {
 
         List<Message> myMessages = messageService.getMyMessages(36);
 
-        messageMaps.put("count",pageLine.getTotal());
+        messageMaps.put("count",pageLine.getPages());//数据库的总行数getPages()
         messageMaps.put("code","");
         messageMaps.put("msg","");
         messageMaps.put("data",myMessages);
