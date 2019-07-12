@@ -33,6 +33,11 @@ public class URLController {
     @Autowired
     private AnswerService answerService;
 
+
+    @RequestMapping(value = "/welcome")
+    public String welcome(){
+        return "admin/html/welcome";
+    }
     /**
      *注销
      * @param request
@@ -115,13 +120,13 @@ public class URLController {
 
 
 
-    //展示题库类别数据(选择考试内容)*跳转到下拉框页面的
-    @RequestMapping("/getcategorys")
-    public String getcategorys(HttpSession session){
-        List<Category> category = categoryService.getCategory();
-        session.setAttribute("category",category);
-        return "admin/jdy/fzselect";
-    }
+//    //展示题库类别数据(选择考试内容)*跳转到下拉框页面的
+//    @RequestMapping("/getcategorys")
+//    public String getcategorys(HttpSession session){
+//        List<Category> category = categoryService.getCategory();
+//        session.setAttribute("category",category);
+//        return "admin/jdy/fzselect";
+//    }
 
     //跳转到课程管理
     @RequestMapping("/cours")
@@ -142,30 +147,6 @@ public class URLController {
 
         return "/admin/liuxuqing/sectionAdd.html";
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //------------------------------------前台-------------------------------------

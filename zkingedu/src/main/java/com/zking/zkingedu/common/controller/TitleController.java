@@ -75,7 +75,7 @@ public class TitleController {
         }
         StringBuffer ct = new StringBuffer();
         for (Integer integer : cuoti) {
-            ct.append("第"+integer+"题  ");
+            ct.append(integer+", ");
         }
         map.put("score",score);
         map.put("cuoti",ct);
