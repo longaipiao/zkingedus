@@ -100,7 +100,7 @@ function updateName11() {
         },
         success:function (data) {
             if(data==1){
-                location.href="/userinfo";
+                location.href="/user/userinfo";
             }
         },
         error:function () {
