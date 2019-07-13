@@ -220,9 +220,11 @@
                         active.reload(curr,sysName,fid);
                         //关闭弹出层
                         layer.closeAll();
+
+                        layer.msg("添加成功");
+
                         //清空添加form表单的数据
                         document.getElementById("sysAdd").reset();
-                        alert("添加成功");
                     }
                 },
                 error:function (data) {
@@ -394,13 +396,13 @@
                         var curr=$(".layui-laypage-em").next().html();
                         //重载刷新数据
                         active.reload(curr,sysName,fid);
+                        layer.msg("修改成功");
                         //关闭弹出层
                         layer.closeAll();
-                        alert("修改成功");
                     }
                 },
                 error:function (data) {
-                    layui.alert("接口回调失败");
+                    alert("接口回调失败");
                 }
             }) ;
             return false;

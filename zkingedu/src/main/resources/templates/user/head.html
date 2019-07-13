@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--suppress ALL-->
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -128,12 +128,16 @@
                 <div class="layui-form-item" style="float:left;margin-left: 190px;">
                     <div class="layui-input-inline">
                         <select name="checkType" id="checkType">
-                            <option style="text-align: center" value="搜帖子">搜帖子</option>
-                            <option style="text-align: center" value="搜课程">搜课程</option>
+                            <option style="text-align: center" th:if="${checkType}==搜帖子" selected="selected" value="搜帖子">搜帖子</option>
+                            <option style="text-align: center" th:if="${checkType}!=搜帖子" value="搜帖子">搜帖子</option>
+
+                            <option style="text-align: center" th:if="${checkType}==搜课程" selected="selected" value="搜课程">搜课程</option>
+                            <option style="text-align: center" th:if="${checkType}!=搜课程" value="搜课程">搜课程</option>
                         </select>
                     </div>
                 </div>
-                <input type="text" class="form-control" name="post_name" autocomplete="off" placeholder="搜索 课程/问答">
+                <input type="text" class="form-control" name="post_name" th:if="${courseName}!=0" th:value="${courseName}" autocomplete="off" placeholder="搜索 课程/问答">
+                <input type="text" class="form-control" name="post_name" th:if="${courseName}==0" autocomplete="off" placeholder="搜索 课程/问答">
                 <button type="submit" class="layui-btn">搜索</button>
             </form>
         </div>

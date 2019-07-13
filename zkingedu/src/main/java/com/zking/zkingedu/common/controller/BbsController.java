@@ -2,9 +2,11 @@ package com.zking.zkingedu.common.controller;
 
 import com.google.gson.Gson;
 import com.zking.zkingedu.common.dao.SortDao;
+import com.zking.zkingedu.common.model.CourseType;
 import com.zking.zkingedu.common.model.Post;
 import com.zking.zkingedu.common.model.Sort;
 import com.zking.zkingedu.common.model.User;
+import com.zking.zkingedu.common.service.CourseTypeService;
 import com.zking.zkingedu.common.service.PostService;
 import com.zking.zkingedu.common.service.SortService;
 import com.zking.zkingedu.common.service.TcommentService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.spring5.context.SpringContextUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,15 +32,32 @@ public class BbsController {
     private SortService sortService;
     @Autowired
     private TcommentService tcommentService;
+    @Resource
+    private CourseTypeService courseTypeService;
 
 
     @RequestMapping(value = "/bbsIndex")
     public String test1(String post_name,String checkType,HttpServletRequest request){
         if("搜帖子".equals(checkType)){
             request.setAttribute("post_name",post_name);
+            //搜索框里的值
+            request.setAttribute("courseName",post_name);
             return "user/bbsIndex";
         }else if("搜课程".equals(checkType)){
-            return "";
+            //获取所有课程类别
+            List<CourseType> courseTypes = courseTypeService.courseTypes();
+            request.setAttribute("courseTypes",courseTypes);
+            //将课程是否免费、课程分类，课程搜索名字参数存入request
+            request.setAttribute("free",2);
+            request.setAttribute("Tid",0);
+            //判断搜索框里的值
+            if(post_name==null||"".equals(post_name.trim())){
+                post_name="0";
+            }
+            request.setAttribute("courseName",post_name);
+            //搜索的类型
+            request.setAttribute("checkType",checkType);
+            return "user/courses/index.html";
         }
         return "user/bbsIndex";
     }
