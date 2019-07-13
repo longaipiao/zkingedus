@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>视频播放</title>
+    <style type="text/css">
+        #youkuplayer {height:100% ; width:100%; position:absolute;}
+        body {margin:0px; padding:0px; overflow:hidden;}
+    </style>
+</head>
+<body>
+<!--播放器-->
+<div id="youkuplayer"></div>
+<!--视频ID-->
+<input type="hidden" id="videoUrl" th:value="${videoUrl}" />
+
+<script type="text/javascript" src="//player.youku.com/jsapi"></script>
+
+<script type="text/javascript">
+    //获取课程ID
+    var videoUrl=document.getElementById('videoUrl').value;
+    var player = new YKU.Player('youkuplayer',{
+        styleid: '0',
+        client_id: 'baea9c8ad51a264f',
+        vid: videoUrl,
+        newPlayer: true,
+        autoplay: true
+    });
+
+</script>
+</body>
+</html>

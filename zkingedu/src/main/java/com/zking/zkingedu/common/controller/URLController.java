@@ -120,13 +120,13 @@ public class URLController {
 
 
 
-//    //展示题库类别数据(选择考试内容)*跳转到下拉框页面的
-//    @RequestMapping("/getcategorys")
-//    public String getcategorys(HttpSession session){
-//        List<Category> category = categoryService.getCategory();
-//        session.setAttribute("category",category);
-//        return "admin/jdy/fzselect";
-//    }
+    //展示题库类别数据(选择考试内容)*跳转到下拉框页面的
+    @RequestMapping("/getcategorys")
+    public String getcategorys(HttpSession session){
+        List<Category> category = categoryService.getCategory();
+        session.setAttribute("category",category);
+        return "admin/jdy/fzselect";
+    }
 
     //跳转到课程管理
     @RequestMapping("/cours")
@@ -147,6 +147,46 @@ public class URLController {
 
         return "/admin/liuxuqing/sectionAdd.html";
     }
+
+    /**
+     * 跳转到章节管理页面
+     * @param request
+     * @return
+     */
+    @RequestMapping("/secList")
+    public String secList(HttpServletRequest request){
+        //接收传来的课程Id
+        Integer courseId = Integer.parseInt(request.getParameter("courseId"));
+        request.setAttribute("courseId",courseId);
+
+        return "/admin/liuxuqing/sectioncurd.html";
+    }
+
+    @RequestMapping("/video")
+    public String video(HttpServletRequest request){
+        //接收传来的视频Id（视频播放地址）
+        String videoUrl = request.getParameter("videoUrl");
+//        System.out.println(videoUrl);
+        request.setAttribute("videoUrl",videoUrl);
+
+        return "/admin/liuxuqing/video.html";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //------------------------------------前台-------------------------------------
