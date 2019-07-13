@@ -64,7 +64,7 @@ function zc() {
             return false;
         }
         $.ajax({
-            url:'user/zc',
+            url:'/user/zc',
             type:'post',
             async:false,
             data:{
@@ -89,7 +89,7 @@ function zc() {
 function checkPhone() {
     var f = true;
     $.ajax({
-        url:'user/checkPhone',
+        url:'/user/checkPhone',
         type:'post',
         data:{
             userPhone:$("#phonez").val()

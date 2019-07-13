@@ -87,7 +87,7 @@ function qqzc() {
 function qqcheckPhone() {
     var f = true;
     $.ajax({
-        url:'user/checkPhone',
+        url:'/user/checkPhone',
         type:'post',
         data:{
             userPhone:$("#qqphone").val()

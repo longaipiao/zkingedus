@@ -92,7 +92,7 @@ function updateName11() {
         return false;
     }
     $.ajax({
-        url:'user/updateName',
+        url:'/user/updateName',
         type:'post',
         data:{
             inputName:$('#inputName').val(),
