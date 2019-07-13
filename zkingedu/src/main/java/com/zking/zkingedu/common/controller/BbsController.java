@@ -54,7 +54,7 @@ public class BbsController {
         List<Map<String, Object>> list;
         Integer start = (page-1)*5;
         int cpage=0;
-        if(type!=null&&type.length()!=0&&Integer.parseInt(type)!=0){
+        if(type!=null&&type.length()!=0&&!type.equals("0")){
             list = postService.queryPagePostByType(start, 5,type);
             Integer count = postService.queryAllPostByType(type).size();
             cpage = count/5;
