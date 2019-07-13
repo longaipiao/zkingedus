@@ -38,7 +38,7 @@ public class ShiroConfiguration {
 //        filterChainDefinitionMap.put("/error","anon");
 //        filterChainDefinitionMap.put("/index.*","authc");
         filterChainDefinitionMap.put("/url/index", "authc");//表示需要认证才可以访问
-//        filterChainDefinitionMap.put("/admin/jdy", "authc");//表示需要认证才可以访问
+        filterChainDefinitionMap.put("/admin/jdy", "authc");//表示需要认证才可以访问
 //        filterChainDefinitionMap.put("/admin/html", "authc");//表示需要认证才可以访问
 //        filterChainDefinitionMap.put("/admin/liuxuqing", "authc");//表示需要认证才可以访问
 //        filterChainDefinitionMap.put("/admin/tool", "authc");//表示需要认证才可以访问

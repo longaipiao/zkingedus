@@ -33,13 +33,10 @@ public class AnswerController {
         if(sid.equals("0")){
             title2.setTitleCid(null);
         }
-        System.out.println(sid+"h哈");
 
-        System.out.println(title2+"dasdasd");
         List<Map<String,Object>> maps = new ArrayList<>();
         List<Title> all = answerService.getAll(title2);//所有的题目
         for (Title title : all) {//题目对于的答案
-            System.out.println("数据"+title);
             HashMap<String, Object> map = new HashMap<>();
             map.put("id",title.getTitleID());
             map.put("pid",0);
@@ -58,7 +55,6 @@ public class AnswerController {
                 maps.add(map2);
             }
         }
-        System.err.println(maps);
         return maps;
     }
     /**
@@ -91,7 +87,7 @@ public class AnswerController {
             }
             maps.put("treelist",treelist);
             map.add(maps);
-            System.out.println(map);
+//            System.out.println(map);
         }
 
         return map;
@@ -104,7 +100,7 @@ public class AnswerController {
     @RequestMapping(value = "/addtm")
     @ResponseBody
     public String addTm(Title title,String a,String b,String c,String d,String tm,String s,String titleDescribe,String titleContent){
-        System.err.println("--------------------------------------------------我进来了-----------------------------------------------------------");
+//        System.err.println("--------------------------------------------------我进来了-----------------------------------------------------------");
         Answer a1=new Answer();//答案a的对象
         Answer b2=new Answer();//答案b的对象
         Answer c2=new Answer();//答案d的对象
@@ -204,8 +200,8 @@ public class AnswerController {
     @RequestMapping(value = "/updatetm")
     @ResponseBody
     public String updatetm(Title title,String a,String b,String c,String d,String s,String titleDescribe,String titleContent,String tid){
-        System.out.println("进来了方法");
-        System.out.println(s+"正确");
+//        System.out.println("进来了方法");
+//        System.out.println(s+"正确");
         //增加题目
         title.setTitleDescribe(titleDescribe);
         title.setTitleContent(titleContent);
