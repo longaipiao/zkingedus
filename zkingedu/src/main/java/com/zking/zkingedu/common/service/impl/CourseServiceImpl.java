@@ -151,4 +151,9 @@ public class CourseServiceImpl implements CourseService {
     public Integer couUpd(Course course) {
         return courseDao.couUpd(course);
     }
+
+    @Override
+    public Integer couDel(Integer courseID) {
+        return courseDao.couDel(courseID);
+    }
 }

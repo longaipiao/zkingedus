@@ -79,4 +79,11 @@ public interface SectionDao {
      * @return
      */
     Section section(@Param("sectionCid") Integer sectionCid,@Param("sectionSeq") Integer sectionSeq);
+
+    /**
+     * 根据课程ID删除章节
+     * @param sectionCid
+     * @return
+     */
+    Integer secdelbyCid(Integer sectionCid);
 }

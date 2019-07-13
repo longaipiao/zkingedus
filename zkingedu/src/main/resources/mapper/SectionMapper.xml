@@ -47,4 +47,9 @@
     <select id="section" resultType="Section">
         SELECT * FROM t_section WHERE section_cid=#{sectionCid} and section_seq=#{sectionSeq}
     </select>
+
+    <!--根据课程ID删除章节-->
+    <delete id="secdelbyCid" parameterType="Integer">
+        DELETE FROM t_section WHERE section_cid=#{sectionCid}
+    </delete>
 </mapper>

@@ -26,6 +26,7 @@
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" lay-event="add">添加课程</button>
+            <button class="layui-btn layui-btn-sm" lay-event="delete">删除课程</button>
         </div>
     </script>
     <!--姓名文本框-->
@@ -116,12 +117,38 @@
                     }
                 });
                 return con;
+            },
+            //根据课程ID删除课程及底下的章节
+            couDel: function (courseIDs) {
+                $.ajax({
+                    url:'/admin/couDel',
+                    data:{
+                        courseIDs:courseIDs
+                    },
+                    success: function (res) {
+                        if(res==-1){
+                            alert("删除过程中发生错误，删除程序已停止");
+                        }else if(res>0){
+                            layer.msg("成功删除"+res+"条数据");
+                            //获取当前页码数
+                            var curr=$(".layui-laypage-em").next().html();
+                            //刷新页面
+                            active.reload(nametype,name,curr);
+                        }else if(res==0){
+                            alert("删除失败");
+                        }
+                    },
+                    error: function () {
+                        alert("删除课程回调出错");
+                    }
+                });
             }
         };
 
         //监听头工具栏
         table.on('toolbar(test)', function(obj){
-            var checkStatus = table.checkStatus(obj.config.id);
+            var checkStatus = table.checkStatus(obj.config.id),
+                data=checkStatus.data; //获取选中的数据;
             switch(obj.event){
                 //添加课程
                 case 'add':
@@ -147,6 +174,23 @@
 
                     //重新渲染下拉框
                     form.render('select');
+                    break;
+                //删除课程
+                case 'delete':
+                    if(data.length==0){ //判断用户是否选中了数据
+                        layer.msg("请选择需要删除的课程");
+                    }else{
+                        layer.confirm("确定删除选中的课程及底下的章节吗？",function(){
+                            //选中的的章节Id集合
+                            var courseIDs='';
+                            //循环选中的章节ID
+                            $(data).each(function(i,cou){
+                                courseIDs+=cou.course_id+",";
+                            });
+                            //将值传入删除方法进行删除
+                            active.couDel(courseIDs);
+                        });
+                    }
                     break;
             };
         });
@@ -211,7 +255,8 @@
             limit: 6,
             limits: [6,12,18,24,30],  //每页条数下拉框选项
             cols: [[
-                {field: 'course_id', align: 'left', title: '课程ID', sort: true}
+                {type: 'checkbox', align: 'left', fixed: 'left'} //复选框
+                ,{field: 'course_id', align: 'left', title: '课程ID', sort: true}
                 ,{field: 'course_name', align: 'left', title: '课程名称'}
                 ,{field: 'system_fname', align: 'left', title: '所属父体系'}
                 ,{field: 'system_name', align: 'left', title: '所属子体系'}
