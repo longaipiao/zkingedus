@@ -98,6 +98,9 @@
                 <li class="">
                     <a href="/bbsIndex">讨论区</a>
                 </li>
+                <li class="" th:if="${session.user}!=null">
+                    <a href="/url/tiku">学习考核</a>
+                </li>
 
             </ul>
 
