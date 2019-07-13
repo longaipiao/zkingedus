@@ -53,7 +53,9 @@
         </select>
       </div>
     </div>
-    <button type="button" onclick="zjtm()" class="layui-btn ">新增</button>
+
+    <button type="button" onclick="zjtm()" class="layui-btn ">新增题目</button>
+
     <div class="layui-inline">
       <label class="layui-form-label">请选择阶段</label>
       <div class="layui-input-inline">
@@ -161,27 +163,7 @@
               }
             }
           },
-          // {
-          //   key: 'id',
-          //   title: 'ID',
-          //   align: 'center',
-          // },
-          // {
-          //   key: 'abcd',
-          //   title: '答案',
-          //   align: 'center',
-          //
-          // },
-           // {
-           //     title: '开关',
-           //     align: 'center',
-           //     template: function(item){
-           //       if(item.state==0){
-           //             return '<input type="checkbox" value="'+item.id+'" lay-skin="switch" lay-text="关闭|开启" lay-filter="sexDemo" checked>';
-           //         }
-           //         return '<input type="checkbox"  value="'+item.id+'" lay-skin="switch" lay-text="关闭|开启" lay-filter="sexDemo" >';
-           //     }
-           // },
+
           {
             title: '操作',
             align: 'center',
@@ -327,27 +309,9 @@
     //   layer.msg('选中参数'+treeTable.checked(re).join(','))
     // })
     // 刷新重载树表（一般在异步处理数据后刷新显示）
-    o('.refresh').click(function(){
-      var tm = $("#xm").val();
-      if(tm==""){
-        alert("请选择你要添加题目的类型");
-        // location.href="/admin/title";
-      }
-      else {
-        layer.open({
-          //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-          type: 1,
-          title: "添加信息",
-          area: ['620px', '600px'],
-          content: $("#toolupdate"),//引用的弹出层的页面层的方式加载修改界面表单
-          maxmin: true,
-          end:function () {
-            $("#toolupdate").attr("style", "display:none;");//隐藏
-          }
-        });
-      }
-      treeTable.render(re);
-    })
+    // o('.refresh').click(function(){
+
+    // })
     // // 全部展开
     // o('.open-all').click(function(){
     //   alert("进来了");
@@ -402,7 +366,27 @@
   })
 </script>
 <script>
-
+  function zjtm(){
+    var tm = $("#xm").val();
+    if(tm==""){
+      layer.alert("请选择你要添加题目的类型");
+      // location.href="/admin/title";
+    }
+    else {
+      layer.open({
+        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+        type: 1,
+        title: "添加信息",
+        area: ['620px', '600px'],
+        content: $("#toolupdate"),//引用的弹出层的页面层的方式加载修改界面表单
+        maxmin: true,
+        end:function () {
+          $("#toolupdate").attr("style", "display:none;");//隐藏
+        }
+      });
+    }
+    treeTable.render(re);
+  }
   //删除题目和答案
   function sctm(tid) {
     layer.confirm('确认要删除吗？', function (index) {
@@ -435,7 +419,6 @@
     var d = $("#d").val();//d答案
     var titleDescribe = $("#titleDescribe").val();//题目描述
     var titleContent = $("#titleContent").val();//题目内容
-
       $.ajax({
         url:'/addtm',
         data:{
@@ -560,28 +543,28 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">题目内容：</label>
     <div class="layui-input-block">
-      <input type="text"  id="titleContent" name="titleContent" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 200px" >
+      <input type="text"  id="titleContent" name="titleContent" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">题目描述：</label>
     <div class="layui-input-block">
-      <input type="text" id="titleDescribe"  name="titleDescribe" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 200px" >
+      <input type="text" id="titleDescribe"  name="titleDescribe" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">A：</label>
     <div class="layui-input-block">
-      <input type="text" id="a" name="advertisingURL" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入A答案内容" style="width: 200px" >
+      <input type="text" id="a" name="advertisingURL" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入A答案内容" style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">B：</label>
     <div class="layui-input-block">
-      <input type="text"  name="b" id="b" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入B答案内容"  style="width: 200px" >
+      <input type="text"  name="b" id="b" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入B答案内容"  style="width: 450px" >
     </div>
   </div>
 
@@ -589,7 +572,7 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">C：</label>
     <div class="layui-input-block">
-      <input type="text"  name="c" id="c" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入C答案内容" style="width: 200px" >
+      <input type="text"  name="c" id="c" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入C答案内容" style="width: 450px" >
     </div>
   </div>
 
@@ -597,7 +580,7 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">D：</label>
     <div class="layui-input-block">
-      <input type="text"  lay-verify="required"  id="d" autocomplete="off" class="layui-input" placeholder="请输入D答案内容"  style="width: 200px" >
+      <input type="text"  lay-verify="required"  id="d" autocomplete="off" class="layui-input" placeholder="请输入D答案内容"  style="width: 450px" >
     </div>
   </div>
 
@@ -625,28 +608,28 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">题目内容：</label>
     <div class="layui-input-block">
-      <input type="text"  id="titleContents" name="titleContent" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 200px" >
+      <input type="text"  id="titleContents" name="titleContent" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">题目描述：</label>
     <div class="layui-input-block">
-      <input type="text" id="titleDescribes"  name="titleDescribe" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 200px" >
+      <input type="text" id="titleDescribes"  name="titleDescribe" required lay-verify="required"  autocomplete="off" class="layui-input"  style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">A：</label>
     <div class="layui-input-block">
-      <input type="text" id="as" name="advertisingURL" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入答案内容" style="width: 200px" >
+      <input type="text" id="as" name="advertisingURL" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入答案内容" style="width: 450px" >
     </div>
   </div>
 
   <div class="layui-form-item">
     <label class="layui-form-label">B：</label>
     <div class="layui-input-block">
-      <input type="text"  name="b" id="bs" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入答案内容"  style="width: 200px" >
+      <input type="text"  name="b" id="bs" required lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入答案内容"  style="width: 450px" >
       <input type="hidden" id="tid">
     </div>
   </div>
@@ -655,7 +638,7 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">C：</label>
     <div class="layui-input-block">
-      <input type="text"  name="c" id="cs" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入答案内容" style="width: 200px" >
+      <input type="text"  name="c" id="cs" required lay-verify="required"  autocomplete="off" class="layui-input"  placeholder="请输入答案内容" style="width: 450px" >
     </div>
   </div>
 
@@ -663,7 +646,7 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
   <div class="layui-form-item">
     <label class="layui-form-label">D：</label>
     <div class="layui-input-block">
-      <input type="text"  lay-verify="required"  id="ds" autocomplete="off" class="layui-input" placeholder="请输入答案内容"  style="width: 200px" >
+      <input type="text"  lay-verify="required"  id="ds" autocomplete="off" class="layui-input" placeholder="请输入答案内容"  style="width: 450px" >
     </div>
   </div>
 
@@ -682,5 +665,6 @@ if(objs.answerAbcd=="A" && objs.answerState=='1'){
     </div>
   </div>
 </form>
+
 </body>
 </html>

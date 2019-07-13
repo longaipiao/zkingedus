@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.LinkedHashMap;
+
 /**
  * shiro的配置类
  * @author Administrator
@@ -25,20 +27,23 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean bean=new ShiroFilterFactoryBean();
         bean.setSecurityManager(manager);
         //配置登录的url和登录成功的url
-        bean.setLoginUrl("/admin");
-        bean.setSuccessUrl("/admin/index");
+        bean.setLoginUrl("/url/loginpage");
+        bean.setSuccessUrl("/url/index");
         //配置访问权限
-//        LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
-//        filterChainDefinitionMap.put("/login", "anon"); //表示可以匿名访问
+        LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/admin/login", "anon"); //表示可以匿名访问
 //        filterChainDefinitionMap.put("/user/loginUser", "anon");
 //        filterChainDefinitionMap.put("/laypage", "anon");
 //        filterChainDefinitionMap.put("/user/logout*","anon");
 //        filterChainDefinitionMap.put("/error","anon");
 //        filterChainDefinitionMap.put("/index.*","authc");
-//        filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
-//        filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
+        filterChainDefinitionMap.put("/url/index", "authc");//表示需要认证才可以访问
+//        filterChainDefinitionMap.put("/admin/jdy", "authc");//表示需要认证才可以访问
+//        filterChainDefinitionMap.put("/admin/html", "authc");//表示需要认证才可以访问
+//        filterChainDefinitionMap.put("/admin/liuxuqing", "authc");//表示需要认证才可以访问
+//        filterChainDefinitionMap.put("/admin/tool", "authc");//表示需要认证才可以访问
 //        filterChainDefinitionMap.put("/*.*", "authc");
-//        bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }
     //配置核心安全事务管理器

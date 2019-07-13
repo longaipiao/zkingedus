@@ -58,6 +58,7 @@ public class AnswerController {
                 maps.add(map2);
             }
         }
+        System.err.println(maps);
         return maps;
     }
     /**

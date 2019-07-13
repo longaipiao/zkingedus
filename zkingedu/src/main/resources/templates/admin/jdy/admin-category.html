@@ -3,7 +3,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8">
-    <title>权限列表</title>
+    <title>题库体系列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -120,8 +120,8 @@
                         '            <td class="td-manage">\n'+
                         '              <button class="layui-btn layui-btn layui-btn-xs"  onclick="member_update('+obj.categoryState+','+obj.categoryID+')"><i class="layui-icon">&#xe631;</i>开启</button>\n'
               }
-              text +='              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe642;</i>修改</button>\n' +
-                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe642;</i>删除</button>\n' +
+              text +='              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe642;</i>修改名称</button>\n' +
+                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obj.categoryID+')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>\n' +
                       '            </td>\n' +
                       '          </tr>'
               text +=loadchild(obj.categories);
@@ -155,8 +155,8 @@
                       '            <td>'+obja.categoryEid+'号员工</td>\n' +
                       '            <td><i class="layui-icon">&#xe619;</i></td>\n' +
                       '            <td class="td-manage">\n' +
-                      '              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obja.categoryID+')"><i class="layui-icon">&#xe642;</i>修改</button>\n' +
-                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obja.categoryID+')"  ><i class="layui-icon">&#xe642;</i>删除</button>\n' +
+                      '              <button class="layui-btn layui-btn layui-btn-xs"  onclick="updatename('+obja.categoryID+')"><i class="layui-icon">&#xe642;</i>修改名称</button>\n' +
+                      '              <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'+obja.categoryID+')"  ><i class="layui-icon">&#xe640;</i>删除</button>\n' +
                       '            </td>\n' +
                       '          </tr>'
             });
@@ -169,7 +169,7 @@
           var sid = $("#xm").val();//下拉框ID
           var text = $("#tiximin").val();//添加的文本的值
           var empid = [[${session.emp.empID}]]//获取作用域的值
-          if(text!=null){
+          if(text==''||text==null){
             layer.msg("体系名不能为空")
             $("#tiximin").select();
           }
