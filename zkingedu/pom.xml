@@ -207,6 +207,7 @@
             <artifactId>mail</artifactId>
             <version>2</version>
         </dependency>
+
         <!-- 引入zhenxi -->
         <!--<dependency>
             <groupId>com.zhenzi</groupId>
