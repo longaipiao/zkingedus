@@ -22,4 +22,16 @@
         FROM `t_message` where message_uid=#{messageUid} ORDER BY message_state
     </select>
 
+    <!--未读消息改已读-->
+    <update id="editMessageState">
+        UPDATE t_message SET message_state=1 where message_id=#{messageID}
+    </update>
+
+    <!---->
+    <select id="getMessageByMessageID" resultType="message">
+        select
+        <include refid="messageAll"></include>
+        from t_message where message_id=#{messageID}
+    </select>
+
 </mapper>

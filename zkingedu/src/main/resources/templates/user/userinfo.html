@@ -757,7 +757,7 @@
                                         content += '</div>';
                                         content += '</span>';
                                         content += '<div class="answer-content markdown-body">';
-                                        content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='ydzt(\"" + o.messageID + "\")' style='color: #000000'>" + o.messageContent + "</a>";
+                                        content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='editMessageState(\"" + o.messageID + "\")' style='color: #000000'>" + o.messageContent + "</a>";
                                         content += '</div>';
                                         content += '<div>';
                                         content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="create-time">时间：<span>' + o.messageTime + '</span></span>';
@@ -781,6 +781,26 @@
                     });
                 });
             })
+
+            function editMessageState(messageID) {
+                $.ajax({
+                    url:"/user/editMessageState",
+                    data:{messageID:messageID},
+                    dataType:"text",
+                    success:function(){
+                        location.href="/checkBbs/"+messageID;
+                    },
+                    /*error:function(){
+                        alert(messageID);
+                        layer.msg("出BUG了，请联系921607915");
+                    }*/
+                })
+               /* $.post('/user/editMessageState',{messageID:messageID},function () {
+
+                });*/
+            }
+
+
         </script>
 
 

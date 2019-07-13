@@ -37,4 +37,26 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> getMyMessages(Integer messageUid) {
         return messageDao.getMyMessages(messageUid);
     }
+
+    /**
+     * 用户未读消息改已读
+     *
+     * @param messageID
+     * @return
+     */
+    @Override
+    public int editMessageState(Integer messageID) {
+        return messageDao.editMessageState(messageID);
+    }
+
+    /**
+     * 根据得到帖子ID
+     *
+     * @param messageID 消息ID
+     * @return Message
+     */
+    @Override
+    public Message getMessageByMessageID(Integer messageID) {
+        return messageDao.getMessageByMessageID(messageID);
+    }
 }

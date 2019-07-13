@@ -21,4 +21,18 @@ public interface MessageDao {
      * @return
      */
     List<Message> getMyMessages(Integer messageUid);
+
+    /**
+     * 用户未读消息改已读
+     * @param messageID 消息ID
+     * @return
+     */
+    int editMessageState(Integer messageID);
+
+    /**
+     * 根据得到帖子ID
+     * @param messageID 消息ID
+     * @return Message
+     */
+    Message getMessageByMessageID(Integer messageID);
 }

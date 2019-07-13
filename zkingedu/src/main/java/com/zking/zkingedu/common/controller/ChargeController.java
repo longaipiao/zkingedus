@@ -166,4 +166,14 @@ public class ChargeController {
         return messageMaps;
     }
 
+
+    @ResponseBody
+    @RequestMapping("/user/editMessageState")
+    int editMessageStateByuserID(Integer messageID){
+        messageService.editMessageState(messageID);
+        Message message = messageService.getMessageByMessageID(messageID);
+        return message.getMessagePid();
+    }
+
+
 }
