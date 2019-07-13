@@ -111,4 +111,14 @@ public class SectionServiceImpl implements SectionService {
         return sectionDao.section(sectionCid,sectionSeq);
     }
 
+    /**
+     * 根据课程ID删除章节
+     * @param sectionCid
+     * @return
+     */
+    @Override
+    public Integer secdelbyCid(Integer sectionCid) {
+        return sectionDao.secdelbyCid(sectionCid);
+    }
+
 }

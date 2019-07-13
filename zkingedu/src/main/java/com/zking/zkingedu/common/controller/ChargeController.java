@@ -138,7 +138,6 @@ public class ChargeController {
         chargeMap.put("code","");
         chargeMap.put("msg","");
         chargeMap.put("data",myCharges);
-
         return chargeMap;
     }
 

@@ -75,4 +75,11 @@ public interface SectionService {
      * @return
      */
     Section section(Integer sectionCid,Integer sectionSeq);
+
+    /**
+     * 根据课程ID删除章节
+     * @param sectionCid
+     * @return
+     */
+    Integer secdelbyCid(Integer sectionCid);
 }

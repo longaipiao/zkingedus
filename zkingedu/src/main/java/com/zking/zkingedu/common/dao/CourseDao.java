@@ -95,4 +95,11 @@ public interface CourseDao {
      * @return
      */
     Integer couUpd(Course course);
+
+    /**
+     * 根据课程ID删除课程
+     * @param courseID
+     * @return
+     */
+    Integer couDel(Integer courseID);
 }

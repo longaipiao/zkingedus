@@ -179,4 +179,27 @@ public class CourseController {
         return n;
     }
 
+    @RequestMapping("/admin/couDel")
+    @ResponseBody
+    public Integer couDel(HttpServletRequest request){
+        //接收前台传来的课程ID集合
+        String courseIDs = request.getParameter("courseIDs");
+        //分割成数组
+        String[] couList = courseIDs.split(",");
+        Integer n=0;
+        try {
+            //循环数组
+            for (String s : couList) {
+                //根据ID删除课程及底下章节
+                n += courseService.couDel(Integer.parseInt(s));
+                sectionService.secdelbyCid(Integer.parseInt(s));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+
+        return n;
+    }
+
 }
