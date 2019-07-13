@@ -52,6 +52,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Map<String, Object>> queryAllPostByNamePage(String pname, Integer start, Integer size) {
+        return postDao.queryAllPostByNamePage(pname, start, size);
+    }
+
+    @Override
     public List<Map<String, Object>> queryPostByUserIdPage(Integer uid, Integer size, Integer page) {
         return postDao.queryPostByUserIdPage(uid, size, page);
     }

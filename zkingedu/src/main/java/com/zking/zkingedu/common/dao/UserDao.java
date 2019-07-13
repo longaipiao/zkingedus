@@ -72,7 +72,7 @@ public interface UserDao {
      * @param user
      * @return
      */
-    int addQqLogin(User user);
+    int addQqLogin(@Param("user") User user);
 
     /**
      * 修改手机号码

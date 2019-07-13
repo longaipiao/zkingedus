@@ -23,7 +23,7 @@ function newPwd2() {
 function subPwd(){
     if(newPwd2()==true&&newPwd()==true){
         $.ajax({
-            url:'user/updatePwd',
+            url:'/user/updatePwd',
             type:'post',
             data:{
                 pwd:$('#inputPassword2').val(),

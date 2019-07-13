@@ -18,6 +18,10 @@ public interface PostDao {
     List<Map<String,Object>> queryAllPost();
 
     /**
+     * 模糊查询所有帖子并分页
+     */
+    List<Map<String,Object>> queryAllPostByNamePage(@Param("pname") String pname,@Param("start")Integer start,@Param("size")Integer size);
+    /**
      * 根据用户id查询该用户所发过的帖子
      * @param uid
      * @return
@@ -92,6 +96,7 @@ public interface PostDao {
      * @return
      */
     int pageView(Integer post_id);
+
 
 
 }

@@ -191,30 +191,26 @@ public class TestController {
     @Resource
     private EmpDao empDao;
 
-//    @ResponseBody
-//    @RequestMapping("/redis")
-//    public List<Emp> getEmps(){
-//        log.info("请求成功。。");
-////        return empDao.getemps();
-//    }
 
     /**
      * layui测试页面
      * @return
      */
 
-
-
-
     @RequestMapping(value = "head")
     public String test3(){
         return "user/head";
     }
-    @RequestMapping(value = "show2")
-    public String test4(){
-        return "user/show2";
-    }
 
+    /**
+     * 退出登录
+     * @return
+     */
+    @RequestMapping(value = "/loginOut")
+    public String loginOut(HttpServletRequest request){
+        request.getSession().removeAttribute("user");
+        return "user/index";
+    }
 
 
 

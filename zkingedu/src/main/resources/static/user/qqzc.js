@@ -69,8 +69,8 @@ function qqzc() {
             userPhone:$("#qqphone").val(),
             userPassword:$("#qqpwd").val(),
             userOpenID:$('#userOpenID').val(),
-            userImg:$('#userImg').val,
-            userName:$('#userName').val
+            userImg:$('#userImg').val(),
+            userName:$('#userName').val()
         },
         success:function (data) {
             if(data=='1'){

@@ -57,6 +57,29 @@ function phoneCheck() {
     return true;
 }
 
+function checkPhoneu() {
+    var f = true;
+    $.ajax({
+        url:'user/checkPhone',
+        type:'post',
+        data:{
+            userPhone:$("#phone").val()
+        },
+        success:function (data) {
+            if(data=='1'){
+                layer.msg("账号已存在",{time:1200});
+                f=false;
+            }else{
+
+            }
+        },
+        error:function () {
+            console.log("查询重复错误")
+        }
+    });
+    return f;
+}
+
 /**
  * 提交修改申请
  */
@@ -71,9 +94,11 @@ function subUpPhone() {
         alert("验证码有误");
         $('#code').val("")
         return false;
+    }else if(checkPhoneu()==false){
+        return false;
     }
     $.ajax({
-        url:'user/updatePhone',
+        url:'/user/updatePhone',
         type:'post',
         data:{
             phone:$('#phone').val(),
@@ -81,7 +106,7 @@ function subUpPhone() {
         },
         success:function (data) {
             if(data==1){
-                location.href="/userinfo";
+                location.href="/user/userinfo";
             }
         },
         error:function () {

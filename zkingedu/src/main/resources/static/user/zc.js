@@ -7,14 +7,14 @@ $(function(){
             code+=Math.floor(Math.random()*10);
         }
         alert(code);
-        $.ajax({
+        /*$.ajax({
                  type: 'post',
                 url: 'http://route.showapi.com/28-1',
                 dataType: 'json',
                 data: {
                     "showapi_appid": '99583', //这里需要改成自己的appid
                     "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
-                    "mobile":$('#phone').val(),
+                    "mobile":$('#phonez').val(),
                     "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
                     "tNum":"T150606060602",
                     "big_msg":""
@@ -27,7 +27,7 @@ $(function(){
                     console.log(result) //console变量在ie低版本下不能用
                     //alert(result.showapi_res_code)
                 }
-        });
+        });*/
         timeStart();
     });
 });
@@ -50,9 +50,9 @@ function zc() {
         var layer = layui.layer;
         if(checkPhone()==false){//查询重复用户
             return false;
-        }else if(!(/^1[3456789]\d{9}$/.test($('#phone').val()))){
+        }else if(!(/^1[3456789]\d{9}$/.test($('#phonez').val()))){
             layer.msg("手机号码有误，请重填",{time:1200});
-            $('#phone').val('');
+            $('#phonez').val('');
             return false;
         }else if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/.test($('#upwd').val()))){
             layer.msg("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符",{time:1200});
@@ -68,7 +68,7 @@ function zc() {
             type:'post',
             async:false,
             data:{
-                userPhone:$("#phone").val(),
+                userPhone:$("#phonez").val(),
                 userPassword:$("#upwd").val()
             },
             success:function (data) {
@@ -92,7 +92,7 @@ function checkPhone() {
         url:'user/checkPhone',
         type:'post',
         data:{
-            userPhone:$("#phone").val()
+            userPhone:$("#phonez").val()
         },
         success:function (data) {
             if(data=='1'){

@@ -11,6 +11,7 @@ import com.zking.zkingedu.common.service.TcommentService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,25 +32,43 @@ public class BbsController {
 
 
     @RequestMapping(value = "/bbsIndex")
-    public String test1(HttpServletRequest request){
-        //request.setAttribute("Bbss",postService.queryAllPost());
+    public String test1(String post_name,String checkType,HttpServletRequest request){
+        if("搜帖子".equals(checkType)){
+            request.setAttribute("post_name",post_name);
+            return "user/bbsIndex";
+        }else if("搜课程".equals(checkType)){
+            return "";
+        }
         return "user/bbsIndex";
     }
 
+    /**
+     * 分页并按类别查询帖子
+     * @param page
+     * @param type
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/pagePost")
-    public String pagePost(Integer page,String type){
+    public String pagePost(Integer page,String type,String post_name){
         List<Map<String, Object>> list;
         Integer start = (page-1)*5;
         int cpage=0;
-        if(type!=null&&type.length()!=0){
+        if(type!=null&&type.length()!=0&&Integer.parseInt(type)!=0){
             list = postService.queryPagePostByType(start, 5,type);
             Integer count = postService.queryAllPostByType(type).size();
             cpage = count/5;
             if(count%5!=0){
                 cpage+=1;
             }
-        }else{
+        }else if(post_name!=null&&post_name.length()!=0){
+            Integer count = postService.queryAllPostByNamePage(post_name,null, null).size();
+            cpage = count/5;
+            if(count%5!=0){
+                cpage+=1;
+            }
+            list = postService.queryAllPostByNamePage(post_name,start, 5);
+        } else{
             Integer count = postService.queryAllPost().size();
             cpage = count/5;
             if(count%5!=0){
@@ -87,8 +106,8 @@ public class BbsController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/checkBbs")
-    public String checkBbs(Integer post_id, HttpServletRequest request){
+    @RequestMapping(value = "/checkBbs/{post_id}")
+    public String checkBbs(@PathVariable("post_id")Integer post_id, HttpServletRequest request){
         //增加浏览量
         postService.pageView(post_id);
 

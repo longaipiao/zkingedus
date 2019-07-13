@@ -54,6 +54,11 @@ public interface PostService {
     List<Map<String,Object>> queryPostByUserId(@Param("post")Integer uid);
 
     /**
+     * 模糊查询所有帖子并分页
+     */
+    List<Map<String,Object>> queryAllPostByNamePage(@Param("pname") String pname,@Param("start")Integer start,@Param("size")Integer size);
+
+    /**
      * 根据用户id查询收藏的帖子Page
      * @return
      */

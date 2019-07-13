@@ -9,7 +9,7 @@ $(function(){
         alert(code);
         $.ajax({
                 type: 'post',
-                url: 'user/sendMail',
+                url: '/user/sendMail',
                 dataType: 'json',
                 data: {
                     Email:$('#email').val(),
@@ -67,7 +67,7 @@ function subUpEmail() {
     }
 
     $.ajax({
-        url:'user/updateEmail',
+        url:'/user/updateEmail',
         type:'post',
         async:false,
         data:{
@@ -76,7 +76,7 @@ function subUpEmail() {
         },
         success:function (data) {
             if(data==1){
-                location.href="/userinfo";
+                location.href="/user/userinfo";
             }
         },
         error:function () {
