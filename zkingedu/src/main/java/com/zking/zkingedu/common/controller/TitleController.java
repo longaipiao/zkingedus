@@ -42,7 +42,8 @@ public class TitleController {
         model.addAttribute("titles",gettitles);//数据渲染
         session.setAttribute("titles",gettitles);//阅卷需要
         model.addAttribute("size",gettitles.size());//判空
-        return "admin/jdy/grid";
+        return "user/courses/grid";
+
     }
 
     /**

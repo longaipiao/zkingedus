@@ -18,6 +18,7 @@
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body >
+<!--头部行--><!--弹出层-->
 
 
 <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -25,8 +26,8 @@
   <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
   <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-<div class="layui-container" >
+<div th:replace="/user/head :: html"></div>
+<div class="layui-container" style="margin-top: 90px">
 
   <blockquote class="layui-elem-quote">Zking 小课堂 答题区(随机50题,一小题两分,满分100分)</blockquote>
   <blockquote class="layui-elem-quote layui-quote-nm">
