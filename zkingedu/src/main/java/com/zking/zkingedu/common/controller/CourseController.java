@@ -104,11 +104,14 @@ public class CourseController {
         Integer page = (Integer.parseInt(request.getParameter("page"))-1)*limit;
         String nametype = request.getParameter("nametype");
         String name = request.getParameter("name");
+        //获取后台登录员工的Id
+        Integer empID=8;
 
         query.put("page",page);
         query.put("limit",limit);
         query.put("nametype",nametype);
         query.put("name",name);
+        query.put("empID",empID);
 
         //获取所有课程及数量
         List<Map> maps = courseService.couList(query);
@@ -150,6 +153,11 @@ public class CourseController {
         return n;
     }
 
+    /**
+     * 修改课程信息
+     * @param course
+     * @return
+     */
     @RequestMapping("/admin/courseUpd")
     @ResponseBody
     public Integer courseUpd(Course course){

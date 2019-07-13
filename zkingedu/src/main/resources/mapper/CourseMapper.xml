@@ -63,7 +63,7 @@
     <select id="couList" resultType="Map">
         select a.course_id,a.course_name,a.course_desc,a.course_img,a.course_state,a.course_free,a.course_num,a.course_time,a.course_inte,b.t_id,b.t_name,c.system_id,c.system_name,c.system_desc,d.*,e.system_id as 'system_fid',e.system_name as 'system_fname',e.system_desc as 'system_fdesc',e.system_img
         from t_course a,course_type b,t_system c,t_emp d,t_system e
-        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id
+        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id and d.emp_id=#{empID}
         <if test="nametype=='courseName'">
             and a.course_name like '%${name}%'
         </if>

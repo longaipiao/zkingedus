@@ -82,7 +82,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">视频id</label>
             <div class="layui-input-block">
-                <input type="text" name="videoUrl" id="videoUrl" value="aaaa" lay-verify="required" lay-reqtext="视频不能为空，请先上传视频" autocomplete="off" class="layui-input">
+                <input type="text" name="videoUrl" id="videoUrl" lay-verify="required" lay-reqtext="视频不能为空，请先上传视频" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -98,6 +98,9 @@
                 <input type="file" id="selectfiles">选择文件</a>
                 <div id="uploadControl" class="controls">
                 </div>
+            </div>
+            <div class="control-group">
+                <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
             </div>
             <div class="well" style="margin-left:0;">
                 <h4>说明</h4>
@@ -146,9 +149,6 @@
 
         //监听提交
         form.on('submit(demo2)', function(data){
-            //弹出loading
-            var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:10000,shade:0.8});
-            //弹出层提示
             // alert(JSON.stringify(data));
             $.ajax({
                 type: "post",

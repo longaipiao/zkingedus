@@ -3,8 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.SectionDao">
     <!--根据课程Id获取课程章节-->
-    <select id="sections" resultType="Section">
+    <select id="sections" parameterType="Integer" resultType="Section">
         SELECT * FROM t_section WHERE section_cid=#{courseID} ORDER BY section_seq ASC
+    </select>
+
+    <!--根据课程Id获取课程章节及分页-->
+    <select id="secList" parameterType="Map" resultType="Section">
+        SELECT * FROM t_section WHERE section_cid=#{courseId} ORDER BY section_seq ASC LIMIT #{page},#{limit}
     </select>
 
     <!--根据课程Id获取章节最大顺序号-->
@@ -17,4 +22,29 @@
         INSERT INTO t_section(section_cid,section_name,section_time,section_seq,section_inte,video_url)
         VALUES(#{sectionCid},#{sectionName},SYSDATE(),#{sectionSeq},#{sectionInte},#{videoUrl})
     </insert>
+
+    <!--获取章节总数量-->
+    <select id="couSec" resultType="Integer">
+        SELECT COUNT(*) FROM t_section WHERE section_cid=#{courseID}
+    </select>
+
+    <!--根据章节Id删除章节-->
+    <delete id="secDel">
+        DELETE FROM t_section WHERE section_id=#{sectionID}
+    </delete>
+
+    <!--根据章节Id修改章节-->
+    <update id="secUpd">
+        UPDATE t_section SET ${field}=#{value} WHERE section_id=#{sectionID}
+    </update>
+
+    <!--根据课程ID修改顺序号-->
+    <update id="secUpSeq">
+        UPDATE t_section SET section_seq=#{sectionSeq} WHERE section_id=#{sectionID}
+    </update>
+
+    <!--根据课程ID及章节顺序号获取章节-->
+    <select id="section" resultType="Section">
+        SELECT * FROM t_section WHERE section_cid=#{sectionCid} and section_seq=#{sectionSeq}
+    </select>
 </mapper>
