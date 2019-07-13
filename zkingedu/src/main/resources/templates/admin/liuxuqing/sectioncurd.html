@@ -77,9 +77,6 @@
                         });
                     }
                     break;
-                case 'update':
-                    layer.msg('编辑');
-                    break;
             };
         });
 
@@ -107,7 +104,7 @@
                         }
                     },
                     error: function () {
-                        layer.msg("删除课程章节回调出错");
+                        alert("删除课程章节回调出错");
                     }
                 });
             },
@@ -201,15 +198,10 @@
                 //获取章节顺序号、课程号
                 var sectionCid=data.sectionCid,
                     sectionSeq=data.sectionSeq;
-                //判断是否是最后一行
-                if(sectionSeq==1){
-                    layer.msg("已经是第一行了");
-                }else{
                     //关闭其他iframe层
                     layer.closeAll("iframe");
                     //调用上下移动方法
                     active.updn(sectionCid,sectionSeq,layEvent);
-                }
             }
         });
 

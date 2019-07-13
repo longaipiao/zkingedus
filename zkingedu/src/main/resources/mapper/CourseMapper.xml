@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zking.zkingedu.common.dao.CourseDao">
-    <!--根据课程收费状态、课程类别查询-->
+    <!--根据课程收费状态、课程类别、课程名称查询-->
     <select id="courses2" parameterType="Map" resultType="Map">
-        select * from t_course where 1=1
+        select * from t_course where course_name LIKE '%${courseName}%'
         <!--判断课程是否收费-->
         <if test="free==0">
             and course_free=0

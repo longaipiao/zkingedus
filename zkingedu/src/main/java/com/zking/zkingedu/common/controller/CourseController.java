@@ -30,10 +30,15 @@ public class CourseController {
     @Resource
     private SectionService sectionService;
 
+    /**
+     * 根据课程收费状态、课程类别、课程名称查询
+     * @param query
+     * @return
+     */
     @RequestMapping(value = "courses2",method = RequestMethod.POST)
     @ResponseBody
     public Map courses2(@RequestBody Map query){
-        //根据课程收费状态、课程类别查询
+        //根据课程收费状态、课程类别、课程名称查询
         List<Course> courses = courseService.courses2(query);
 
         //返回的Map
@@ -43,7 +48,7 @@ public class CourseController {
         if(courses.size()==0){
             map2.put("code",0);
         }else{
-            System.out.println(courses);
+//            System.out.println(courses);
             map2.put("courses",courses);
         }
         return map2;
@@ -52,15 +57,15 @@ public class CourseController {
     /**
      * 跳转到课程搜索
      */
-    @RequestMapping("/courseindex/{Tid}/{free}")
-    public String courseIndex(@PathVariable("Tid") Integer Tid, @PathVariable("free") Integer free,HttpServletRequest request){
+    @RequestMapping("/courseindex/{Tid}/{free}/{courseName}")
+    public String courseIndex(@PathVariable("Tid") Integer Tid, @PathVariable("free") Integer free, @PathVariable("courseName") String courseName, HttpServletRequest request){
         //获取所有课程类别
         List<CourseType> courseTypes = courseTypeService.courseTypes();
         request.setAttribute("courseTypes",courseTypes);
-        //将课程是否免费、课程分类参数存入request
+        //将课程是否免费、课程分类，课程搜索名字参数存入request
         request.setAttribute("free",free);
         request.setAttribute("Tid",Tid);
-
+        request.setAttribute("courseName",courseName);
         return "user/courses/index.html";
     }
 

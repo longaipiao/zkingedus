@@ -204,9 +204,9 @@
 <div class="container layout layout-margin-top">
     
 <ol class="breadcrumb">
-    <li><a href="/courses/">全部课程</a></li>
+    <li><a href="/courseindex/0/2/0">全部课程</a></li>
     <!--课程分类-->
-    <li><a th:href="'/courseindex/'+${course.t_id}+'/2'" th:text="${course.t_name}"></a></li>
+    <li><a th:href="'/courseindex/'+${course.t_id}+'/2/0'" th:text="${course.t_name}"></a></li>
     <!--课程名-->
     <li class="active">
         <a href="javascript:void(0);" th:text="${course.course_name}"></a>

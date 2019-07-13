@@ -91,20 +91,20 @@
             
     <div class="content">
         <div class="row course-cates">
-            <div class="col-md-1 course-cates-title">类别：</div>
+            <div class="col-md-1 course-cates-title">收费：</div>
             <div class="col-md-11 course-cates-content free">
-                <a th:title="${free}" name="2" th:href='${"/courseindex/"+Tid+"/2"}'>全部</a>
-                <a name="0" th:href='${"/courseindex/"+Tid+"/0"}'>免费</a>
-                <a name="1" th:href='${"/courseindex/"+Tid+"/1"}'><img src="/user/img/vip-icon.png"> 收费</a>
+                <a th:title="${free}" name="2" th:href='${"/courseindex/"+Tid+"/2/"+courseName}'>全部</a>
+                <a name="0" th:href='${"/courseindex/"+Tid+"/0/"+courseName}'>免费</a>
+                <a name="1" th:href='${"/courseindex/"+Tid+"/1/"+courseName}'><img src="/user/img/vip-icon.png"> 收费</a>
             </div>
         </div>
 
         <div class="row course-cates">
-            <div class="col-md-1 course-cates-title">体系：</div>
+            <div class="col-md-1 course-cates-title">类型：</div>
             <div class="col-md-11 course-cates-content system">
-                <a id="0" th:name="${Tid}" th:href='${"/courseindex/0/"+free}'>全部</a>
+                <a id="0" th:name="${Tid}" th:href='${"/courseindex/0/"+free+"/"+courseName}'>全部</a>
                 <!--后台获取所有课程分类-->
-                <a th:id="${courseType.Tid}" th:each="courseType:${courseTypes}" th:text="${courseType.tName}" th:href='${"/courseindex/"+courseType.Tid+"/"+free}'></a>
+                <a th:id="${courseType.Tid}" th:each="courseType:${courseTypes}" th:text="${courseType.tName}" th:href='${"/courseindex/"+courseType.Tid+"/"+free+"/"+courseName}'></a>
             </div>
         </div>
 
@@ -474,9 +474,10 @@
 
             //加载课程的方法
             function courses(){
-                //获取选中的课程收费状态（0免费，1收费，2全部）/课程类别Id
+                //获取选中的课程收费状态（0免费，1收费，2全部）/课程类别Id/搜索名称
                 var free=$(".free .active").attr("name");
                 var Tid=$(".system .active").attr("id");
+                var courseName=$("input[name=post_name]").val();
 
                 //根据收费状态/课程类别查询课程
                 $.ajax({
@@ -485,7 +486,8 @@
                     dataType:"json",
                     data:JSON.stringify({
                         free:free,
-                        Tid:Tid
+                        Tid:Tid,
+                        courseName:courseName
                     }),
                     contentType : "application/json",//应用类型/json
                     success:function(courses){
