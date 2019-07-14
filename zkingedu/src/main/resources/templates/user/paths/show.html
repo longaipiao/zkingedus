@@ -79,75 +79,8 @@
 </head>
 
 <body>
-
-
-
-
-
-
-
-
-
-
-<nav class="navbar navbar-default navbar-fixed-top header">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
-                <span class="sr-only">实验楼</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="../index.html">
-                <img src="/user/img/logo_03.png">
-            </a>
-        </div>
-        <div class="collapse navbar-collapse" id="header-navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="dropdown active">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                        课程
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="active" href="../courses/index.html" >全部课程</a></li>
-                        <li><a class="" href="../courses/index.html?status=preview" >即将上线</a></li>
-                        <li><a class="" href="../developer/index.html">开发者</a></li>
-                    </ul>
-                </li>
-                <li class="">
-                    <a href="../paths/index.html">路径</a>
-                </li>
-                <li class="">
-                    <a href="../questions/index.html">讨论区</a>
-                </li>
-                <li class=" bootcamp new-nav logo-1111">
-                    <a href="../bootcamp/index.html">训练营</a>
-
-                </li>
-                <li class=" new-nav logo-1111">
-                    <a href="../vip/index.html">会员</a>
-
-                </li>
-
-            </ul>
-
-
-            <div class="navbar-right btns">
-                <a class="btn btn-default navbar-btn sign-in" data-sign="signin" href="#sign-modal" data-toggle="modal">登录</a>
-                <a class="btn btn-default navbar-btn sign-up" data-sign="signup" href="#sign-modal" data-toggle="modal">注册</a>
-            </div>
-
-
-            <form class="navbar-form navbar-right" action="../search" method="get" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索 课程/问答">
-                </div>
-            </form>
-        </div>
-    </div>
-</nav>
-
+<!--引入头部样式-->
+<div th:replace="/user/head :: html"></div>
 
 
 <div class="container layout layout-margin-top">
@@ -174,7 +107,7 @@
                         </div>
                         <div class="col-md-10 col-md-offset-1 path-desc-text" th:text="${system.systemDesc}"></div>
                     </div>
-                    <div class="path-desc-btm" >
+                    <!--<div class="path-desc-btm" >
                         <div class="col-sm-12 col-md-4 clearfix learn-time-div">
                             <div class="col-md-12 text-left need-learn-time">预计需要 <span class="num">30</span> 小时学习</div>
                         </div>
@@ -186,7 +119,7 @@
                                 <p style="font-size:10px;margin-top:5px">加入获得路径课程更新提醒</p>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="content">
@@ -201,7 +134,7 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane path-details active" id="path-details">
                         <div class="details-box">
-                            <a href="/courses/63" class="btn start-btn">开始学习</a>
+                            <!--<a href="/courses/63" class="btn start-btn">开始学习</a>-->
 
                             <!--体系下的课程-->
                             <div id="systems">
@@ -239,7 +172,7 @@
 
                             </div>
 
-                            <div class="btn end-pin">完成学习</div>
+                            <div class="btn end-pin">更多课程</div>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane path-comment" id="path-comments">
@@ -263,40 +196,61 @@
 
         </div>
         <div class="col-md-3 layout-side">
-
-
-
-
-
+            <!--右边登录-->
             <div class="panel panel-default panel-userinfo">
                 <div class="panel-body body-userinfo">
-                    <div class="media userinfo-header">
-                        <div class="media-left">
-                            <div class="user-avatar">
 
-                                <a class="avatar" href="#sign-modal" data-toggle="modal" data-sign="signin">
-                                    <img class="circle" src="/user/img/logo-grey.png">
-                                </a>
-
-                            </div>
-                        </div>
-                        <div class="media-body">
-
-                            <span class="media-heading username">欢迎来到实验楼</span>
-                            <p class="vip-remain">做实验，学编程</p>
-
-                        </div>
-                    </div>
-
-                    <div class="row userinfo-data">
-
-                        <hr>
-                        <div class="btn-group-lr">
-                            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
-                            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>
-                        </div>
-
-                    </div>
+                    <div class="panel panel-default panel-userinfo">
+    <span th:if="${session.user}!=null">
+        <div class="panel-body body-userinfo">
+        <div class="media userinfo-header">
+            <div class="media-left">
+                <div class="user-avatar">
+                     <a class="avatar" href="user/userinfo" data-toggle="modal" data-sign="signin">
+                         <img class="circle" th:src="${session.user.userImg}">
+                     </a>
+                </div>
+             </div>
+            <div class="media-body">
+                 <span class="media-heading username">欢迎来到实验楼</span>
+                 <p class="vip-remain">做实验，学编程</p>
+            </div>
+        </div>
+        <div class="row userinfo-data">
+            <hr>
+            <div class="btn-group-lr">
+                <span style="margin-left: -20px">用户：<span th:text="${session.user.userName}"></span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>积分余额：<span th:text="${session.user.userIntegrsl}">114514</span></span>
+                <!--<a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>-->
+            </div>
+        </div>
+    </div>
+    </span>
+                        <span th:if="${session.user}==null">
+        <div class="panel-body body-userinfo">
+        <div class="media userinfo-header">
+            <div class="media-left">
+                <div class="user-avatar">
+                     <a class="avatar" href="user/userinfo" data-toggle="modal" data-sign="signin">
+                         <img class="circle" src="/user/img/default.jpg">
+                     </a>
+                </div>
+             </div>
+            <div class="media-body">
+                 <span class="media-heading username">欢迎来到实验楼</span>
+                 <p class="vip-remain">做实验，学编程</p>
+            </div>
+        </div>
+        <div class="row userinfo-data">
+            <hr>
+            <div class="btn-group-lr">
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
+                <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>
+            </div>
+        </div>
+    </div>
+    </span>
 
                     <div class="userinfo-footer row">
                         <div class="col-md-6 col-xs-6 pos-left">
@@ -557,65 +511,68 @@
         release: '3.12.13'
     }).install();
 
-    //获取体系Id
-    var systemID=$('#systemID').attr("title");
+    //程序入口
+    $(function () {
+        //获取体系Id
+        var systemID=$('#systemID').attr("title");
 
-    //获取子体系以及子体系下的课程
-    $.ajax({
-        type:"post",
-        url:"/systems",
-        data:JSON.stringify({
-            systemID:systemID
-        }),
-        dataType:"json",
-        contentType : "application/json",//应用类型/json
-        success:function(systems){
-            //判断体系是否为空
-            if (systems.data.length>0){
-                var content='';
-                //遍历体系
-                for(var i=0;i<systems.data.length;i++){
-                    content+='<div class="clearfix text-center path-title-box">' +
-                        '<span class="line hidden-xs"></span>' +
-                        '<span>'+systems.data[i].systemName+'</span>' +
-                        '<span class="line hidden-xs"></span>' +
-                        '</div>'+
-                        '<div class="row">';
-                    //遍历体系下的课程
-                    for(var j=0;j<systems.courses.length;j++){
-                        //判读课程里的体系Id是否相等
-                        if(systems.courses[j].courseSid==systems.data[i].systemID){
-                            content+='<div class="col-md-4 col-sm-6  course">' +
-                                '<a class="course-box" href="/courseshow/'+systems.courses[j].courseID+'">' +
-                                ' <div class="sign-box">' +
-                                '<i class="fa fa-star-o course-follow pull-right"' +
-                                'data-follow-url="/courses/75/follow"' +
-                                'data-unfollow-url="/courses/75/unfollow" style="display:none" ></i>' +
-                                '</div>' +
-                                '<div class="course-img">' +
-                                '<img alt="'+systems.courses[j].courseName+'" src="'+systems.courses[j].courseImg+'">' +
-                                '</div>' +
-                                '<div class="course-body">' +
-                                '<span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+systems.courses[j].courseName+'">'+systems.courses[j].courseName+'</span>' +
-                                '</div>' +
-                                '<div class="course-footer">' +
-                                '<span class="course-per-num pull-left">' +
-                                '<i class="fa fa-users"></i>' +
-                                ''+systems.courses[j].courseNum+'' +
-                                '</span>' +
-                                '</div>' +
-                                '</a>' +
-                                '</div>';
+        //获取子体系以及子体系下的课程
+        $.ajax({
+            type:"post",
+            url:"/systems",
+            data:JSON.stringify({
+                systemID:systemID
+            }),
+            dataType:"json",
+            contentType : "application/json",//应用类型/json
+            success:function(systems){
+                //判断体系是否为空
+                if (systems.data.length>0){
+                    var content='';
+                    //遍历体系
+                    for(var i=0;i<systems.data.length;i++){
+                        content+='<div class="clearfix text-center path-title-box">' +
+                            '<span class="line hidden-xs"></span>' +
+                            '<span>'+systems.data[i].systemName+'</span>' +
+                            '<span class="line hidden-xs"></span>' +
+                            '</div>'+
+                            '<div class="row">';
+                        //遍历体系下的课程
+                        for(var j=0;j<systems.courses.length;j++){
+                            //判读课程里的体系Id是否相等
+                            if(systems.courses[j].courseSid==systems.data[i].systemID){
+                                content+='<div class="col-md-4 col-sm-6  course">' +
+                                    '<a class="course-box" href="/courseshow/'+systems.courses[j].courseID+'">' +
+                                    ' <div class="sign-box">' +
+                                    '<i class="fa fa-star-o course-follow pull-right"' +
+                                    'data-follow-url="/courses/75/follow"' +
+                                    'data-unfollow-url="/courses/75/unfollow" style="display:none" ></i>' +
+                                    '</div>' +
+                                    '<div class="course-img">' +
+                                    '<img alt="'+systems.courses[j].courseName+'" src="'+systems.courses[j].courseImg+'">' +
+                                    '</div>' +
+                                    '<div class="course-body">' +
+                                    '<span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+systems.courses[j].courseName+'">'+systems.courses[j].courseName+'</span>' +
+                                    '</div>' +
+                                    '<div class="course-footer">' +
+                                    '<span class="course-per-num pull-left">' +
+                                    '<i class="fa fa-users"></i>' +
+                                    ''+systems.courses[j].courseNum+'' +
+                                    '</span>' +
+                                    '</div>' +
+                                    '</a>' +
+                                    '</div>';
+                            }
                         }
+                        content+='</div>';
                     }
-                    content+='</div>';
+                    $("#systems").html(content);
                 }
-                $("#systems").html(content);
+            },
+            error:function(){
+                aler("接口回调异常");
             }
-        },
-        error:function(){
-            aler("接口回调异常");
-        }
+        });
     });
 </script>
 
