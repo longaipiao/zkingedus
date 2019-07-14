@@ -314,10 +314,10 @@
                         var curr=$(".layui-laypage-em").next().html();
                         //重载刷新数据
                         active.reload(nametype,name,curr);
-                        //关闭弹出层
-                        layer.closeAll();
                         //清空添加form表单的数据
                         document.getElementById("couUpd").reset();
+                        //关闭弹出层
+                        layer.closeAll();
                         layer.msg("修改成功");
                     }else{
                         alert("修改失败");

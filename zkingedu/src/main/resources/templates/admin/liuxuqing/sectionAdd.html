@@ -159,10 +159,11 @@
                     if(n!=1){
                         alert("添加失败");
                     }else{
-                        layer.closeAll("iframe");
-                        layer.msg("添加成功");
                         //刷新父页面
                         parent.location.reload();
+                        //关闭弹层
+                        layer.closeAll("iframe");
+                        layer.msg("添加成功");
                     }
                 }
             });

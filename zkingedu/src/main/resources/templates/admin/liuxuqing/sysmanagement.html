@@ -220,15 +220,13 @@
                         active.reload(curr,sysName,fid);
                         //关闭弹出层
                         layer.closeAll();
-
-                        layer.msg("添加成功");
-
                         //清空添加form表单的数据
                         document.getElementById("sysAdd").reset();
+                        layer.msg("添加成功");
                     }
                 },
                 error:function (data) {
-                    layui.alert("接口回调失败");
+                    alert("增加体系接口回调失败");
                 }
             }) ;
             return false;
@@ -241,8 +239,8 @@
             ,before: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
-                    //图片预览（base64）
-                    $('#adsystemImg').attr('src', result);
+                //图片预览（base64）
+                $('#adsystemImg').attr('src', result);
                 });
             }
             //文件上传成功返回的参数
@@ -302,7 +300,7 @@
                         }
                     },
                     error:function () {
-                        alert("数据回调异常");
+                        alert("下拉框接口回调异常");
                     }
                 });
                 return content;
@@ -396,9 +394,11 @@
                         var curr=$(".layui-laypage-em").next().html();
                         //重载刷新数据
                         active.reload(curr,sysName,fid);
-                        layer.msg("修改成功");
                         //关闭弹出层
                         layer.closeAll();
+                        layer.msg("修改成功");
+                    }else{
+                        alert("体系修改失败");
                     }
                 },
                 error:function (data) {

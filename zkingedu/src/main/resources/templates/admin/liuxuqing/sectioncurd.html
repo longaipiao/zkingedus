@@ -94,11 +94,11 @@
                         if(res==-1){
                             alert("删除过程中发生错误，删除程序已停止");
                         }else if(res>0){
-                            layer.msg("成功删除"+res+"条数据");
                             //获取当前页码数
                             var curr=$(".layui-laypage-em").next().html();
                             //刷新页面
                             active.reload(curr);
+                            layer.msg("成功删除"+res+"条数据");
                         }else if(res==0){
                             alert("删除失败");
                         }
@@ -210,13 +210,12 @@
             var value = obj.value //修改后的值
                 ,data = obj.data //所有键值
                 ,field = obj.field; //修改的字段
-            // layer.msg('[ID: '+ data.sectionID +'] ' + field + ' 字段更改为：'+ value);
             //去掉左右空格判断修改后的值是否为null
             if(value.trim(value)==''||value==null){
-                layer.msg("不能输入空值");
                 //获取当前页码数
                 var curr=$(".layui-laypage-em").next().html();
                 active.reload(curr);
+                layer.msg("不能输入空值");
             }else{
                 $.ajax({
                     url: '/admin/secUpd',
@@ -228,6 +227,8 @@
                     success: function (res) {
                         if (res>0){
                             layer.msg("修改成功");
+                        }else{
+                            alert("修改失败请稍后重试");
                         }
                     },
                     error: function () {
