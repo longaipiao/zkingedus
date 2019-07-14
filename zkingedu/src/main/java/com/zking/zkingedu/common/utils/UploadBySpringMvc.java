@@ -68,7 +68,6 @@ public class UploadBySpringMvc{
         String contextPath = request.getSession().getServletContext().getRealPath("/");
         //判断文件是否为空
         if(!file.isEmpty()){
-
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
             File destFile = new File(contextPath+"\\img",name);
