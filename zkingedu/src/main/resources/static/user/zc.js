@@ -58,7 +58,7 @@ function zc() {
             layer.msg("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符",{time:1200});
             $('#upwd').val('');
             return false;
-        }else if(code!=$('#code').val()){
+        }else if(code!=$('#codez').val()){
             layer.msg("验证码错误",{time:1200});
             $('#code').val('');
             return false;

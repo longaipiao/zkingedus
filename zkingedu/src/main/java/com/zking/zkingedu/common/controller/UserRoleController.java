@@ -136,7 +136,7 @@ public class UserRoleController {
         try {
             User user = new User();
             user.setUserID(userId);
-            user.setUserName("inputName");
+            user.setUserName(inputName);
             n = userService.updateData(user);
         }catch (Exception e){
             System.out.println("修改名字错误1");
