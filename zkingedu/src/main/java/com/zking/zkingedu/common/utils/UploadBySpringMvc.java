@@ -1,6 +1,6 @@
 package com.zking.zkingedu.common.utils;
 
-import com.alibaba.fastjson.JSONObject;
+
 import com.google.gson.Gson;
 import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.UserService;
@@ -25,15 +25,20 @@ public class UploadBySpringMvc{
 
     @RequestMapping(value = "fileUploadPage",produces = "application/text;charset=utf-8")
     public String fileUploadPage(MultipartFile file, HttpServletRequest request){
+        //获取服务器路径
+        String contextPath = request.getSession().getServletContext().getRealPath("/");
 
         //判断文件是否为空
         if(!file.isEmpty()){
-            //文件存放路径
-            String path = request.getServletContext().getRealPath("/images/");
-
+            System.out.println(contextPath+"\\img");
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
-            File destFile = new File("F:\\git\\zkingedu2\\zkingedu\\target\\classes\\static\\user\\img",name);
+            File destFile = new File(contextPath+"\\img",name);
+            if (!destFile.exists()) {
+                destFile.mkdirs();
+            }
+
+
             try {
                 //转存文件
                 file.transferTo(destFile);
@@ -41,14 +46,13 @@ public class UploadBySpringMvc{
                 User user = (User)request.getSession().getAttribute("user");
                 User u = new User();
                 u.setUserID(user.getUserID());
-                u.setUserImg("/user/img/"+name);
+                u.setUserImg("/img/"+name);
                 //调用修改方法
                 userService.updateData(u);
-                user.setUserImg("/user/img/"+name);
+                user.setUserImg("/img/"+name);
                 request.getSession().setAttribute("user",user);
                 System.out.println(name);
             } catch (IOException e) {
-
                 e.printStackTrace();
             }
             return "user/userinfo";
@@ -60,15 +64,17 @@ public class UploadBySpringMvc{
     @RequestMapping(value = "UploadPage")
     @ResponseBody
     public String fileUploadPage2(MultipartFile file, HttpServletRequest request){
-        System.out.println("来了");
+        //获取服务器路径
+        String contextPath = request.getSession().getServletContext().getRealPath("/");
         //判断文件是否为空
         if(!file.isEmpty()){
-            //文件存放路径
-            String path = request.getServletContext().getRealPath("/images/");
+
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
-            File destFile = new File("F:\\git\\zkingedu2\\zkingedu\\target\\classes\\static\\user\\img",name);
-            System.out.println(name);
+            File destFile = new File(contextPath+"\\img",name);
+            if (!destFile.exists()) {
+                destFile.mkdirs();
+            }
             try {
                 //转存文件
                 file.transferTo(destFile);
@@ -79,7 +85,7 @@ public class UploadBySpringMvc{
 
             Gson gson = new Gson();
             Map<String,Object> map = new HashMap<>();
-            map.put("name","/user/img/"+name);
+            map.put("name","/img/"+name);
             String str = gson.toJson(map);
             return str;
         }

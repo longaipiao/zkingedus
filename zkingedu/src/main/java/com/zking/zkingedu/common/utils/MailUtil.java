@@ -33,7 +33,7 @@ public class MailUtil {
         Transport ts = session.getTransport();
         // 连接邮件服务器：邮箱类型，帐号，授权码代替密码（更安全）
         // =====================自行修改账号和授权码
-        ts.connect("smtp.qq.com", "ahogorira@qq.com", "qyupgajscqnzefhf");// 后面的字符是授权码
+        ts.connect("smtp.qq.com", "ahogorira@qq.com", "ygemmnxkflknbhca");// 后面的字符是授权码
         // 创建邮件
 
         Message message = createSimpleMail(session,mail,value);
