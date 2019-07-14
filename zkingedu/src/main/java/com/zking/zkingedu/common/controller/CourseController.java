@@ -56,6 +56,11 @@ public class CourseController {
 
     /**
      * 跳转到课程搜索
+     * @param Tid
+     * @param free
+     * @param courseName
+     * @param request
+     * @return
      */
     @RequestMapping("/courseindex/{Tid}/{free}/{courseName}")
     public String courseIndex(@PathVariable("Tid") Integer Tid, @PathVariable("free") Integer free, @PathVariable("courseName") String courseName, HttpServletRequest request){
@@ -179,6 +184,11 @@ public class CourseController {
         return n;
     }
 
+    /**
+     * 删除课程
+     * @param request
+     * @return
+     */
     @RequestMapping("/admin/couDel")
     @ResponseBody
     public Integer couDel(HttpServletRequest request){
@@ -202,4 +212,27 @@ public class CourseController {
         return n;
     }
 
+    /**
+     * 获取热门课程
+     * @return
+     */
+    @RequestMapping("/hotCou")
+    @ResponseBody
+    public List<Course> hotCou(){
+        //获取热门课程
+        List<Course> courses = courseService.hotCou();
+//        System.out.println(courses);
+        return courses;
+    }
+
+    @RequestMapping("/hotcoubySid")
+    @ResponseBody
+    public List<Course> hotcoubySid(HttpServletRequest request){
+        //接收前台传来的体系ID
+        Integer systemID = Integer.parseInt(request.getParameter("systemID"));
+
+        //根据体系ID获取热门课程
+        List<Course> courses = courseService.hotcoubySid(systemID);
+        return courses;
+    }
 }

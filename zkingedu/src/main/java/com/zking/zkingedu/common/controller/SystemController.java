@@ -65,6 +65,13 @@ public class SystemController {
         return map;
     }
 
+    /**
+     * 体系详情界面
+     * @param systemID
+     * @param ccount
+     * @param request
+     * @return
+     */
     @RequestMapping("/systemShow/{systemID}/{ccount}")
     public String systemShow(@PathVariable("systemID") Integer systemID,@PathVariable("ccount") Integer ccount,HttpServletRequest request){
         //根据传来的体系Id获取体系
@@ -76,15 +83,12 @@ public class SystemController {
         return "user/paths/show.html";
     }
 
-
-
     /**
      * 跳转到后台体系展示界面
      * @return
      */
     @RequestMapping("/admin/systems")
     public String adsystems(){
-//        java.lang.System.out.println("进后台体系界面");
         return "admin/liuxuqing/sysmanagement.html";
     }
 

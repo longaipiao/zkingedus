@@ -156,4 +156,23 @@ public class CourseServiceImpl implements CourseService {
     public Integer couDel(Integer courseID) {
         return courseDao.couDel(courseID);
     }
+
+    /**
+     * 获取学习人数最多的前五条课程
+     * @return
+     */
+    @Override
+    public List<Course> hotCou() {
+        return courseDao.hotCou();
+    }
+
+    /**
+     * 根据父体系ID获取热门课程前五条
+     * @param systemID
+     * @return
+     */
+    @Override
+    public List<Course> hotcoubySid(Integer systemID) {
+        return courseDao.hotcoubySid(systemID);
+    }
 }

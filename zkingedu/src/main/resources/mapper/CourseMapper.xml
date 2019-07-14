@@ -103,4 +103,14 @@
     <delete id="couDel" parameterType="Integer">
         DELETE FROM t_course WHERE course_id=#{courseID}
     </delete>
+
+    <!--获取学习人数最多的前五条课程-->
+    <select id="hotCou" resultType="Course">
+        SELECT * FROM t_course ORDER BY course_num DESC LIMIT 0,4
+    </select>
+
+    <!--根据父体系ID获取热门课程前五条-->
+    <select id="hotcoubySid" resultType="Course">
+        SELECT * FROM t_course WHERE course_sid IN (SELECT system_id FROM t_system WHERE system_fid=#{systemID}) ORDER BY course_num DESC LIMIT 0,4
+    </select>
 </mapper>

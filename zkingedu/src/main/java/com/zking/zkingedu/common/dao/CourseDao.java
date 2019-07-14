@@ -102,4 +102,17 @@ public interface CourseDao {
      * @return
      */
     Integer couDel(Integer courseID);
+
+    /**
+     * 获取学习人数最多的前五条课程
+     * @return
+     */
+    List<Course> hotCou();
+
+    /**
+     * 根据父体系ID获取热门课程前五条
+     * @param systemID
+     * @return
+     */
+    List<Course> hotcoubySid(Integer systemID);
 }

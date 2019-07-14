@@ -294,14 +294,10 @@
             <div class="sidebox">
 
                 <div class="sidebox-header">
-                    <h4 class="sidebox-title">最热路径</h4>
+                    <h4 class="sidebox-title">此体系最热课程</h4>
                 </div>
                 <div class="sidebox-body course-content side-list-body">
-                    <a href="/paths/python"><img style="width:25px;height:25px" src="/user/img/1471513769430.png"> Python 研发工程师</a>
-                    <a href="/paths/bigdata"><img style="width:25px;height:25px" src="/user/img/1471513926288.png"> 大数据工程师</a>
-                    <a href="/paths/cpp"><img style="width:25px;height:25px" src="/user/img/1471513793360.png"> C++ 研发工程师</a>
-                    <a href="/paths/security"><img style="width:25px;height:25px" src="/user/img/1471513867033.png"> 信息安全工程师</a>
-                    <a href="/paths/linuxsys"><img style="width:25px;height:25px" src="/user/img/1471514004752.png"> Linux 运维工程师</a>
+                    <!--<a href="/paths/python"><img style="width:25px;height:25px" src="/user/img/1471513769430.png"> Python 研发工程师</a>-->
                 </div>
 
             </div>
@@ -571,6 +567,26 @@
             },
             error:function(){
                 aler("接口回调异常");
+            }
+        });
+
+        //获取此体系下的热门课程
+        $.ajax({
+            url: '/hotcoubySid',
+            data: {
+                systemID: systemID
+            },
+            dataType:"json",
+            success: function(res){
+                //循环拼接最热课程
+                var conten='';
+                $(res).each(function (i,cou) {
+                    conten+='<a href="/courseshow/'+cou.courseID+'"><img style="width:25px;height:25px" src="'+cou.courseImg+'">'+cou.courseName+'</a>';
+                });
+                $('.side-list-body').html(conten);
+            },
+            error: function(){
+                alert("体系热门课程接口回调失败");
             }
         });
     });

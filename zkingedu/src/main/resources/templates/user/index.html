@@ -3,7 +3,7 @@
 <html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>zking课堂首页</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="/user/static/font-awesome//4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/user/static/highlight.js/9.8.0/monokai-sublime.min.css">
@@ -252,9 +252,9 @@
             <div class="text-center item-title">热门课程</div>
             <span class="line"></span>
         </div>
-		<div class="clearfix courses">
+		<div class="clearfix courses" id="hotcou">
 
-<div class="col-md-3 col-sm-6  course">
+<!--<div class="col-md-3 col-sm-6  course">
     <a class="course-box" href="courses/show.html">
         <div class="sign-box">
             <i class="fa fa-star-o course-follow pull-right"
@@ -274,12 +274,12 @@
 			</span>
         </div>
     </a>
-</div>
+</div>-->
 
 		</div>
         <div class="clearfix item-footer">
             <div class="pull-right watch-all">
-                <a href="courses/index.html">查看更多 ></a>
+                <a href="/courseindex/0/2/0">查看更多 ></a>
             </div>
         </div>
 	</div>
@@ -398,52 +398,85 @@
 
     </script>
    <script>
+       //程序入口
+       $(function(){
+           //获取所有体系展示
+           $.ajax({
+               type:"post",
+               url:"/systems",
+               data:JSON.stringify({
+                   systemID:0
+               }),
+               dataType:"json",
+               contentType : "application/json",//应用类型/json
+               success:function(systems){
+                   //循环拼接体系
+                   for(var i=0;i<systems.data.length;i++){
+                       var content='<div class="col-xs-12 col-sm-6 col-md-4">' +
+                           '<a href="/systemShow/'+systems.data[i].systemID+'/'+systems.data[i].ccount+'">' +
+                           '<div class="path-item">' +
+                           '<div class="col-xs-5 col-sm-4 path-img">' +
+                           '<img src="'+systems.data[i].systemImg+'">' +
+                           '</div>' +
+                           '<div class="col-xs-7 col-sm-8">' +
+                           '<div class="path-name">'+systems.data[i].systemName+'</div>' +
+                           '<div class="path-course-num">' +
+                           '</span>'+systems.data[i].ccount+'</span>' +
+                           '门课程' +
+                           '</div>' +
+                           '</div>' +
+                           '<div class="desc-layer">' +
+                           '<div class="center">'+systems.data[i].systemDesc+'</div>' +
+                           '</div>' +
+                           '</div>' +
+                           '</a>' +
+                           '</div>'
+                       $("#study-line").append(content);
+                   }
+               },
+               error:function(){
+                   console.log("体系接口回调异常");
+               }
+           });
 
-        //获取所有体系展示
-        $.ajax({
-            type:"post",
-            url:"/systems",
-            data:JSON.stringify({
-                systemID:0
-            }),
-            dataType:"json",
-            contentType : "application/json",//应用类型/json
-            success:function(systems){
-                //判断有数据才遍历
-                if (systems.code==1){
-                    for(var i=0;i<systems.data.length;i++){
-                        //添加体系
-                        var content='<div class="col-xs-12 col-sm-6 col-md-4">' +
-                            '<a href="/systemShow/'+systems.data[i].systemID+'/'+systems.data[i].ccount+'">' +
-                            '<div class="path-item">' +
-                            '<div class="col-xs-5 col-sm-4 path-img">' +
-                            '<img src="'+systems.data[i].systemImg+'">' +
-                            '</div>' +
-                            '<div class="col-xs-7 col-sm-8">' +
-                            '<div class="path-name">'+systems.data[i].systemName+'</div>' +
-                            '<div class="path-course-num">' +
-                            '</span>'+systems.data[i].ccount+'</span>' +
-                            '门课程' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="desc-layer">' +
-                            '<div class="center">'+systems.data[i].systemDesc+'</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</a>' +
-                            '</div>'
-                        $("#study-line").append(content);
-                    }
-                }else{
-                    alert("没有数据");
-                }
-            },
-            error:function(){
-               console.log("接口回调异常");
-            }
-        });
+           //获取热门课程
+           $.ajax({
+               url: "/hotCou",
+               dataType:"json",
+               success: function(res){
+                    //循环拼接热门课程
+                   var content='';
+                   $(res).each(function (i,cou) {
+                        content+='<div class="col-md-3 col-sm-6 course">' +
+                            '                       <a class="course-box" href="/courseshow/'+cou.courseID+'">' +
+                            '                       <div class="sign-box">' +
+                            '                       <i class="fa fa-star-o course-follow pull-right"' +
+                            '                   data-follow-url="/courses/23/follow"' +
+                            '                   data-unfollow-url="/courses/23/unfollow" style="display:none"></i>' +
+                            '                       </div>' +
+                            '                       <div class="course-img">' +
+                            '                       <img alt="'+cou.courseName+'" src="'+cou.courseImg+'">' +
+                            '                       </div>' +
+                            '                       <div class="course-body">' +
+                            '                       <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+cou.courseName+'">'+cou.courseName+'</span>' +
+                            '                       </div>' +
+                            '                       <div class="course-footer">' +
+                            '                       <span class="course-per-num pull-left">' +
+                            '                       <i class="fa fa-users"></i>' +cou.courseNum+
+                            '                   </span>' +
+                            '                   </div>' +
+                            '                   </a>' +
+                            '                   </div>';
+                   });
+                   $('#hotcou').html(content);
+               },
+               error: function(){
+                   alert("热门课程接口回调失败");
+               }
+           });
+       });
+
     </script>
-
 
 <div id="jinja-data"
     data-post-url="/registercheck"
@@ -459,7 +492,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 clearfix footer-col">
-                <img src="/user/img/logo_03.png">
+                <img src="/user/img/logo.png" style="width: 140px;height: 60px;">
                 <div class="footer-slogan">动手做实验，轻松学编程</div>
                 <div class="col-xs-2">
                     <div class="social-item footer-weixin-item">
