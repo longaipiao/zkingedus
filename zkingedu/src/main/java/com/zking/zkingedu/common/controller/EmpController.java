@@ -244,7 +244,7 @@ public class EmpController {
             m.addAttribute("ps",map);
             System.out.println(map);
         }
-        return "/admin/jdy/admin-title";
+        return "admin/jdy/admin-title";
     }
 
 
