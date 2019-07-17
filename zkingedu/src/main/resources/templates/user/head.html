@@ -69,7 +69,7 @@
 </head>
 <body>
 <!--头部行-->
-<nav class="navbar navbar-default navbar-fixed-top header">
+<nav class="navbar navbar-default navbar-fixed-top header" style="height: 65px">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
@@ -90,8 +90,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="" href="courses/index.html" >全部课程</a></li>
-                        <li><a class="" href="courses/index.html?status=preview" >即将上线</a></li>
+                        <li><a class="" href="/courseindex/0/2/0" >全部课程</a></li>
                         <li><a class="" href="/getTools">开发者</a></li>
                     </ul>
                 </li>
@@ -188,7 +187,6 @@
 
                             </div>
                             <div class="form-group remember-login">
-                                <input name="remember" type="checkbox" value="y"> 下次自动登录
                                 <a class="pull-right" href="user/zhPwd" >忘记密码？</a>
                             </div>
                             <div class="form-group">
@@ -212,7 +210,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-envelope" style="margin:0;"></i>
                                     </div>
-                                    <input type="email" name="email" class="form-control" placeholder="请输入手机号" id="phonez">
+                                    <input type="text" name="email" class="form-control" placeholder="请输入手机号" id="phonez">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -229,14 +227,14 @@
                                         <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码" id="codez">
                                     </div>
                                 </div>
-                                <button id="sendPhone">获取验证码</button>
+                                <button id="sendPhone" class="layui-btn">获取验证码</button>
                                 <!--<img class="verify-code" src="" source="https://www.shiyanlou.com/captcha.gif">-->
                             </div>
                             <div class="form-group">
                                 <input class="btn btn-primary" name="submit" onclick="zc()" type="button" value="注册">
                             </div>
                             <div class="form-group error-msg">
-                                <div class="alert alert-danger" role="alert"></div>
+
                             </div>
                         </form>
                     </div>

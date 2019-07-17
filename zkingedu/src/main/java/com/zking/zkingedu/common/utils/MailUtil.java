@@ -50,9 +50,9 @@ public class MailUtil {
         // 指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(mail));
         // 邮件的标题
-        message.setSubject("zking在线课堂。您本次的验证码为："+value+"。如非本人操作，请无视");
+        message.setSubject("zking在线课堂。");
         // 邮件的文本内容
-        message.setContent("<font style='color:red'>JavaMail发送邮件成功！</font>", "text/html;charset=UTF-8");
+        message.setContent("<font>您本次的验证码为：</font><h3>"+value+"</h3>。<font>如非本人操作，请无视</font>", "text/html;charset=UTF-8");
         // 返回创建好的邮件对象
         return message;
     }

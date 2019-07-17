@@ -37,13 +37,11 @@ public class AopUserRole {
     }
     @Before("test()")
     public boolean roleAop(){
-        System.out.println("权限切面检测");
         User u;
         if(session.getAttribute("user")!=null){
             u = (User)session.getAttribute("user");
         }else{
             try {
-                System.out.println("重定向了");
                 response.sendRedirect("/jump");
                 System.out.println(response);
                 return false;

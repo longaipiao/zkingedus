@@ -11,7 +11,7 @@ function loginChek() {
             return false;
         }
         $.ajax({
-            url:'user/loginCheck',
+            url:'/user/loginCheck',
             type:'post',
             async:false,
             data:{

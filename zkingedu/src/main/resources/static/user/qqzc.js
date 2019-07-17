@@ -2,35 +2,45 @@ var time=60;
 var code = "come";
 $(function(){
     $('#getQQCode').click(function(){
-        code = "";
-        for(var i=0;i<6;i++){
-            code+=Math.floor(Math.random()*10);
-        }
-        alert(code);
-        $.ajax({
-                 type: 'post',
-                url: 'http://route.showapi.com/28-1',
-                dataType: 'json',
-                data: {
-                    "showapi_appid": '99583', //这里需要改成自己的appid
-                    "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
-                    "mobile":$('#qqphone').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
-                    "tNum":"T150606060602",
-                    "big_msg":""
-
-                },
-                error: function(XmlHttpRequest, textStatus, errorThrown) {
-                    alert("操作失败!");
-                },
-                success: function(result) {
-                    console.log(result) //console变量在ie低版本下不能用
-                    //alert(result.showapi_res_code)
-                }
-        });
-        qqtimeStart();
+        qqfcode();
     });
 });
+
+function qqfcode() {
+    if(!(/^1[3456789]\d{9}$/.test($('#qqphone').val()))){
+        layer.msg("手机号码有误，请重填",{time:1200});
+        $('#qqphone').val('');
+        return false;
+    }
+    code = "";
+    for(var i=0;i<6;i++){
+        code+=Math.floor(Math.random()*10);
+    }
+    alert(code);
+    /*$.ajax({
+             type: 'post',
+            url: 'http://route.showapi.com/28-1',
+            dataType: 'json',
+            data: {
+                "showapi_appid": '99583', //这里需要改成自己的appid
+                "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
+                "mobile":$('#qqphone').val(),
+                "content":"{\"name\":\"\",\"code\":\""+code+"\",\"minute\":\"\"}",
+                "tNum":"T150606060602",
+                "big_msg":""
+
+            },
+            error: function(XmlHttpRequest, textStatus, errorThrown) {
+                alert("操作失败!");
+            },
+            success: function(result) {
+                console.log(result) //console变量在ie低版本下不能用
+                //alert(result.showapi_res_code)
+            }
+    });*/
+    qqtimeStart();
+}
+
 function qqtimeStart(){
     if(time>1){
         $('#getQQCode').css("pointer-events","none");
@@ -49,15 +59,15 @@ function qqzc() {
     if(qqcheckPhone()==false){//查询重复用户
         return false;
     }else if(!(/^1[3456789]\d{9}$/.test($('#qqphone').val()))){
-        alert("手机号码有误，请重填");
+        layer.msg("手机号码有误，请重填",{time:1200});
         $('#qqphone').val('');
         return false;
     }else if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/.test($('#qqpwd').val()))){
-        alert("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符");
+        layer.msg("密码至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符",{time:1200});
         $('#qqpwd').val('');
         return false;
     }else if(code!=$('#qqcode').val()){
-        alert("验证码错误");
+        layer.msg("验证码错误",{time:1200});
         $('#qqcode').val('');
         return false;
     }
@@ -74,7 +84,7 @@ function qqzc() {
         },
         success:function (data) {
             if(data=='1'){
-                alert("注册完成");
+                layer.msg('注册完成',{time:1200});
                 location.href='/'
             }
         },
@@ -94,7 +104,7 @@ function qqcheckPhone() {
         },
         success:function (data) {
             if(data=='1'){
-                alert("账号已存在");
+                layer.msg('账号已存在',{time:1200});
                 f=false;
             }else{
 

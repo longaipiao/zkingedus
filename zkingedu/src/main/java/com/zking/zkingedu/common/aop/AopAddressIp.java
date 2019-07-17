@@ -53,7 +53,6 @@ public class AopAddressIp {
             return false;
         }
 
-        System.out.println(u);
         User user = userService.getUserByid(u.getUserID());
         if(!IpAddress.getIpAddr(request).equals(user.getUserIP())){//对比数据库中与访问的ip地址是否对应
             f = false;

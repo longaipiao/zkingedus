@@ -84,7 +84,6 @@ public class QQLogin {
     public String requestQQLogin(HttpServletRequest request) throws QQConnectException {
         //自动组装qq登陆连接，重定向到qq登陆页面
         String authorizeURL = new Oauth().getAuthorizeURL(request);
-        System.out.println("联合登陆请求地址:"+authorizeURL);
         return "redirect:"+authorizeURL;
     }
 

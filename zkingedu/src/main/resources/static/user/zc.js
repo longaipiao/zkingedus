@@ -2,35 +2,47 @@ var time=60;
 var code = "come";
 $(function(){
     $('#sendPhone').click(function(){
-        code = "";
-        for(var i=0;i<6;i++){
-            code+=Math.floor(Math.random()*10);
-        }
-        alert(code);
-        /*$.ajax({
-                 type: 'post',
-                url: 'http://route.showapi.com/28-1',
-                dataType: 'json',
-                data: {
-                    "showapi_appid": '99583', //这里需要改成自己的appid
-                    "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
-                    "mobile":$('#phonez').val(),
-                    "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
-                    "tNum":"T150606060602",
-                    "big_msg":""
-
-                },
-                error: function(XmlHttpRequest, textStatus, errorThrown) {
-                    alert("操作失败!");
-                },
-                success: function(result) {
-                    console.log(result) //console变量在ie低版本下不能用
-                    //alert(result.showapi_res_code)
-                }
-        });*/
-        timeStart();
+        fcode();
     });
 });
+
+/**
+ * 发送验证码
+ */
+function fcode() {
+    if(!(/^1[3456789]\d{9}$/.test($('#phonez').val()))){
+        layer.msg("手机号码有误，请重填",{time:1200});
+        return false;
+    }
+    code = "";
+    for(var i=0;i<6;i++){
+        code+=Math.floor(Math.random()*10);
+    }
+    alert(code);
+    /*$.ajax({
+             type: 'post',
+            url: 'http://route.showapi.com/28-1',
+            dataType: 'json',
+            data: {
+                "showapi_appid": '99583', //这里需要改成自己的appid
+                "showapi_sign": '0bff2581f0a548a9a65c4f06163f3044',  //这里需要改成自己的应用的密钥secret
+                "mobile":$('#phonez').val(),
+                "content":"{\"name\":\"\",\"code\":\""+code+"\"}",
+                "tNum":"T150606060602",
+                "big_msg":""
+
+            },
+            error: function(XmlHttpRequest, textStatus, errorThrown) {
+                alert("操作失败!");
+            },
+            success: function(result) {
+                console.log(result) //console变量在ie低版本下不能用
+                //alert(result.showapi_res_code)
+            }
+    });*/
+    timeStart();
+}
+
 function timeStart(){
     if(time>1){
         $('#sendPhone').css("pointer-events","none");
