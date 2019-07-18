@@ -3,6 +3,7 @@ package com.zking.zkingedu.common.controller;
 import com.zking.zkingedu.common.model.Course;
 import com.zking.zkingedu.common.model.CourseType;
 import com.zking.zkingedu.common.model.Section;
+import com.zking.zkingedu.common.model.User;
 import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.CourseTypeService;
 import com.zking.zkingedu.common.service.SectionService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,6 +98,16 @@ public class CourseController {
         request.setAttribute("sections",sections);
 //        System.out.println(course);
 //        System.out.println(sections);
+        //获取用户
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        //判断用户不为空
+        if (null!=user){
+            //判断该用户是否收藏了课程
+            Integer collectionID = courseService.Bookmarked(courseID, user.getUserID(), 0);
+//        System.out.println(collectionID);
+            request.setAttribute("collectionID",collectionID);
+        }
         return "user/courses/show.html";
     }
 
@@ -219,12 +231,16 @@ public class CourseController {
     @RequestMapping("/hotCou")
     @ResponseBody
     public List<Course> hotCou(){
-        //获取热门课程
         List<Course> courses = courseService.hotCou();
 //        System.out.println(courses);
         return courses;
     }
 
+    /**
+     * 获取某个体系热门课程
+     * @param request
+     * @return
+     */
     @RequestMapping("/hotcoubySid")
     @ResponseBody
     public List<Course> hotcoubySid(HttpServletRequest request){
@@ -233,6 +249,71 @@ public class CourseController {
 
         //根据体系ID获取热门课程
         List<Course> courses = courseService.hotcoubySid(systemID);
+        return courses;
+    }
+
+    /**
+     * 修改学习人数
+     * @param request
+     * @return
+     */
+    @RequestMapping("/updNum")
+    @ResponseBody
+    public Integer updNum(HttpServletRequest request){
+        //接收传来的课程ID
+        Integer courseID = Integer.parseInt(request.getParameter("courseID"));
+        Integer n = courseService.updNum(courseID);
+        return n;
+    }
+
+    /**
+     * 添加收藏
+     * @param request
+     * @return
+     */
+    @RequestMapping("/collAdd")
+    @ResponseBody
+    public Integer collAdd(HttpServletRequest request){
+        //接收传来的课程ID
+        Integer courseID = Integer.parseInt(request.getParameter("courseID"));
+        //获取用户ID
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        //添加收藏
+        Integer n = courseService.collAdd(courseID, user.getUserID());
+        return n;
+    }
+
+    /**
+     * 取消课程收藏
+     * @param request
+     * @return
+     */
+    @RequestMapping("/collDel")
+    @ResponseBody
+    public Integer collDel(HttpServletRequest request){
+        //接收前台传来的课程ID
+        Integer courseID = Integer.parseInt(request.getParameter("courseID"));
+        //获取用户ID
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        //取消课程收藏
+        Integer n = courseService.collDel(courseID, user.getUserID());
+        return n;
+    }
+
+    /**
+     * 相似课程
+     * @param request
+     * @return
+     */
+    @RequestMapping("/similarCou")
+    @ResponseBody
+    public List<Course> similarCou(HttpServletRequest request){
+        //接收前台传来的课程ID、课程类别名
+        Integer courseID = Integer.parseInt(request.getParameter("courseID"));
+        Integer tid = Integer.parseInt(request.getParameter("tid"));
+        List<Course> courses = courseService.similarCou(tid, courseID);
         return courses;
     }
 }

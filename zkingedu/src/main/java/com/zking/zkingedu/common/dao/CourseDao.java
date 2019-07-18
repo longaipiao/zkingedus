@@ -2,6 +2,7 @@ package com.zking.zkingedu.common.dao;
 
 import com.zking.zkingedu.common.model.Course;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -115,4 +116,44 @@ public interface CourseDao {
      * @return
      */
     List<Course> hotcoubySid(Integer systemID);
+
+    /**
+     * 根据课程ID修改学习人数
+     * @param courseID
+     * @return
+     */
+    Integer updNum(Integer courseID);
+
+    /**
+     * 根据收藏（课程ID、帖子ID）ID，用户ID，收藏类型查询
+     * @param courseID
+     * @param userID
+     * @param collectionState
+     * @return
+     */
+    Integer Bookmarked(@Param("courseID") Integer courseID,@Param("userID") Integer userID,@Param("collectionState") Integer collectionState);
+
+    /**
+     * 添加课程收藏
+     * @param courseID
+     * @param userID
+     * @return
+     */
+    Integer collAdd(@Param("courseID") Integer courseID,@Param("userID") Integer userID);
+
+    /**
+     * 取消课程收藏
+     * @param courseID
+     * @param userID
+     * @return
+     */
+    Integer collDel(@Param("courseID") Integer courseID,@Param("userID") Integer userID);
+
+    /**
+     * 获取相似课程
+     * @param tid
+     * @param courseID
+     * @return
+     */
+    List<Course> similarCou(@Param("tid") Integer tid,@Param("courseID") Integer courseID);
 }

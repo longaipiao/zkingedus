@@ -175,4 +175,60 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> hotcoubySid(Integer systemID) {
         return courseDao.hotcoubySid(systemID);
     }
+
+    /**
+     * 根据课程ID修改学习人数
+     * @param courseID
+     * @return
+     */
+    @Override
+    public Integer updNum(Integer courseID) {
+        return courseDao.updNum(courseID);
+    }
+
+    /**
+     * 根据收藏（课程ID、帖子ID）ID，用户ID，收藏类型查询
+     * @param courseID
+     * @param userID
+     * @param collectionState
+     * @return
+     */
+    @Override
+    public Integer Bookmarked(Integer courseID, Integer userID, Integer collectionState) {
+        return courseDao.Bookmarked(courseID,userID,collectionState);
+    }
+
+    /**
+     * 添加课程收藏
+     * @param courseID
+     * @param userID
+     * @return
+     */
+    @Override
+    public Integer collAdd(Integer courseID,Integer userID) {
+        return courseDao.collAdd(courseID,userID);
+    }
+
+    /**
+     * 取消课程收藏
+     * @param courseID
+     * @param userID
+     * @return
+     */
+    @Override
+    public Integer collDel(Integer courseID, Integer userID) {
+        return courseDao.collDel(courseID,userID);
+    }
+
+    /**
+     * 获取相似课程
+     * @param tid
+     * @param courseID
+     * @return
+     */
+    @Override
+    public List<Course> similarCou(Integer tid, Integer courseID) {
+        return courseDao.similarCou(tid,courseID);
+    }
+
 }

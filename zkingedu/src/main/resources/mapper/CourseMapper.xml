@@ -63,12 +63,16 @@
     <select id="couList" resultType="Map">
         select a.course_id,a.course_name,a.course_desc,a.course_img,a.course_state,a.course_free,a.course_num,a.course_time,a.course_inte,b.t_id,b.t_name,c.system_id,c.system_name,c.system_desc,d.*,e.system_id as 'system_fid',e.system_name as 'system_fname',e.system_desc as 'system_fdesc',e.system_img
         from t_course a,course_type b,t_system c,t_emp d,t_system e
-        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id and d.emp_id=#{empID}
+        where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id
         <if test="nametype=='courseName'">
             and a.course_name like '%${name}%'
         </if>
         <if test="nametype=='empName'">
             and d.emp_name like '%${name}%'
+        </if>
+        <!--判断是否是管理员-->
+        <if test="empID!=0">
+            and d.emp_id=#{empID}
         </if>
         <if test="page!=null">
             limit #{page},#{limit}
@@ -111,6 +115,31 @@
 
     <!--根据父体系ID获取热门课程前五条-->
     <select id="hotcoubySid" resultType="Course">
-        SELECT * FROM t_course WHERE course_sid IN (SELECT system_id FROM t_system WHERE system_fid=#{systemID}) ORDER BY course_num DESC LIMIT 0,4
+        SELECT * FROM t_course WHERE course_sid IN (SELECT system_id FROM t_system WHERE system_fid=#{systemID}) ORDER BY course_num DESC LIMIT 0,5
+    </select>
+
+    <!--根据课程ID修改学习人数-->
+    <update id="updNum">
+        UPDATE t_course SET course_num=course_num+1 where course_id=#{courseID}
+    </update>
+
+    <!--根据收藏（课程ID、帖子ID）ID，用户ID，收藏类型查询-->
+    <select id="Bookmarked" resultType="Integer">
+        SELECT collection_id FROM t_collection WHERE collection_zpid=#{courseID} AND collection_uid=#{userID} AND collection_state=#{collectionState}
+    </select>
+
+    <!--添加课程收藏-->
+    <insert id="collAdd" parameterType="Integer">
+        insert into t_collection(collection_zpid,collection_uid,collection_state,collection_time) values(#{courseID},#{userID},0,SYSDATE());
+    </insert>
+
+    <!--取消课程收藏-->
+    <delete id="collDel">
+        DELETE FROM t_collection WHERE collection_zpid=#{courseID} AND collection_uid=#{userID} AND collection_state=0
+    </delete>
+
+   <!--获取相似课程-->
+    <select id="similarCou" resultType="Course">
+        SELECT * FROM t_course WHERE course_type=#{tid} and course_id!=#{courseID} ORDER BY course_num DESC LIMIT 0,4
     </select>
 </mapper>

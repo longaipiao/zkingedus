@@ -72,7 +72,7 @@
 
 <!--修改体系弹出层-->
 <div class="layui-row" id="systemUpd" style="display:none;margin-left: 15%;">
-    <form class="layui-form">
+    <form class="layui-form" id="sysUpd">
         <div class="layui-col-md10">
             <div class="layui-form-item"><label class="layui-form-label">体系ID：</label>
                 <div class="layui-input-block"><input type="text" readonly="readonly" name="systemID" id="upsystemID" autocomplete="off" class="layui-input" >
@@ -281,7 +281,7 @@
             },
             //获取下拉框数据的方法
             sele: function () {
-                var content='';
+                var content='<option value="0" selected="selected">无</option>';
                 //获取所有父体系
                 $.ajax({
                     url: "/systems",
@@ -292,11 +292,13 @@
                         systemID:0
                     }),
                     success:function (systems) {
-                        //拼接下拉框
-                        content+='<option value="0" selected="selected">无</option>';
-                        for(var i=0;i<systems.data.length;i++){
-                            //判断选中
-                            content+='<option value="'+systems.data[i].systemID+'">'+systems.data[i].systemName+'</option>';
+                        //判断获得的体系是否为空
+                        if (null!=systems.data){
+                            //拼接下拉框
+                            for(var i=0;i<systems.data.length;i++){
+                                //判断选中
+                                content+='<option value="'+systems.data[i].systemID+'">'+systems.data[i].systemName+'</option>';
+                            }
                         }
                     },
                     error:function () {
@@ -396,6 +398,8 @@
                         active.reload(curr,sysName,fid);
                         //关闭弹出层
                         layer.closeAll();
+                        //清空修改表单数据
+                        $('#sysUpd').reset();
                         layer.msg("修改成功");
                     }else{
                         alert("体系修改失败");

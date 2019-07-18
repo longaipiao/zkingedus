@@ -69,7 +69,12 @@ public class SectionController {
         String sectionName = request.getParameter("title");
         //获取章节最大顺序号
         Integer sectionSeq = sectionService.maxSeq(sectionCid);
-        sectionSeq+=1;
+        //判断是否为null
+        if(null==sectionSeq){
+            sectionSeq=1;
+        }else {
+            sectionSeq+=1;
+        }
 
         Map section=new HashMap();
         section.put("sectionCid",sectionCid);

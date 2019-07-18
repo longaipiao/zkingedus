@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="1483780974##87f89328c5616669f00302a263fe9061bb852818">
 
 
-    <title>新手入门 - 学习路径 - 实验楼</title>
+    <title>zking学习体系</title>
 
 
 
@@ -171,8 +171,6 @@
                                 </div>-->
 
                             </div>
-
-                            <div class="btn end-pin">更多课程</div>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane path-comment" id="path-comments">
@@ -254,12 +252,10 @@
 
                     <div class="userinfo-footer row">
                         <div class="col-md-6 col-xs-6 pos-left">
-
                             <a href="#sign-modal" data-toggle="modal" data-sign="signin"><span class="glyphicon glyphicon-bookmark"></span> 加入私有课</a>
-
                         </div>
                         <div class="col-md-6 col-xs-6 pos-right">
-                            <a href="/contribute" target="_blank"><span class="glyphicon glyphicon-send"></span> 我要投稿</a>
+                            <a href="javascript:void(0)" target="_blank"><span class="glyphicon glyphicon-send"></span> 我要投稿</a>
                         </div>
 
                         <div id="join-private-course" class="modal fade words-ctrl" tabindex="-1" role="dialog">
@@ -290,20 +286,19 @@
                 </div>
             </div>
 
-
+            <!--右边体系热门课程-->
             <div class="sidebox">
-
                 <div class="sidebox-header">
                     <h4 class="sidebox-title">此体系最热课程</h4>
                 </div>
                 <div class="sidebox-body course-content side-list-body">
                     <!--<a href="/paths/python"><img style="width:25px;height:25px" src="/user/img/1471513769430.png"> Python 研发工程师</a>-->
                 </div>
-
             </div>
 
+            <!--右边卓京公众号-->
             <div class="side-image side-qrcode">
-                <img src="/user/img/ShiyanlouQRCode.png">
+                <img src="http://www.veryedu.cn/templates/zhuojing/images/index_129.jpg">
                 <div class="side-image-text">关注公众号，手机看教程</div>
             </div>
 
@@ -359,7 +354,7 @@
 
 
 
-
+<!--登录弹出框-->
 <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -581,7 +576,7 @@
                 //循环拼接最热课程
                 var conten='';
                 $(res).each(function (i,cou) {
-                    conten+='<a href="/courseshow/'+cou.courseID+'"><img style="width:25px;height:25px" src="'+cou.courseImg+'">'+cou.courseName+'</a>';
+                    conten+='<a href="/courseshow/'+cou.courseID+'"><img style="width:25px;height:25px" src="'+cou.courseImg+'"> '+cou.courseName+'</a>';
                 });
                 $('.side-list-body').html(conten);
             },

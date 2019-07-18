@@ -208,24 +208,6 @@
             <version>2</version>
         </dependency>
 
-        <!-- 引入zhenxi -->
-        <!--<dependency>
-            <groupId>com.zhenzi</groupId>
-            <artifactId>sms</artifactId>
-            <version>1.0.0</version>
-        </dependency>-->
-
-        <!-- 热加载-->
-        <!--<dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-devtools</artifactId>
-        &lt;!&ndash; optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 &ndash;&gt;
-        <optional>true</optional>
-    </dependency>-->
-
-        <!--引入gson依赖-->
-
-
         <!--   ====================================映入工具类所需依赖 Start-->
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
@@ -301,6 +283,12 @@
             <version>3.4.49.ALL</version>
         </dependency>
 
+        <!--fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.29</version>
+        </dependency>
 
 
     </dependencies>
