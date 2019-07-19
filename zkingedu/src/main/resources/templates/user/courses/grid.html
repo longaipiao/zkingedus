@@ -39,15 +39,28 @@
   </div>
 <div th:if="${size}!=0">
   <form class="layui-form" action="" lay-filter="example" id="forma">
-    <div id="timu" th:each="item:${titles}">
-     <fieldset class="layui-elem-field" style="margin-top: 30px;" >
-      <legend id="1"><span th:text="${item.titleID} +'.  '+${item.titleContent}"></span></legend>
-        <div class="layui-field-box" th:each="zitme:${item.answers}" style="position: relative;">
-          <input th:value="${zitme.answerAbcd}" type="radio" th:name="${zitme.answerTid}" name="1" value="A" title="" lay-filter="filter">
-          <span th:text="${zitme.answerAbcd}+'&nbsp;&nbsp;'+${zitme.answerContent}" style="position: absolute; top:21px"></span>
-        </div>
-     </fieldset>
-    </div>
+    <!--<tr th:each="user,userStat:${users}">-->
+
+      <div id="timu" th:each="title,titleStat:${titles}" th:id="${title.titleID}">
+        <fieldset class="layui-elem-field" style="margin-top: 30px;" >
+          <legend id="1"><span th:text="${titleStat.count} +'.  '+${title.titleContent}" ></span></legend>
+          <div class="layui-field-box" th:each="zitme:${title.answers}" style="position: relative;">
+            <input th:value="${zitme.answerAbcd}" type="radio" th:name="${zitme.answerTid}" name="1" value="A" title="" lay-filter="filter">
+            <span th:text="${zitme.answerAbcd}+'&nbsp;&nbsp;'+${zitme.answerContent}" style="position: absolute; top:21px"></span>
+          </div>
+        </fieldset>
+      </div>
+
+
+    <!--<div id="timu" th:each="item:${titles}">-->
+     <!--<fieldset class="layui-elem-field" style="margin-top: 30px;" >-->
+      <!--<legend id="1"><span th:text="${item.titleID} +'.  '+${item.titleContent}"></span></legend>-->
+        <!--<div class="layui-field-box" th:each="zitme:${item.answers}" style="position: relative;">-->
+          <!--<input th:value="${zitme.answerAbcd}" type="radio" th:name="${zitme.answerTid}" name="1" value="A" title="" lay-filter="filter">-->
+          <!--<span th:text="${zitme.answerAbcd}+'&nbsp;&nbsp;'+${zitme.answerContent}" style="position: absolute; top:21px"></span>-->
+        <!--</div>-->
+     <!--</fieldset>-->
+    <!--</div>-->
 
     <div class="layui-form-item">
       <div class="layui-input-block">
@@ -66,24 +79,25 @@
       <div class="layui-card">
         <div class="layui-card-header">所得分数</div>
         <div class="layui-card-body">
-          <h1><span id="h1"></span></h1>
+          <h1><span id="h1">还未提交答卷哦~</span></h1>
         </div>
       </div>
     </div>
 
     <div class="layui-col-md4">
       <div class="layui-card">
-        <div class="layui-card-header">错题</div>
-        <div class="layui-card-body" id="cuoti">
-        </div>
-      </div>
-    </div>
-
-    <div class="layui-col-md4">
-      <div class="layui-card">
-        <div class="layui-card-header">未做题数</div>
+        <div class="layui-card-header" style="background:#F6CECE">错题</div>
         <div class="layui-card-body" >
-          <h1><span id="weizuo"></span></h1>
+          <h1><span id="cuoti">还未提交答卷哦~</span></h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-col-md4">
+      <div class="layui-card">
+        <div class="layui-card-header" style="background:#BDBDBD">未做题数</div>
+        <div class="layui-card-body" >
+          <h1><span id="weizuo">还未提交答卷哦~</span></h1>
         </div>
       </div>
     </div>
@@ -106,7 +120,7 @@
     //固定块
     util.fixbar({
       bar1: '&#xe9aa;',
-      // bar2: true,
+      // bar2: '&#xe605;',
       css: {right: 50, bottom: 100}
       ,bgcolor: '#393D49'
       ,click: function(type){
@@ -115,7 +129,7 @@
             location.reload(location.href)
           });
         } else if(type === 'bar2') {
-          layer.msg('两个bar都可以设定是否开启')
+
         }
       }
     });
@@ -132,9 +146,16 @@
           str:str
         },
         success:function(data){
+          data.cuoti.forEach(function(val,index){
+            $("#"+val).css({"background": "#F6CECE"});
+          })
+          data.weizuo.forEach(function(val,index){
+            $("#"+val).css({"background": "#BDBDBD"});
+          })
           $("#h1").html(data.score);
-          $("#cuoti").html(data.cuoti);
-          $("#weizuo").html(data.weizuo);
+          $("#cuoti").html(data.size);
+          $("#weizuo").html(data.weizuosize);
+
         },
         error:function () {
           layer.msg("出现bug了，请联系921607915")

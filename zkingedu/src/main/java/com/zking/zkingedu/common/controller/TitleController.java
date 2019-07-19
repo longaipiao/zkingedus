@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -58,6 +55,7 @@ public class TitleController {
         Map maps = (Map)JSON.parse(str);
         int score=0;
         List<Title> titles = (List<Title>)session.getAttribute("titles");
+        Set<Integer> weizuo = new HashSet<>();//实例化一个装未做答案题号的集合
         List<Integer> cuoti = new ArrayList<>();//实例化一个装错误答案题号的集合
         int count = titles.size()-maps.size();//未做题目
         for(int i=0;i<titles.size();++i){
@@ -73,14 +71,20 @@ public class TitleController {
                     }
                 }
             }
+            else{
+                weizuo.add(titles.get(i).getTitleID());
+            }
         }
-        StringBuffer ct = new StringBuffer();
-        for (Integer integer : cuoti) {
-            ct.append(integer+", ");
-        }
+//        StringBuffer ct = new StringBuffer();
+//        for (Integer integer : cuoti) {
+//            ct.append(integer+", ");
+//        }
+//        System.err.println(weizuo.size());
         map.put("score",score);
-        map.put("cuoti",ct);
-        map.put("weizuo",count);
+        map.put("cuoti",cuoti);
+        map.put("size",cuoti.size());
+        map.put("weizuosize",weizuo.size());
+        map.put("weizuo",weizuo);
         return map;
     }
 

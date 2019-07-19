@@ -9,7 +9,7 @@
     <if test="titleCid!=null">
         and a.title_cid = #{titleCid}
     </if>
-    ORDER BY a.title_id,b.answer_abcd
+    ORDER BY a.title_id,b.answer_abcd LIMIT 200
 </select>
 
     <resultMap id="titlemap" type="title">
