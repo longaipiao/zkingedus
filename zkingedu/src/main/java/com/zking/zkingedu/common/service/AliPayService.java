@@ -36,6 +36,9 @@ public class AliPayService {
     private UserService userService;
 
     @Resource
+    private ChargeService chargeService;
+
+    @Resource
     private Charge charge;
 
     @Resource
@@ -71,6 +74,7 @@ public class AliPayService {
             charge.setChargeIntegral(Integer.parseInt(body));//积分
             charge.setChargeTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//充值时间
             charge.setChargeUid(user.getUserID());//用户ID
+            chargeService.insertCharge(charge);
             log.info("================================充值记录成功================================");
 
             //增加账单表的信息
