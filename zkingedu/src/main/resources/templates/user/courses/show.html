@@ -517,7 +517,7 @@
                                 layer.msg("您的积分不够，请充值")
                             }
                             else if("NOW_BUY"==data){
-                                layer.confirm('是否购买本课程,本套课程共 '+courseInit+" 积分",function (index) {
+                                layer.confirm('是否购买本课程。本套课程共'+courseInit,function (index) {
                                     $.ajax({
                                         url:'/user/buyCourse',
                                         data:{
