@@ -54,11 +54,11 @@ public class URLController {
 
 
 //    //跳转到登陆界面
-    @RequestMapping("/loginpage")
-    public String page1(HttpSession session){
-        session.setAttribute("emp",null);
-        return "admin/login";
-    }
+//    @RequestMapping("/loginpage")
+//    public String page1(HttpSession session){
+//        session.setAttribute("emp",null);
+//        return "admin/login";
+//    }
 
 
     //树界面
