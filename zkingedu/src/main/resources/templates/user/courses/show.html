@@ -139,7 +139,8 @@
 <body>
 <!--引入头部样式-->
 <div th:replace="user/head :: html"></div>
-
+<!--用户ID隐藏域-->
+<input type="hidden" th:if="${session.user}!=null" id="userID" th:value="${session.user.userID}" />
 
 
 <div class="container layout layout-margin-top">
@@ -215,7 +216,8 @@
         <div class="tab-content">
             
             <div role="tabpanel" class="tab-pane active" id="labs">
-    <!--课程章节内容-->
+
+                <!--课程章节内容-->
     <div style="height:403px; overflow:scroll;overflow-x:hidden;">
         <div class="lab-item" th:each="section:${sections}">
             <div class="lab-item-status">
@@ -248,25 +250,87 @@
                 var tid=$('#tid').val(),
                     courseID=$('#courseID').val();
 
-                //流加载评论
-                // flow.load({
-                //     elem: '#demo' //指定列表容器
-                //     ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
-                //         var lis = [];
-                //         //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                //         $.get('', function(res){
-                //             //假设你的列表返回在data集合中
-                //             layui.each(res.data, function(index, item){
-                //                 lis.push('<li>'+ item.title +'</li>');
-                //             });
-                //
-                //             //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                //             //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                //             next(lis.join(''), page < res.pages);
-                //         });
-                //     }
-                // });
+                //监听评论按钮
+                $('#comment').on('click',function(){
+                    //获取课程内容
+                    var ccontent=$('textarea[name="ccontent"]').val();
+                    if (''==$.trim(ccontent)){
+                        layer.msg("说点什么吧");
+                    }else{
+                        $.ajax({
+                            url: '/comAdd',
+                            data: {
+                                courseID: courseID,
+                                ccontent: ccontent
+                            },
+                            success: function (res) {
+                                if (1==res){
+                                    //清空文本域
+                                    $('textarea[name="ccontent"]').val('');
+                                    //刷新页面
+                                    window.location.reload();
+                                    layer.msg("评论成功");
+                                } else{
+                                    layer.msg("评论失败")
+                                }
+                            },
+                            error: function(){
+                                alert("添加评论接口发生错误");
+                            }
+                        });
+                    }
+                });
 
+                //流加载评论
+                flow.load({
+                    id: 'flow',
+                    elem: '#demo' //指定列表容器
+                    ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+                        var lis = [],
+                            userID=$('#userID').val();
+                        //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                        $.get('/coms',{'page':page,'limit':5,"courseID":courseID}, function(res){
+                            //假设你的列表返回在data集合中
+                            layui.each(res.data, function(index, item){
+                                // 拼接字符串
+                                var content='<div class="answer-item">\n' +
+                                    '                            <div class="answer-head">\n' +
+                                    '                                <div class="user-avatar">\n' +
+                                    '                                    <a class="avatar" href="/user/162034" target="_blank">\n' +
+                                    '                                        <img src="'+item.user_img+'">\n' +
+                                    '                                    </a>\n' +
+                                    '                                </div>\n' +
+                                    '                            </div>\n' +
+                                    '                            <div class="answer-detail">\n' +
+                                    '                                <span class="comment-reply">\n' +
+                                    '                                    <div class="user-username">\n' +
+                                    '                                        <a class="username" href="javascript:void(0);" style="margin-left: 20px;" target="_blank">\n' +
+                                    '                                                '+item.user_name+'\n' +
+                                    '                                        </a>\n' +
+                                    '                                        <span class="user-level">V</span>\n' +
+                                    '                                    </div>\n' +
+                                    '                                 </span>\n' +
+                                    '                                <div class="answer-content markdown-body">\n' +
+                                    '                                    <a href="javascript:void(0);" style="color: #000000">'+item.scomment_content+'</a>\n' +
+                                    '                                </div>\n' +
+                                    '                                <div>\n' +
+                                    '                                    <span class="create-time">时间：<span>'+item.scomment_time+'</span></span>\n';
+                                if(userID==item.user_id){
+                                    content+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="comDel('+item.scomment_id+')">删除评论</a>\n';
+                                }
+                                content+='                                    <hr/>\n' +
+                                    '                                </div>\n' +
+                                    '                            </div>\n' +
+                                    '                        </div>';
+                                lis.push(content);
+                            });
+
+                            //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                            //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                            next(lis.join(''), page < res.pages);
+                        });
+                    }
+                });
 
                 //收藏星星样式
                 if($('#collectionID').val().length>0){
@@ -294,6 +358,11 @@
                 });
 
             });
+
+            //删除评论
+            function comDel(scommentID){
+                alert(scommentID);
+            }
 
             //课程收藏点击
             function courseCheck() {
@@ -469,15 +538,16 @@
                         <!--已登录-->
                         <div th:if="${session.user}!=null">
                             <!--评论文本域-->
-                            <textarea name="" placeholder="有什么想对老师说的" style="width:100%;height:150px;margin:12px 0 30px;padding:6px 12px;font-size:14px;border:1px solid #ececec"></textarea>
+                            <textarea name="ccontent" placeholder="有什么想对老师说的" style="width:100%;height:150px;margin:12px 0 30px;padding:6px 12px;font-size:14px;border:1px solid #ececec"></textarea>
                             <!--评论按钮-->
-                            <button type="button" class="layui-btn layui-btn-normal" style="margin-left: 87%;">发表评论</button>
+                            <button type="button" id="comment" class="layui-btn layui-btn-normal" style="margin-left: 87%;">发表评论</button>
                         </div>
                     </div>
 
                     <div class="comment-title">最新评论</div>
                     <div class="comment-list">
-                        <ul class="flow-default" style="height: 300px;" id="demo"></ul>
+                        <!--展示评论-->
+                        <div style="height:403px; overflow:scroll;overflow-x:hidden;" id="demo"></div>
                         <!--<div class="answer-item">
                             <div class="answer-head">
                                 <div class="user-avatar ">
@@ -500,6 +570,7 @@
                                 </div>
                                 <div>
                                     <span class="create-time">时间：<span>2009-09-09</span></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0)' onclick=''>删除评论</a>
                                     <hr/>
                                 </div>
                             </div>
