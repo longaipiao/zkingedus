@@ -77,7 +77,7 @@
         from t_user a,t_order b,t_course c
         where a.user_id=b.order_uid
         and b.order_cid=c.course_id
-        and a.user_id=#{userID}
+        and a.user_id=#{userID} order by order_id desc
     </select>
 
 </mapper>

@@ -21,7 +21,7 @@
     <select id="myBills" resultType="bill">
         select
             <include refid="billAll"/>
-        from t_bill where bill_uid=#{billUid}
+        from t_bill where bill_uid=#{billUid} order by bill_ID desc
     </select>
 
     <!--后台的账单记录统计-->
