@@ -1,9 +1,6 @@
 package com.zking.zkingedu.common.controller;
 
-import com.zking.zkingedu.common.model.Course;
-import com.zking.zkingedu.common.model.CourseType;
-import com.zking.zkingedu.common.model.Section;
-import com.zking.zkingedu.common.model.User;
+import com.zking.zkingedu.common.model.*;
 import com.zking.zkingedu.common.service.CourseService;
 import com.zking.zkingedu.common.service.CourseTypeService;
 import com.zking.zkingedu.common.service.SectionService;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.System;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -127,13 +125,14 @@ public class CourseController {
         String nametype = request.getParameter("nametype");
         String name = request.getParameter("name");
         //获取后台登录员工的Id
-        Integer empID=8;
+        HttpSession session = request.getSession();
+        Emp emp = (Emp) session.getAttribute("emp");
 
         query.put("page",page);
         query.put("limit",limit);
         query.put("nametype",nametype);
         query.put("name",name);
-        query.put("empID",empID);
+        query.put("empID",emp.getEmpID());
 
         //获取所有课程及数量
         List<Map> maps = courseService.couList(query);
@@ -158,9 +157,12 @@ public class CourseController {
      */
     @RequestMapping("/admin/courseAdd")
     @ResponseBody
-    public Integer courseAdd(Course course){
+    public Integer courseAdd(Course course,HttpServletRequest request){
+        //获取后台登录员工的Id
+        HttpSession session = request.getSession();
+        Emp emp = (Emp) session.getAttribute("emp");
         //获得讲师Id
-        course.setCourseEid(8);
+        course.setCourseEid(emp.getEmpID());
 
         //判断课程是否免费，若免费将课程积分设置为0
         if (course.getCourseFree()==0){
@@ -315,5 +317,22 @@ public class CourseController {
         Integer tid = Integer.parseInt(request.getParameter("tid"));
         List<Course> courses = courseService.similarCou(tid, courseID);
         return courses;
+    }
+
+    /**
+     * 获取用户收藏课程
+     * @return
+     */
+    @RequestMapping("/coucolls")
+    @ResponseBody
+    public List<Course> coucolls(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        //获取用户ID
+        User user = (User) session.getAttribute("user");
+        //获取收藏课程
+        List<Course> coucolls = courseService.coucolls(user.getUserID());
+        System.out.println(coucolls);
+
+        return coucolls;
     }
 }

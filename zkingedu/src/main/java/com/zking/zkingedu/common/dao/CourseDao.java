@@ -156,4 +156,11 @@ public interface CourseDao {
      * @return
      */
     List<Course> similarCou(@Param("tid") Integer tid,@Param("courseID") Integer courseID);
+
+    /**
+     * 根据用户ID查询收藏课程
+     * @param userID
+     * @return
+     */
+    List<Course> coucolls(Integer userID);
 }

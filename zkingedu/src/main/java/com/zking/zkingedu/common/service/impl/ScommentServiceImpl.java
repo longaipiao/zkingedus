@@ -50,4 +50,14 @@ public class ScommentServiceImpl implements ScommentService {
         return scommentDao.coucom(courseID);
     }
 
+    /**
+     * 删除评论
+     * @param scommentID
+     * @return
+     */
+    @Override
+    public Integer comDel(Integer scommentID) {
+        return scommentDao.comDel(scommentID);
+    }
+
 }

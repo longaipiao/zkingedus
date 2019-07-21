@@ -43,7 +43,7 @@ public class ScommentController {
         if (coucom%limit>0){
             pages++;
         }
-        System.out.println("coms:"+coms);
+//        System.out.println("coms:"+coms);
         //返回的Map
         Map map=new HashMap();
         map.put("data",coms);
@@ -70,4 +70,14 @@ public class ScommentController {
         return n;
     }
 
+
+    @RequestMapping("/comDel")
+    @ResponseBody
+    public Integer comDel(HttpServletRequest request){
+        //获取课程评论ID
+        Integer scommentID = Integer.parseInt(request.getParameter("scommentID"));
+        //删除评论
+        Integer n = scommentService.comDel(scommentID);
+        return n;
+    }
 }

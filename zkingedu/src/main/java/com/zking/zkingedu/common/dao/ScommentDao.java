@@ -35,4 +35,11 @@ public interface ScommentDao {
      * @return
      */
     Integer coucom(Integer courseID);
+
+    /**
+     * 删除评论
+     * @param scommentID
+     * @return
+     */
+    Integer comDel(Integer scommentID);
 }

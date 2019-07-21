@@ -231,4 +231,14 @@ public class CourseServiceImpl implements CourseService {
         return courseDao.similarCou(tid,courseID);
     }
 
+    /**
+     * 根据用户ID查询收藏课程
+     * @param userID
+     * @return
+     */
+    @Override
+    public List<Course> coucolls(Integer userID) {
+        return courseDao.coucolls(userID);
+    }
+
 }

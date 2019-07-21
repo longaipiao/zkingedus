@@ -16,4 +16,9 @@
     <select id="coucom" resultType="Integer">
         SELECT COUNT(*) FROM t_scomment WHERE scomment_cid=#{courseID}
     </select>
+
+    <!--删除评论-->
+    <delete id="comDel">
+        DELETE FROM t_scomment WHERE scomment_id=#{scommentID}
+    </delete>
 </mapper>

@@ -153,4 +153,11 @@ public interface CourseService {
      * @return
      */
     List<Course> similarCou(Integer tid,Integer courseID);
+
+    /**
+     * 根据用户ID查询收藏课程
+     * @param userID
+     * @return
+     */
+    List<Course> coucolls(Integer userID);
 }

@@ -354,22 +354,10 @@
 						</div>
 					</div>
 					<div class="col-md-11 layout-body" id="get4" >
-						<div class="content" style="height: 600px;">
-                            <h3>我的收藏</h3> <A href="javascript:void(0)" style="color: #0ace9d">课程</A> <A onclick="post_collection()" href="javascript:void(0)" style="color: #0ace9d">帖子</A>
+						<div class="content" style="height: 615px;">
+                            <h3>我的收藏</h3> <A href="javascript:void(0)" onclick="coucolls()" style="color: #0ace9d">课程</A> <A onclick="post_collection()" href="javascript:void(0)" style="color: #0ace9d">帖子</A>
+                           	<!--收藏帖子、课程-->
                             <div id="collection">
-                                <ul class="flow-default" style="margin-top: 15px;height: 70px;list-style:none;border-bottom:1px solid rgba(59,126,255,0.28);"  >
-                                    <li style="height: 80px;">
-                                        <!--用户头像-->
-                                        <img src="/user/img/default.jpg" style="width: 50px;height: 50px" class="layui-nav-img"><p></p>
-                                        <!--用户名-->
-                                        <span style="margin-left: 10px" text="野兽前辈"></span>
-                                       <!--帖子标题-->
-                                       <div style="margin-left: 10%;margin-top: -50px"><div><h3><span onclick=""  style="cursor:pointer">看招！！！昏睡红茶！！！</span></h3></div>
-                                                评论数：<span>123</span>
-                                            </div>
-                                        <button style="margin-left: 80%;margin-top: -60px" disabled="disabled" class="layui-btn layui-btn-warm"><span>取消收藏</span></button>
-                                    </li>
-                                </ul>
                             </div>
                             <div id="collectionPage"></div>
 						</div>
@@ -880,6 +868,77 @@
         $(function () {
             post_collection();
         });
+        
+        //获取用户的课程收藏
+		function coucolls() {
+			layui.use('laypage',function () {
+				var laypage=layui.laypage;
+
+				//获取用户收藏课程
+				$.ajax({
+					url: '/coucolls',
+					success: function(res){
+						if (null!=res){
+							//分页拼接
+							laypage.render({
+								elem: 'collectionPage'  //分页工具ID
+								,count: res.length //数据总行数
+								,limit: 6 //每页显示多少条
+								,layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip']
+								,jump: function(obj){
+									//渲染页面
+									$("#collection").html(function(){
+										var content='',thisData = res.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+										//将数据循环拼接
+										layui.each(thisData, function(index, item){
+											content+='<div class="col-md-4 col-sm-6  course">' +
+													'                        <a class="course-box" href="/courseshow/'+item.courseID+'">' +
+													'                            <div class="sign-box">' +
+													'                                <i class="fa fa-star-o course-follow pull-right"' +
+													'                                   data-follow-url="/courses/708/follow"' +
+													'                                   data-unfollow-url="/courses/708/unfollow"  style="display:none"></i>' +
+													'                            </div>' +
+													'                            <div class="course-img">' +
+													'                                <img alt="'+item.courseName+'" src="'+item.courseImg+'">' +
+													'                            </div>' +
+													'                            <div class="course-body">' +
+													'                                <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="'+item.courseName+'">'+item.courseName+'</span>' +
+													'                            </div>' +
+													'                            <div class="course-footer">' +
+													'<span class="course-per-num pull-left">' +
+													'                <i class="fa fa-users"></i>' +
+													'                '+item.courseNum+'' +
+													'</span>'
+											//判断是收费还是免费
+											if(item.courseFree==0){
+												content+='                                <span class="course-bootcamp pull-right">免费</span>' +
+														'                            </div>' +
+														'                        </a>' +
+														'                    </div>'
+											}else{
+												content+='                                <span class="course-money pull-right">收费</span>' +
+														'                            </div>' +
+														'                        </a>' +
+														'                    </div>'
+											}
+
+										});
+										return content;
+									});
+								}
+							});
+
+						}else {
+							layer.msg("暂无收藏课程");
+						}
+					},
+					error: function(){
+						alert("课程收藏接口出错");
+					}
+				});
+			});
+		}
+        
         //获取用户的帖子收藏
         function post_collection(){
             layui.use('laypage',function () {
@@ -927,7 +986,6 @@
                                         console.log('lay分页错误Error')
                                     }
                                 });
-
                             }
                         });
                     },error:function(){

@@ -361,7 +361,25 @@
 
             //删除评论
             function comDel(scommentID){
-                alert(scommentID);
+                layer.confirm("确定要删除您的评论吗？",function(){
+                    $.ajax({
+                        url: '/comDel',
+                        data: {
+                            scommentID: scommentID
+                        },
+                        success: function(res){
+                            if(1==res){
+                                window.location.reload();
+                                layer.msg("删除成功");
+                            }else {
+                                layer.msg("删除失败");
+                            }
+                        },
+                        error: function(){
+                            alert("删除评论接口回调失败");
+                        }
+                    });
+                });
             }
 
             //课程收藏点击
