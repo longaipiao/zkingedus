@@ -71,7 +71,7 @@
             and d.emp_name like '%${name}%'
         </if>
         <!--判断是否是管理员-->
-        <if test="empID!=0">
+        <if test="empID!=1">
             and d.emp_id=#{empID}
         </if>
         <if test="page!=null">
