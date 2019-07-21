@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台员工接口  实现层
@@ -21,7 +22,7 @@ public class EmpServiceImpl implements EmpService {
     private EmpDao empDao;
     //查询所有员工
     @Override
-    public List<Emp> getemps(String str) {
+    public List<Map> getemps(String str) {
         return empDao.getemps(str);
     }
     //按照用户名查询查询员工

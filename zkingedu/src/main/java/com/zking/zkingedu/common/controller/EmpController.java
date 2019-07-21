@@ -84,7 +84,7 @@ public class EmpController {
         }
         Page<Object> objects = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         Map<String,Object> empmap = new HashMap<>();
-        List<Emp> getemps = empService.getemps("%"+str+"%");
+        List<Map> getemps = empService.getemps("%"+str+"%");
         empmap.put("code","0");
         empmap.put("msg","");
         empmap.put("count",objects.getTotal());
@@ -124,8 +124,9 @@ public class EmpController {
     public String deleteempbyid(String empid){
         if(empid!=null){
             empService.delempbyid(Integer.parseInt(empid));
+            return "ok";
         }
-        return "ok";
+        return "no";
     }
 
     /**

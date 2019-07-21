@@ -7,14 +7,18 @@
 
     <!--使全局的映射器启用或禁用缓存  开启二级缓存-->
     <!--<cache type="com.zking.zkingedu.common.redis.MybatisRedisCache"></cache>-->
-    
-    
-    <select id="getemps" resultType="Emp">
-        select * from t_emp where emp_name != 'admin'
+    <select id="getemps" resultType="map">
+        select t_emp.emp_id,t_emp.emp_name,t_emp.emp_time,t_emp.emp_state,t_role.role_name from
+        (t_emp left join t_emp_role on t_emp.emp_id=t_emp_role.emp_id)
+        left join t_role on t_emp_role.role_id=t_role.role_id
+        where t_emp.emp_id != 1
         <if test="str !=null">
             and emp_name like #{str}
         </if>
     </select>
+
+
+
 
     <select id="getempbyempname" resultType="com.zking.zkingedu.common.model.Emp">
         select * from t_emp where emp_name = #{empname} and emp_state=0

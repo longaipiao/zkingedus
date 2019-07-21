@@ -50,7 +50,7 @@ public class ToolController {
 //        }
         ModelAndView mv = new ModelAndView();
         //路径
-        mv.setViewName("/user/developer/index");
+        mv.setViewName("user/developer/index");
         //转发的键与值
         mv.addObject("tools",tools);
         return mv;
@@ -63,7 +63,7 @@ public class ToolController {
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public String download() throws Exception{
-        return "/admin/html/download-list";
+        return "admin/html/download-list";
     }
 
     /**
@@ -108,7 +108,7 @@ public class ToolController {
         //调用开发者工具的删除方法
         toolService.deleteTool(Integer.parseInt(id));
         //跳转
-        return "/admin/html/download-list";
+        return "admin/html/download-list";
     }
 
     /**
@@ -124,7 +124,7 @@ public class ToolController {
         Tool tool1 = toolService.getToolByID(Integer.parseInt(toolID));
         ModelAndView mv = new ModelAndView();
         //路径
-        mv.setViewName("/admin/tool/tool-edit");
+        mv.setViewName("admin/tool/tool-edit");
         //传值到修改界面
         mv.addObject("tool1",tool1);
         return mv;
@@ -161,7 +161,7 @@ public class ToolController {
 //        //调用开发者工具的编辑方法
         toolService.updateTool(tool);
         //跳页面
-        return "/admin/html/download-list";
+        return "admin/html/download-list";
     }
 
     /**
@@ -178,7 +178,7 @@ public class ToolController {
 
         //调用开发者工具的增加方法
         toolService.addTool(tool);
-        return "/admin/html/download-list";
+        return "admin/html/download-list";
     }
 
     /**
@@ -189,7 +189,7 @@ public class ToolController {
      */
     @RequestMapping(value = "/test")
     public String test() throws Exception{
-        return "/admin/tool/tool-add";
+        return "admin/tool/tool-add";
     }
 
     /**
@@ -198,7 +198,7 @@ public class ToolController {
      */
     @RequestMapping(value = "/edit")
     public String edit() throws Exception{
-        return "/admin/tool/tool-edit";
+        return "admin/tool/tool-edit";
     }
 
     /**

@@ -4,13 +4,14 @@ import com.zking.zkingedu.common.model.Emp;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台员工接口
  */
 public interface EmpService {
     //查询所有员工
-    List<Emp> getemps(String str);
+    List<Map> getemps(String str);
     //按照条件查询查询员工
     Emp getempbyempname(String empname);
     //删除员工

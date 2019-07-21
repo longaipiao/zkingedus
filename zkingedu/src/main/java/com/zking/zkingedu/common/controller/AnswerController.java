@@ -87,9 +87,7 @@ public class AnswerController {
             }
             maps.put("treelist",treelist);
             map.add(maps);
-//            System.out.println(map);
         }
-
         return map;
     }
 

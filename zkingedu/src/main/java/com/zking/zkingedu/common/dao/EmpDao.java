@@ -5,6 +5,7 @@ import com.zking.zkingedu.common.model.Menu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台员工接口
@@ -13,7 +14,7 @@ public interface EmpDao {
 
 
     //查询所有员工
-    List<Emp> getemps(@Param("str") String str);
+    List<Map> getemps(@Param("str") String str);
     //按照名字查询查询员工
     Emp getempbyempname(@Param("empname") String empname);
     //删除员工
