@@ -90,6 +90,10 @@ public class AliPayService {
             userService.addIntegral(user.getUserID(),body);
             log.info("================================用户增加积分成功================================");
 
+            User user1 =  (User) request.getSession().getAttribute("user");
+            user1.setUserIntegrsl(user1.getUserIntegrsl()+Integer.parseInt(body));
+            request.setAttribute("user",user1);
+
 
 
             // 调用SDK生成表单
