@@ -79,7 +79,7 @@ public class SystemController {
         HttpSession session = request.getSession();
         //将体系放入request
         request.setAttribute("system",system);
-        return "user/paths/show.html";
+        return "user/paths/show";
     }
 
     /**
@@ -88,7 +88,7 @@ public class SystemController {
      */
     @RequestMapping("/admin/systems")
     public String adsystems(){
-        return "admin/liuxuqing/sysmanagement.html";
+        return "admin/liuxuqing/sysmanagement";
     }
 
     /**

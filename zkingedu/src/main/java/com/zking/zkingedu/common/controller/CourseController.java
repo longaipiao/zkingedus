@@ -71,7 +71,7 @@ public class CourseController {
         request.setAttribute("free",free);
         request.setAttribute("Tid",Tid);
         request.setAttribute("courseName",courseName);
-        return "user/courses/index.html";
+        return "user/courses/index";
     }
 
     /**
@@ -106,7 +106,7 @@ public class CourseController {
 //        System.out.println(collectionID);
             request.setAttribute("collectionID",collectionID);
         }
-        return "user/courses/show.html";
+        return "user/courses/show";
     }
 
     /**
