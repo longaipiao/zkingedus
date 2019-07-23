@@ -131,7 +131,7 @@ public class URLController {
     //跳转到课程管理
     @RequestMapping("/cours")
     public String cours(){
-        return "admin/liuxuqing/admincou.html";
+        return "admin/liuxuqing/admincou";
     }
 
     /**
@@ -145,7 +145,7 @@ public class URLController {
         Integer courseId = Integer.parseInt(request.getParameter("courseId"));
         request.setAttribute("courseId",courseId);
 
-        return "/admin/liuxuqing/sectionAdd.html";
+        return "admin/liuxuqing/sectionAdd";
     }
 
     /**
@@ -159,7 +159,7 @@ public class URLController {
         Integer courseId = Integer.parseInt(request.getParameter("courseId"));
         request.setAttribute("courseId",courseId);
 
-        return "/admin/liuxuqing/sectioncurd.html";
+        return "admin/liuxuqing/sectioncurd";
     }
 
     @RequestMapping("/video")
@@ -169,7 +169,7 @@ public class URLController {
 //        System.out.println(videoUrl);
         request.setAttribute("videoUrl",videoUrl);
 
-        return "/admin/liuxuqing/video.html";
+        return "admin/liuxuqing/video";
     }
 
 

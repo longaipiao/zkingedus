@@ -57,7 +57,7 @@
                         type: 2 //弹出页面（iframe）
                         ,title: "章节上传" //弹出层标题
                         ,area: ['650px', '85%'] //弹出层大小
-                        ,content: 'url/secAdd?courseId='+courseId //弹出层内容
+                        ,content: '/url/secAdd?courseId='+courseId //弹出层内容
                         ,shade: 0 //不显示遮罩
                     });
                     break;
@@ -178,7 +178,7 @@
                     type: 2 //弹出页面（iframe）
                     ,title: "视频播放" //弹出层标题
                     ,area: ['60%', '85%'] //弹出层大小
-                    ,content: 'url/video?videoUrl='+data.videoUrl //弹出层内容
+                    ,content: '/url/video?videoUrl='+data.videoUrl //弹出层内容
                     ,shade: 0 //不显示遮罩
                 });
             }else if(layEvent=='MoveUp'){
