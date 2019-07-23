@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页底部</title>
+</head>
+<body>
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 clearfix footer-col">
+                <img src="/user/img/logo.png" style="width: 140px;height: 60px;">
+                <div class="footer-slogan">动手做实验，轻松学编程</div>
+                <!--微信-->
+                <div class="col-xs-2">
+                    <div class="social-item footer-weixin-item">
+                        <i class="fa fa-weixin"></i>
+                        <div class="footer-weixin">
+                            <img src="http://www.veryedu.cn/templates/zhuojing/images/index_129.jpg">
+                        </div>
+                    </div>
+                </div>
+                <!--QQ-->
+                <div class="col-xs-2">
+                    <div class="social-item footer-qq-item">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                </div>
+                <!--微博-->
+                <div class="col-xs-2">
+                    <div class="social-item footer-weibo-item">
+                        <a href="https://weibo.com/u/5909028139?is_all=1#1563782220788" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">公司</div>
+                <a href="javascript:void(0);" target="_blank">关于我们</a><br>
+                <a href="javascript:void(0);" target="_blank">联系我们</a><br>
+                <a href="javascript:void(0);" target="_blank">加入我们</a><br>
+                <a href="javascript:void(0);" target="_blank">技术博客</a><br>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">合作</div>
+                <a href="javascript:void(0);" target="_blank">我要投稿</a><br>
+                <a href="javascript:void(0);" target="_blank">教师合作</a><br>
+                <a href="javascript:void(0);" target="_blank">高校合作</a><br>
+                <a href="javascript:void(0);" target="_blank">友情链接</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">服务</div>
+                <a href="javascript:void(0);" target="_blank">实战训练营</a><br>
+                <a href="javascript:void(0);" target="_blank">会员服务</a><br>
+                <a href="javascript:void(0);" target="_blank">实验报告</a><br>
+                <a href="javascript:void(0);" target="_blank">常见问题</a><br>
+                <a href="javascript:void(0);" target="_blank">隐私条款</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col dbsys">
+                <div class="col-title">学习路径</div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center copyright">
+        <span>Copyright @2019 zking课堂在线教育</span>
+        <span class="ver-line"> | </span>
+        <a href="javascript:void(0);" target="_blank">湘CXK备666号</a>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-89338452-1', 'auto');
+            ga('send', 'pageview');
+        </script>&ndash;&gt;
+
+        <script src="/user/app/dest/frontend/index.js?=2016121272249"></script>
+        <script src="/user/app/dest/user/index.js?=2016121272249"></script>
+        <script type="text/javascript">
+            $("#lb").carousel({
+                interval:2000 //每隔2秒自动切换图片
+            })
+
+            // 程序入口
+            $(function(){
+                $.ajax({
+                    type:"post",
+                    url:"/systems",
+                    data:JSON.stringify({
+                        systemID:0
+                    }),
+                    dataType:"json",
+                    contentType : "application/json",//应用类型/json
+                    success:function(systems){
+                        //拼接底部体系or快捷路径
+                        for (var j=0;j<5;j++){
+                            var content='<a href="/systemShow/'+systems.data[j].systemID+'/'+systems.data[j].ccount+'" target="_blank">'+systems.data[j].systemName+'</a><br>';
+                            var con='<a href="/systemShow/'+systems.data[j].systemID+'/'+systems.data[j].ccount+'"><img style="width:25px;height:25px" src="'+systems.data[j].systemImg+'"> '+systems.data[j].systemName+'</a>';
+                            $('.dbsys').append(content);
+                            $('#fastpath').append(con);
+                        }
+                    },
+                    error:function(){
+                        console.log("体系接口回调异常");
+                    }
+                });
+
+            });
+        </script>
+    </div>
+</div>
+
+</body>
+</html>
