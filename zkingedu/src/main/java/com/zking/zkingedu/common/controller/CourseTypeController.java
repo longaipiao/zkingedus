@@ -48,7 +48,7 @@ public class CourseTypeController {
      */
     @RequestMapping(value="/admin/adcourseImg")
     @ResponseBody
-    public String uploadSource(@RequestParam("file") MultipartFile file) {
+    public String uploadSource(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
 //        java.lang.System.out.println("增加课程图片的方法");
         //存放图片路径
         String pathString = null;
@@ -57,7 +57,11 @@ public class CourseTypeController {
         //获取图片在此项目的路径
         String courseImg=null;
         if(file!=null) {
-            pathString = "E:\\代码\\Y2\\SpringBoot\\zkingedus\\zkingedu\\target\\classes\\static\\user\\img\\course\\"+time+"_" +file.getOriginalFilename();
+            //获取服务器路径
+            String contextPath = request.getSession().getServletContext().getRealPath("/");
+
+
+            pathString = contextPath+"/user/img/course/"+time+"_" +file.getOriginalFilename();
             courseImg="/user/img/course/"+time+"_" +file.getOriginalFilename();
         }
         try {

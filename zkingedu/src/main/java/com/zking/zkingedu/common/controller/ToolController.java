@@ -2,12 +2,12 @@ package com.zking.zkingedu.common.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+
 import com.zking.zkingedu.common.model.Tool;
 import com.zking.zkingedu.common.service.ToolService;
-import com.zking.zkingedu.common.utils.RedisUtil;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,21 +39,19 @@ public class ToolController {
      * @param
      * @return ModelAndView
      */
-    @RequestMapping(value = "/getTools", method = RequestMethod.GET)
-    public ModelAndView getTools() throws Exception{
-//        System.out.println("开发者工具");
+    @RequestMapping(value = "/getTools")
+    public String getTools(HttpServletRequest request){
+        System.out.println("开发者工具");
 
         //从数据库里面获取值
         List<Tool> tools = toolService.getAlls();
-//        for (tool tool: tools) {
-//            System.out.println(tool);
-//        }
-        ModelAndView mv = new ModelAndView();
-        //路径
-        mv.setViewName("user/developer/index");
-        //转发的键与值
-        mv.addObject("tools",tools);
-        return mv;
+        for (Tool tool1 : tools) {
+            System.out.println(tool1);
+        }
+
+
+        request.setAttribute("tools",tools);
+        return "user/developer/dindex";
     }
 
     /**
@@ -62,7 +60,7 @@ public class ToolController {
      * @return 路径
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public String download() throws Exception{
+    public String download(){
         return "admin/html/download-list";
     }
 
@@ -73,7 +71,7 @@ public class ToolController {
      */
     @ResponseBody
     @RequestMapping(value = "/setTool", method = RequestMethod.GET)
-    public Map<String,Object> setTool(HttpServletRequest request,Integer page,Integer limit) throws Exception{
+    public Map<String,Object> setTool(HttpServletRequest request,Integer page,Integer limit){
 //        System.out.println( "后台开发者工具");
 
         //获取文本框的值
@@ -101,7 +99,7 @@ public class ToolController {
      * @return 路径
      */
     @RequestMapping(value = "/deleteTool", method = RequestMethod.POST)
-    public String deleteTool(HttpServletRequest request) throws Exception{
+    public String deleteTool(HttpServletRequest request){
         //获取要删除的开发者工具的id
         String id = request.getParameter("toolID");
 //        System.out.println("hhhh   拿到id：" + id);
@@ -137,7 +135,7 @@ public class ToolController {
      */
     @ResponseBody
     @RequestMapping(value = "/updateTool")
-    public String updateTool(HttpServletRequest request,Tool tool) throws Exception{
+    public String updateTool(HttpServletRequest request,Tool tool){
         //获取开发者工具的名称
 //        String toolName = request.getParameter("toolName");
 //        //获取开发者工具的介绍
@@ -188,7 +186,7 @@ public class ToolController {
      * @return 路径
      */
     @RequestMapping(value = "/test")
-    public String test() throws Exception{
+    public String test() {
         return "admin/tool/tool-add";
     }
 
@@ -197,7 +195,7 @@ public class ToolController {
      * @return 路径
      */
     @RequestMapping(value = "/edit")
-    public String edit() throws Exception{
+    public String edit() {
         return "admin/tool/tool-edit";
     }
 

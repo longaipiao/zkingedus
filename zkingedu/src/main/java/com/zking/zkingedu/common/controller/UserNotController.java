@@ -38,7 +38,7 @@ public class UserNotController {
         user.setUserName(getRandomJianHan(3));
         user.setUserRegTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         user.setUserImg("/user/img/default.jpg");
-        user.setUserIntegrsl(0);
+        user.setUserIntegrsl(100000);
         user.setUserState(0);
         user.setUserIP("127.0.0.1");
         return userService.addUser(user)>0?"注册成功":"注册失败";

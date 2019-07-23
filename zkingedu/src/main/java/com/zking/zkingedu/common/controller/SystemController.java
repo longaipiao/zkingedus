@@ -170,7 +170,9 @@ public class SystemController {
         //获取图片在此项目的路径
         String systemImg=null;
         if(file!=null) {
-            pathString = "E:\\代码\\Y2\\SpringBoot\\zkingedus\\zkingedu\\target\\classes\\static\\user\\img\\system\\"+time+"_" +file.getOriginalFilename();
+            //获取服务器路径
+            String contextPath = request.getSession().getServletContext().getRealPath("/");
+            pathString = contextPath+"/"+"user/img/system/"+time+"_" +file.getOriginalFilename();
             systemImg="/user/img/system/"+time+"_" +file.getOriginalFilename();
         }
         try {

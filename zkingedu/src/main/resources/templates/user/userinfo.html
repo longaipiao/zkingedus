@@ -952,7 +952,7 @@
                         laypage.render({
                              elem: 'collectionPage'
                             ,count:posts.length
-                            ,limit:1
+                            ,limit:5
                             ,limits:[5,10,15,20,25]
                             ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                             ,jump: function(obj){
@@ -1064,7 +1064,7 @@
                     <td><input  type="email" id="email" name="email" onblur="emailCheck()" class="layui-form-label"  placeholder="请输入邮箱地址" style="width: 230px;text-align:left;"/></td>
                 </tr>
                 <tr style="height: 80px">
-                    <td><input type="text" id="emailCode" class="layui-form-label"  placeholder="请输入验证码" style="width: 120px;text-align:left;"/>&nbsp;&nbsp;&nbsp;<button type="button" id="getEmailCode" class="layui-btn layui-btn-normal">获取验证码</button></td>
+                    <td><input type="text" id="emailCode" class="layui-form-label"  placeholder="请输入验证码" style="width: 120px;text-align:left;"/>&nbsp;&nbsp;&nbsp;<button type="button" id="getEmailCode" onclick="getEmailCodes()" class="layui-btn layui-btn-normal">获取验证码</button></td>
                 </tr>
                 <tr style="height: 80px">
                     <td><input id="userId" type="hidden" name="userId" th:value="${session.user.userID}"/><button class="layui-btn layui-btn-normal" type="button" onclick="subUpEmail()" style="margin-left: 20px">确认</button>&nbsp;&nbsp;&nbsp;<button id="emailClose" class="layui-btn layui-btn-warm" type="button" style="margin-left: 20px">返回</button></td>

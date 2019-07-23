@@ -16,6 +16,8 @@ public interface SortDao {
      */
     List<Sort> queryAllSort();
 
+    List<Sort> queryAllSortU();
+
     /**
      * 添加板块类别
      * @param sort
@@ -44,4 +46,6 @@ public interface SortDao {
      * @return
      */
     int sortBan(@Param("type") Integer type,@Param("sortID") Integer sortID);
+
+
 }

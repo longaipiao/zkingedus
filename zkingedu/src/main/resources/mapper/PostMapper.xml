@@ -19,7 +19,7 @@
         select a.post_id,a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
         b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
         d.sort_name
-         from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id AND d.sort_name=#{type}
+         from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id AND d.sort_name=#{type} AND d.sort_state=0
     </select>
 
     <select id="queryPostByid" resultType="map">
@@ -85,14 +85,14 @@
         select a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
         b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
         d.sort_name
-         from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id  LIMIT #{page},#{size}
+         from t_post a,t_user b,t_sort d where a.post_uid=b.user_id and a.sort_id=d.sort_id AND d.sort_state=0 AND a.post_state=0 LIMIT #{page},#{size}
     </select>
 
     <select id="queryPagePostByType" resultType="map">
         SELECT a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
         b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
         d.sort_name
-         FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND d.sort_name=#{type} LIMIT #{page},#{size}
+         FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND d.sort_name=#{type} AND d.sort_state=0 AND a.post_state=0 LIMIT #{page},#{size}
     </select>
 
     <select id="queryAllPostByNamePage" resultType="map">
@@ -100,7 +100,7 @@
             SELECT a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,
             b.user_id,b.user_img,b.user_email,b.user_phone,b.user_name,b.user_password,b.user_integrsl,b.user_state,b.user_IP,b.user_lastTime,b.user_regTime,b.user_openid,
             d.sort_name
-            FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND a.post_name LIKE '%${pname}%' LIMIT #{start},#{size}
+            FROM t_post a,t_user b,t_sort d WHERE a.post_uid=b.user_id AND a.sort_id=d.sort_id AND  d.sort_state=0 AND a.post_state=0 AND a.post_name LIKE '%${pname}%' LIMIT #{start},#{size}
         </if>
         <if test="start==null">
             SELECT a.post_id as 'post_id1',a.post_uid,a.post_name,a.post_content,a.post_time,a.post_num,a.post_state,a.sort_id,

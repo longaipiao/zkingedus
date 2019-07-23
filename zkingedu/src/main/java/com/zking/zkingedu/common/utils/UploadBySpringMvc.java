@@ -22,7 +22,7 @@ public class UploadBySpringMvc{
     @Autowired
     private UserService userService;
 
-
+    //更换头像
     @RequestMapping(value = "fileUploadPage",produces = "application/text;charset=utf-8")
     public String fileUploadPage(MultipartFile file, HttpServletRequest request){
         //获取服务器路径
@@ -30,10 +30,10 @@ public class UploadBySpringMvc{
 
         //判断文件是否为空
         if(!file.isEmpty()){
-            System.out.println(contextPath+"\\img");
+            System.out.println(contextPath+"/img");
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
-            File destFile = new File(contextPath+"\\img",name);
+            File destFile = new File(contextPath+"/img",name);
             if (!destFile.exists()) {
                 destFile.mkdirs();
             }
@@ -70,7 +70,7 @@ public class UploadBySpringMvc{
         if(!file.isEmpty()){
             //文件名称
             String name = String.valueOf(new Date().getTime()+"_"+file.getOriginalFilename());
-            File destFile = new File(contextPath+"\\img",name);
+            File destFile = new File(contextPath+"/img",name);
             if (!destFile.exists()) {
                 destFile.mkdirs();
             }

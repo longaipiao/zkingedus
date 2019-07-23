@@ -85,7 +85,7 @@ function zc() {
             },
             success:function (data) {
                 if(data=='注册成功'){
-                    layer.msg("注册完成",{time:1600});
+                    layer.msg('请输入密码',{time:1200});
                     location.href='/'
                 }else{
                     layer.msg("注册失败",{time:1600});

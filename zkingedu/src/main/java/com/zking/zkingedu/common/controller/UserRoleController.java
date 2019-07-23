@@ -188,6 +188,7 @@ public class UserRoleController {
     public String getPostCollectionCount(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
         List<Map<String, Object>> list = postService.queryPostByUserId(user.getUserID());
+        System.out.println("+++++++++++++++"+list.size());
         Gson gson = new Gson();
         return gson.toJson(list);
     }

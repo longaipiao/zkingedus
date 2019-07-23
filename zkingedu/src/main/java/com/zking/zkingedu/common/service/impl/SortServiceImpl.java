@@ -21,6 +21,11 @@ public class SortServiceImpl implements SortService {
     }
 
     @Override
+    public List<Sort> queryAllSortU() {
+        return sortDao.queryAllSortU();
+    }
+
+    @Override
     public int addSort(Sort sort) {
         return sortDao.addSort(sort);
     }

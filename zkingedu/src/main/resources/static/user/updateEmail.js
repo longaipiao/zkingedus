@@ -1,34 +1,37 @@
 var time=60;
 var code = "come";
 $(function(){
-    $('#getEmailCode').click(function(){
-        code = "";
-        for(var i=0;i<6;i++){
-            code+=Math.floor(Math.random()*10);
-        }
-        alert(code);
-        $.ajax({
-                type: 'post',
-                url: '/user/sendMail',
-                dataType: 'json',
-                data: {
-                    Email:$('#email').val(),
-                    code:code
-                },
-                error: function() {
-                    console.log('邮件验证码发送失败');
-                },
-                success: function(result) {
-                    if(result==1){
-                        console.log('邮件发送成功');
-                    }
-                }
-        });
-
-        timeStart1();
-    });
 
 });
+
+function getEmailCodes() {
+    code = "";
+    for(var i=0;i<6;i++){
+        code+=Math.floor(Math.random()*10);
+    }
+    alert(code);
+    $.ajax({
+        type: 'post',
+        url: '/user/sendMail',
+        dataType: 'json',
+        data: {
+            Email:$('#email').val(),
+            code:code
+        },
+        error: function() {
+            console.log('邮件验证码发送失败');
+        },
+        success: function(result) {
+            if(result==1){
+                console.log('邮件发送成功');
+            }
+        }
+    });
+
+    timeStart1();
+}
+
+
 function timeStart1(){
     if(time>1){
         $('#getEmailCode').css("pointer-events","none");

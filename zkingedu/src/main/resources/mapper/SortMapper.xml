@@ -8,6 +8,10 @@
         select sort_id,sort_name,sort_state from t_sort
     </select>
 
+    <select id="queryAllSortU" resultType="sort">
+        select sort_id,sort_name,sort_state from t_sort WHERE sort_state = 0
+    </select>
+
     <insert id="addSort" parameterType="sort">
         INSERT INTO t_sort(sort_name) VALUES(#{sort.sortName})
     </insert>

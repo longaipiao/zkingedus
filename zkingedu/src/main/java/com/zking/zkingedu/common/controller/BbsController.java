@@ -57,7 +57,7 @@ public class BbsController {
             request.setAttribute("courseName",post_name);
             //搜索的类型
             request.setAttribute("checkType",checkType);
-            return "user/courses/index.html";
+            return "user/courses/dindex.html";
         }
         return "user/bbsIndex";
     }
@@ -108,7 +108,7 @@ public class BbsController {
         map.put("data",list);
         map.put("apage",cpage);
         map.put("count",cpage);
-        map.put("types",sortService.queryAllSort());
+        map.put("types",sortService.queryAllSortU());
         if(type!=null&&type.length()!=0){
             map.put("type",type);
         }
@@ -184,7 +184,13 @@ public class BbsController {
         }
 
         //查询该用户是否收藏了该帖子
-        Integer user_id = 41;
+
+        User user = (User)request.getSession().getAttribute("user");
+        Integer user_id = 0;
+        if(user!=null){
+            user_id = user.getUserID();
+        }
+
         Map<String, Object> map = new HashMap<>();//收藏点赞
         map.put("collection","");
         map.put("give","");
@@ -254,13 +260,15 @@ public class BbsController {
      */
     @ResponseBody
     @RequestMapping(value = "/addConllection")
-    public String addConllection(Integer post_id, Integer user_id, Integer type_id, String cTime,Integer type){
+    public String addConllection(Integer post_id, Integer user_id, Integer type_id, String cTime,Integer type,HttpServletRequest request){
         int n=0;
+        User user =(User)request.getSession().getAttribute("user");
+        user_id = user.getUserID();
         String resultMsg="";
         if(type==1){//如果是收藏类型的操作
             cTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             type_id = 1;
-            user_id = 41;
+            System.out.println(user_id);
             n = tcommentService.addCollection(post_id,user_id,type_id,cTime);
             if(n>0){
                 resultMsg = "addCollection";
@@ -268,7 +276,6 @@ public class BbsController {
                 resultMsg = "addCError";
             }
         }else{
-            user_id=41;
             n = tcommentService.deleteConllection(post_id,user_id);
             if(n>0){
                 resultMsg = "delCollection";
@@ -282,8 +289,9 @@ public class BbsController {
 
     @ResponseBody
     @RequestMapping(value = "/addGive")
-    public String addGive(Integer post_id,Integer type){
-        Integer user_id = 41;
+    public String addGive(Integer post_id,Integer type,HttpServletRequest request){
+        User user =(User)request.getSession().getAttribute("user");
+        Integer user_id = user.getUserID();
         String resultMsg="Error";
         if(type==1){
             if(tcommentService.addGive(post_id,user_id,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))>0){

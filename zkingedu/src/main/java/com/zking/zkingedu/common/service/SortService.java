@@ -16,6 +16,8 @@ public interface SortService {
      */
     List<Sort> queryAllSort();
 
+    List<Sort> queryAllSortU();
+
     /**
      * 添加板块类别
      * @param sort

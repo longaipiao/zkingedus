@@ -1,10 +1,14 @@
 var time=60;
 var code = "come";
 $(function(){
+    layui.use('layer',function () {
+        layer = layui.layer;
+    });
     $('#getQQCode').click(function(){
         qqfcode();
     });
 });
+var layer;
 
 function qqfcode() {
     if(!(/^1[3456789]\d{9}$/.test($('#qqphone').val()))){

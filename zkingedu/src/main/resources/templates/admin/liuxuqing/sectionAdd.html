@@ -181,6 +181,7 @@
     function cloudUploadSuccess(res) {
         //将视频Id赋值给videoUrl文本框
         $('#videoUrl').val(res.video_id);
+        alert('视频上传完成');
     }
     //调用
     window.onload = function(){
