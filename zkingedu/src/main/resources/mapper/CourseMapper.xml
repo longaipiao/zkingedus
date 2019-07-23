@@ -81,13 +81,18 @@
 
     <!--计算课程数量-->
     <select id="cuncour" resultType="Integer">
-        select count(*) from t_course a,course_type b,t_system c,t_emp d,t_system e
+        select count(*)
+        from t_course a,course_type b,t_system c,t_emp d,t_system e
         where a.course_type=b.t_id and b.t_sid=c.system_id and a.course_eid=d.emp_id and c.system_fid=e.system_id
         <if test="nametype=='courseName'">
             and a.course_name like '%${name}%'
         </if>
         <if test="nametype=='empName'">
             and d.emp_name like '%${name}%'
+        </if>
+        <!--判断是否是管理员-->
+        <if test="empID!=1">
+            and d.emp_id=#{empID}
         </if>
     </select>
 
